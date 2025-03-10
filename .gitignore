@@ -1,0 +1,10 @@
+# dirs
+thermo/
+cbrewer/
+
+.DS_Store
+*.fig
+*.mat
+*.png
+*.nc
+*.asv
