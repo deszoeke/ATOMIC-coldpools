@@ -78,7 +78,7 @@ if i == 16
 end
 lambda_ent = E_ent./(qent_cold(wake_ind(1)) - qent_cold(1));
 lambda_sfc = E_sfc./(qsurf_cold(wake_ind(1)) - qsurf_cold(1));
-lambda = lambda_ent + lambda_sfc; % decay coefficient
+lambda = lambda_ent + lambda_sfc; % decay coefficient = lambda_W from fluxes (SPdeS)
 tau = 1./lambda;
 tau = tau./60;
 if tau > 0
@@ -103,6 +103,27 @@ d = fss_peak./(fss_prime(wake_ind(1))) - in_fee(1); % denominator
 cp_age_fee = tau.*log(n./d); % time/age from the model
 % cp_age_fss = tau.*log(n./d); % time/age from the model
 cp_age_fss = tau.*log(in_fee);
+
+% SPdeS: I'm not sure about using this tau=-1/lambda_W from the fluxes here. 
+% I get confused by tau. And it's the wrong tau (tau_W). So let's avoid tau.
+% There should be another lambda, lambda_iso from the slope of log(in_fee) vs time.
+% I don't think it's calculated here, but you have computed it and we need it here.
+% From that get Dt = cp_age_fss (corrected) = -log(in_fee) / lambda_iso
+% From this, set Dt at the peak, and then increment the time from the peak
+% with the regular clock time axis. Dt is a vector. It's the same
+% time vector whether we're thinking of a flux adjustment or an isotope
+% adjustment, because the cold pool downdraft happened at some definite
+% time, and the clock shows some definite later time. It's just the
+% difference of those times.
+% Then the two different nondimensional times on the plot are 
+% Dt/lambda_W vs. Dt/lambda_iso.
+% Using Dt/lambda_iso will make a pretty boring plot, with
+% straight lines with slopes lambda_iso/lambda_W. But we actually have the
+% isotope nondimensional time = -log( in_fee ) independently!
+% We used it to generate the slope that we solved for \lambda_iso. 
+% Plot it here again and plot two estimates of nondimensional time
+% -log( in_fee ) vs. Dt/lambda_W.
+
 % Adjusted
 % cp_age_fee = -10^(4).*tau.*log(in_fee); % time/age from the model
 % cp_age_fss = -10^(4).*tau.*log(in_fss); % time/age from the model

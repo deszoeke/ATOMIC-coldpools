@@ -11,7 +11,7 @@ load 'mixing_fractions_vars.mat' mf_t_cp slope
 % Add tau as a variable that's saved in the loop
 %% Plot
 % Pre-allocating tau variable
-mf_tau = zeros(1,16); % mixing fraction tau = lambda_i*(t-t0)
+mf_tau = zeros(1,16);
 mf_tau(mf_tau==0) = NaN;
 figure; hold on;
 for i = [2:11,13:16] % [8,16] % 
@@ -20,10 +20,17 @@ for i = [2:11,13:16] % [8,16] %
 % Saving tau for each CP
     mf_tau(i) = tau; % mixing fraction tau = lambda_i*(t-t0)
     % SPdeS 2025-2-25
-    % Dt = t-t0 is the same whether estimated from (isotope) mixing fraction, or fluxes, these being the two axes.
+    % Dt = t-t0 is estimated by dimensionalizing the nondimensional age from
+    % the (isotope) mixing fraction. Then the nondimensional age from the 
+    % mass fluxes is computed as lambda_W*Dt.
     % For each cold pool we need the lambda_W, and either Dt or lambda_iso.
-    % Dt = tau / lambda_iso
-    % tau_W = lambda_W * Dt
+    % lambda_W from the fluxes and lambda_iso from the isotope decay are
+    % computed in cold_pool_ages(). Simon's not sure what tau is. It could
+    % be 1/lambda, or it could be nondimensional age Dt/lambda. Rework
+    % inside of cold_pool_ages assuming Dt = the same const for flux (W) and isotope
+    % (iso) methods. The time of the peak is irrelevant to the age Dt
+    % except for the ideal cold pools where the time of the peak
+    % is assumed to correspond to the time of the evaporative downdraft.
 % Defining wall-clock non-dimesional age reference point
     % Referenced to peak dD
     mf_t = (mf_t_cp(i,:) - mf_t_cp(i,pk_ind))*24*60; % time in minutes
