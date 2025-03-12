@@ -12,12 +12,17 @@ load mixing_fractions_vars
 % axis equal
 ncp  = size(mf_fee, 1);
 proj = cell(ncp,1);
+t_age_vec = cell(ncp,1);
 slope = NaN(ncp,1);
 xd    = NaN(ncp,1);
 yd    = NaN(ncp,1);
 xb    = NaN(ncp,1);
 lambda_iso = NaN(ncp,1);
 dt_dd_src  = NaN(ncp,1);
+
+% start test plot
+plot([0 1 0 0], [0 0 1 0], "k")
+hold on
 
 for cpi = 2:size(mf_fee,1) % each cold pool
     % start at the isotope peak and regress just the recovery
@@ -42,16 +47,15 @@ for cpi = 2:size(mf_fee,1) % each cold pool
     % dt_dd_src(cpi) = -log(pp(1)) / lambda_iso(cpi); % minutes
     dt_dd_src(cpi) = -Pf(2) / lambda_iso(cpi); % minutes
     
-    % test plot
-    % subplot(2,2,1)
-    plot([0 1 0 0], [0 0 1 0], "k")
-    hold on
+    t_age_vec{cpi} = dt_dd_src(cpi) + (0:length(pp));
+
+    % add test plot
     plot(mf_fss(cpi,imx:end),mf_fee(cpi,imx:end),'.-')
     plot(mf_fss(cpi,imx),mf_fee(cpi,imx),'o')
     plot([xb(cpi),xd(cpi)],[0,yd(cpi)])
     
     % subplot(2,1,2)
-    % plot(fii-1, log(pp(fii)))
+    % plot(t_age_vec{cpi}(fii), log(pp(fii)))
 
 end
 
