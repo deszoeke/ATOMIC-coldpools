@@ -78,13 +78,15 @@ if i == 16
 end
 lambda_ent = E_ent./(qent_cold(wake_ind(1)) - qent_cold(1));
 lambda_sfc = E_sfc./(qsurf_cold(wake_ind(1)) - qsurf_cold(1));
-lambda = lambda_ent + lambda_sfc; % decay coefficient = lambda_W from fluxes (SPdeS)
+lambda = lambda_ent + lambda_sfc; % decay coefficient
+% decay coefficient = lambda_W from fluxes (SPdeS)
 tau = 1./lambda;
 tau = tau./60;
-if tau > 0
+if tau > 0 % endangers correctness
     tau = -tau;
 end
 disp(tau)
+
 %% With projection
 fss_prime = mf_fss(i,:) - mf_fss(i,1);
 % % With extrapolation
@@ -97,10 +99,29 @@ fee_prime(fee_prime<0) = NaN;
 fss_prime(fss_prime<0) = NaN;
 % Dividing by the mixing fraction at peak dD normalizes the projection
 in_fee = fee_prime./(fee_prime(wake_ind(1))); % gives same values as fss_prime after normalizing
+% SIMON: To get the age since the creation of the cp by its downdraft source, 
+% normalize by the intercept with
+% the diagonal mixing line between downdraft and surface end members
+% corresponding to the peak of the _ideal_ cold pool, assumed first observed at its
+% downdraft source. Maybe this is already done above.
+
+% Normalizing the argument of the log won't affect the slope lambda_iso,
+% but it will affect the intercept. The intercept we want gives the age Dt since 
+% the evaporative downdraft source, so normalize 
+
+% decay rate of isotopes from slope of log(in_fee)[?] vs time :: SIMON
+
+% Simon: we need to put in_fee in a coordinate normalized for
+% each cold pool, but
+% n,d seem to be offset and normalized too many times:
+% log(0) = -Inf obtained at wake_ind(1) when n=0 and we should have a finite
+% age.
 in_fss = fss_prime./(fss_prime(wake_ind(1)));
-n = in_fee - in_fee(1); % numerator
+n = in_fee - in_fee(1); % numerator  
 d = fss_peak./(fss_prime(wake_ind(1))) - in_fee(1); % denominator
 cp_age_fee = tau.*log(n./d); % time/age from the model
+
+% To get Dt at each cold pool's peak, extrapolate log(n./d) to 0 lambda_iso back to 
 % cp_age_fss = tau.*log(n./d); % time/age from the model
 cp_age_fss = tau.*log(in_fee);
 
