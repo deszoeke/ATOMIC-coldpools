@@ -32,7 +32,7 @@ for cpi = 2:size(mf_fee,1) % each cold pool
     slope(cpi) = b; 
     xd(cpi) = c;
     yd(cpi) = d;
-    xb(cpi) = e;
+    xb(cpi) = e; % y-intercept (no downdraft)
 
     p(p<0) = NaN;
     % start at the isotope peak

@@ -5,6 +5,8 @@ cbrewer/
 .DS_Store
 *.fig
 *.mat
+*.eps
+*.svg
 *.png
 *.nc
 *.asv
