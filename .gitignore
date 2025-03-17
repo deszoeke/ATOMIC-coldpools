@@ -3,6 +3,7 @@ data/
 thermo/
 cbrewer/
 
+Manifest.toml
 .DS_Store
 *.fig
 *.mat
