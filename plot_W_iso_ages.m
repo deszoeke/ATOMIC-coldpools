@@ -16,14 +16,15 @@ for i = [2:11, 13:16]
     y = lambda_W(i) * 60 * (tdd + (0:length(x)-1)');
 
     plot(x,y, '.-')
+    text(x(end)+0.1,y(end), sprintf("%i", i))
 end
 axis tight
 ylim([0, 0.4])
 xlim([0, 8])
-xlabel('isotope age log(g'')')
-ylabel('water vapor age \lambda_W(t-t_{dd})')
+xlabel('nondimensional isotope age -log(g''/g''_{dd})')
+ylabel('nondimensional water vapor age \lambda_W(t-t_{dd})')
 axis square
 
-saveas(gcf, 'W_iso_ages.eps')
+saveas(gcf, 'W_iso_ages.eps', 'epsc')
 saveas(gcf, 'W_iso_ages.svg')
 saveas(gcf, 'W_iso_ages.png')

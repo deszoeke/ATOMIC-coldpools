@@ -6,7 +6,7 @@
 % with the diagonal x+y=1, and xd at its y=0 intercept.
 % SPdeS
 
-load mixing_fractions_vars
+load data/mixing_fractions_vars
 % plot(mf_fss', mf_fee', '.', linestyle="none")
 % hold on; plot([0, 1, 0, 0], [0, 0, 1, 0], "k")
 % axis equal

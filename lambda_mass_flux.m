@@ -21,9 +21,9 @@ h     = 700; % units in meters; SBL height
 rho   = 1.1; % units in kg/m^3; air density
 
 % load mixing fractions and surface fluxes
-load mixing_fractions_vars.mat slope mf_t_cp mf_fen mf_fss mf_fee tcoldw tcold mf_flux
-load conserved_variables_10minLIMITED.mat q_en q_surf time_q
-H = load('conserved_variables_10min&mixing_fractions.mat'); % q_ob, time=time_q
+load ./data/mixing_fractions_vars.mat slope mf_t_cp mf_fen mf_fss mf_fee tcoldw tcold mf_flux
+load ./data/conserved_variables_10minLIMITED.mat q_en q_surf time_q
+H = load('./data/conserved_variables_10min&mixing_fractions.mat'); % q_ob, time=time_q
 
 % need to reconstruct
 ncp = size(mf_fss,1);
@@ -51,7 +51,9 @@ end
 lambda_ent = NaN(ncp,1);
 lambda_sfc = NaN(ncp,1);
 lambda_W   = NaN(ncp,1);
+nobs_iso   = NaN(ncp,1);
 omg        = NaN(ncp,1);
+t_pk       = NaN(ncp,1);
 for i = [2:11, 13:ncp]
     % wake index (wake_ind) corresponds to  T_min  time
     % peak index  (pk_ind)  corresponds to peak dD time
@@ -65,6 +67,8 @@ for i = [2:11, 13:ncp]
         % the indices will change if NaNs are spliced out so we don't do that
         ind = 14:23;
     end
+    t_pk(i) = mf_t_cp(i,ind(1));
+    nobs_iso(i) = length(ind);
 
     % omg = W_sfc/(W_sfc+W_ent) is y-intercept of the mixing fraction (no downdraft)
     [~,~,~,~,omg(i)] = cp_mf_regress_transform(mf_fss(i,ind), mf_fee(i,ind));
@@ -85,7 +89,7 @@ for i = [2:11, 13:ncp]
     lambda_sfc(i) = W_sfc / h;
     lambda_ent(i) = W_ent / h;
     % decay coefficient from fluxes in wake, in absence of downdraft, 1/s
-    lambda_W(i) = lambda_ent(i) + lambda_sfc(i);
+    lambda_W(i) = lambda_ent(i) + lambda_sfc(i); % 1/s
 end
 
 %% function library
