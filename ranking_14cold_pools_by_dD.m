@@ -80,18 +80,21 @@ DXS_comp2_sort(:,112) = DXS_comp2_sort(:,111);
 d18O_comp2_sort(ncp+1,:) = d18O_comp2_sort(ncp,:);
 d18O_comp2_sort(:,112) = d18O_comp2_sort(:,111);
 
-%%
-addpath('/Users/estefania/Documents/Data/cbrewer')
-[tmap]=cbrewer('div', 'BrBG', 12);
-[bw]=cbrewer('seq', 'Greys', 12);
-
-% Cite as:
-% Charles (2021). cbrewer : colorbrewer schemes for Matlab 
-% (https://www.mathworks.com/matlabcentral/fileexchange/34087-cbrewer-colorbrewer-schemes-for-matlab), 
-% MATLAB Central File Exchange. Retrieved December 2, 2021.
-% -> Not available anymore, and Simon doesn't have it.
+% %%
+% addpath('/Users/estefania/Documents/Data/cbrewer')
+% [tmap]=cbrewer('div', 'BrBG', 12);
+% [bw]=cbrewer('seq', 'Greys', 12);
+% % Cite as:
+% % Charles (2021). cbrewer : colorbrewer schemes for Matlab 
+% % (https://www.mathworks.com/matlabcentral/fileexchange/34087-cbrewer-colorbrewer-schemes-for-matlab), 
+% % MATLAB Central File Exchange. Retrieved December 2, 2021.
+%
+% -> Not available anymore, and Simon doesn't have it. Try
+% Scott Lowe (2025). cbrewer2 (https://github.com/scottclowe/cbrewer2), GitHub. Retrieved March 29, 2025.
+addpath('/Users/deszoeks/Documents/MATLAB/user_tools/graphics/cbrewer2repo/cbrewer2')
 
 % load diverging_colormap.mat
+
 %% Plots
 n = length(num_vector) + 1;
 figure;
