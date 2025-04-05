@@ -24,11 +24,25 @@ subset = [1:3, 5:8, 11:17]; % cuts to 14 events
 
 %% Identifying the strongest and weakest cold pools based on dD
 num_vector = i17;
-delta_dD = dD(t_max_ind(num_vector)-factor) - dD(t_min_ind(num_vector)-factor);
+% old way:
+% delta_dD = dD(t_max_ind(num_vector)-factor) - dD(t_min_ind(num_vector)-factor); 
+% new way of ranking by max(dD)
+mxdD = NaN(size(num_vector));
+for i = 1:length(num_vector)
+    nv = num_vector(i);
+    mxdD(i) = max(dD((t_max_ind(nv):t_end_ind(nv))-factor));
+end
+delta_dD = dD(t_max_ind(num_vector)-factor) - mxdD';
+% try ranking from dD sort of 14 events in excel
+% rankdD_cronOrder = [7, 13, 10, 5, 3, 4, 1, 6, 8, 12, 14, 9, 11, 2];
 cp_vector = [delta_dD, num_vector', (1:length(num_vector))'];
 sorted_cp = sortrows(cp_vector,1,'descend');
 cp_order = sorted_cp(:,3);
 cp_order100 = sorted_cp(:,2);
+% cp_order = rankdD_cronOrder;
+% i14 = i17(subset);
+% cp_order100 = i14(rankdD_cronOrder);
+
 sz = size(Taf_comp2);
 Taf_comp2_sort = NaN(sz);
 wspd_comp2_sort = NaN(sz);
@@ -97,16 +111,12 @@ catch
     [bw]=cbrewer2('seq', 'Greys', 12);
 end
 
-% Cite as:
-% Charles (2021). cbrewer : colorbrewer schemes for Matlab 
-% (https://www.mathworks.com/matlabcentral/fileexchange/34087-cbrewer-colorbrewer-schemes-for-matlab), 
-% MATLAB Central File Exchange. Retrieved December 2, 2021.
-
-% load diverging_colormap.mat
 %% Plots
 % n = length(num_vector) + 1;
 n = length(subset) + 1;
-st = subset([1:end, end]);
+st = subset([1:end, end]); % already used max(dD) above
+% st = subset(rankdD_cronOrder([1:end, end]));
+%{
 figure;
     scale = [1 1 2 1.7]; % 1.5 is the scaling of the y-dimension of the figure
     cx = get(gcf,'Position');
@@ -122,7 +132,7 @@ subplot(311)
     plot([0 22],[-19.7 -19.7],':k','LineWidth',1.5)
     plot([0 22],[31.5 31.5],':k','LineWidth',1.5)    
     ylabel('time')
-    title(['dD - dD_{tmin} [',char(8240),']'])
+    title(['dD - dD_{t0} [',char(8240),']'])
     text(-3.3, 75, 'a', 'fontsize',32, 'clipping','off')
     ylim([-30 60])
     caxis([-6 6])
@@ -139,7 +149,7 @@ subplot(312)
     plot([0 22],[-19.7 -19.7],':k','LineWidth',1.5)
     plot([0 22],[31.5 31.5],':k','LineWidth',1.5)    
     ylabel('time')
-    title('T - T_{min} [\circC]')
+    title('T - T_{0} [\circC]')
     text(-3.3, 75, 'b', 'fontsize',32, 'clipping','off')
     ylim([-30 60])
     caxis([-4.5 4.5])
@@ -156,7 +166,7 @@ subplot(313)
     plot([0 22],[-19.7 -19.7],':k','LineWidth',1.5)
     plot([0 22],[31.5 31.5],':k','LineWidth',1.5)    
     ylabel('time')
-    title('q - q_{tmin} [g/kg]')
+    title('q - q_{t0} [g/kg]')
     text(-3.3, 75, 'c', 'fontsize',32, 'clipping','off')
     ylim([-30 60])
     caxis([-3 3])
@@ -184,7 +194,7 @@ subplot(311)
     plot([0 22],[-19.7 -19.7],':k','LineWidth',1.5)
     plot([0 22],[31.5 31.5],':k','LineWidth',1.5)    
     ylabel('time')
-    title(['dD - dD_{tmin} [',char(8240),']'])
+    title(['dD - dD_{t0} [',char(8240),']'])
     text(-3.3, 75, 'd', 'fontsize',32, 'clipping','off')
     ylim([-30 60])
     caxis([-6 6])
@@ -201,7 +211,7 @@ subplot(313)
     plot([0 22],[-19.7 -19.7],':k','LineWidth',1.5)
     plot([0 22],[31.5 31.5],':k','LineWidth',1.5)    
     ylabel('time')
-    title(['DXS - DXS_{tmin} [',char(8240),']'])
+    title(['DXS - DXS_{t0} [',char(8240),']'])
     text(-3.3, 75, 'e', 'fontsize',32, 'clipping','off')
     ylim([-30 60])
     caxis([-2 2])
@@ -218,7 +228,7 @@ subplot(312)
     plot([0 22],[-19.7 -19.7],':k','LineWidth',1.5)
     plot([0 22],[31.5 31.5],':k','LineWidth',1.5)    
     ylabel('time')
-    title(['d^1^8O - d^1^8O_{tmin} [',char(8240),']'])
+    title(['d^1^8O - d^1^8O_{t0} [',char(8240),']'])
     text(-3.3, 75, 'f', 'fontsize',32, 'clipping','off')
     ylim([-30 60])
     caxis([-1 1])
@@ -246,7 +256,7 @@ ax1 = subplot(311);
     plot([0 22],[-19.7 -19.7],':k','LineWidth',1.5)
     plot([0 22],[31.5 31.5],':k','LineWidth',1.5)    
     ylabel('time')
-    title(['d^{18}O - d^{18}O_{tmin} [',char(8240),']'])
+    title(['d^{18}O - d^{18}O_{t0} [',char(8240),']'])
     text(-3.3, 75, 'd', 'fontsize',32, 'clipping','off')
     ylim([-30 60])
     caxis([-1.2 1.2])
@@ -263,7 +273,7 @@ ax2 = subplot(312);
     plot([0 22],[-19.7 -19.7],':k','LineWidth',1.5)
     plot([0 22],[31.5 31.5],':k','LineWidth',1.5)    
     ylabel('time')
-    title('U - U_{tmin} [m/s]')
+    title('U - U_{t0} [m/s]')
     text(-3.3, 75, 'e', 'fontsize',32, 'clipping','off')
     ylim([-30 60])
     caxis([-6 6])
@@ -302,6 +312,7 @@ ax3 = subplot(313)
 set(findall(gcf,'-property','LineWidth'),'LineWidth',1.5)
 set(findall(gcf,'-property','Fontsize'),'FontSize',32)
 set(findall(gcf,'-property','TickLength'),'TickLength',[.02,.1])
+%}
 
 % 6-panel plot w/ d18O
 figure;
@@ -313,14 +324,14 @@ clf;
     set(gcf,'PaperPosition',scale.*cx);
 subplot(321)
     pcolor(1:n,t_comp2,dD_comp2_sort(st,1:end-1)'); shading flat
-    colorbar
+    colorbar('TickDirection', 'out');
     colormap(tmap)
     hold on;
     plot([0 22],[0 0],':k','LineWidth',1.5)
     plot([0 22],[-19.7 -19.7],':k','LineWidth',1.5)
     plot([0 22],[31.5 31.5],':k','LineWidth',1.5)    
     ylabel('time')
-    title(['dD - dD_{tmin} [',char(8240),']'])
+    title(['dD - dD_{t0} [',char(8240),']'])
     text(-3.3, 75, 'a', 'fontsize',32, 'clipping','off')
     ylim([-30 60])
     caxis([-6 6])
@@ -330,14 +341,14 @@ subplot(321)
     box off
 subplot(323)
     pcolor(1:n,t_comp2,Taf_comp2_sort(st,1:end-1)'); shading flat
-    colorbar
+    colorbar('TickDirection', 'out');
     colormap(tmap)
     hold on;
     plot([0 22],[0 0],':k','LineWidth',1.5)
     plot([0 22],[-19.7 -19.7],':k','LineWidth',1.5)
     plot([0 22],[31.5 31.5],':k','LineWidth',1.5)    
     ylabel('time')
-    title('T - T_{min} [\circC]')
+    title('T - T_{0} [\circC]')
     text(-3.3, 75, 'b', 'fontsize',32, 'clipping','off')
     ylim([-30 60])
     caxis([-4.5 4.5])
@@ -347,14 +358,14 @@ subplot(323)
     box off
 subplot(325)
     pcolor(1:n,t_comp2,qair_comp2_sort(st,1:end-1)'); shading flat
-    colorbar
+    colorbar('TickDirection', 'out');
     colormap(tmap)
     hold on;
     plot([0 22],[0 0],':k','LineWidth',1.5)
     plot([0 22],[-19.7 -19.7],':k','LineWidth',1.5)
     plot([0 22],[31.5 31.5],':k','LineWidth',1.5)    
     ylabel('time')
-    title('q - q_{tmin} [g/kg]')
+    title('q - q_{t0} [g/kg]')
     text(-3.3, 75, 'c', 'fontsize',32, 'clipping','off')
     ylim([-30 60])
     caxis([-3 3])
@@ -365,14 +376,14 @@ subplot(325)
 % right column
 ax1 = subplot(322);
     pcolor(1:n,t_comp2,d18O_comp2_sort(st,1:end-1)'); shading flat
-    colorbar
+    colorbar('TickDirection', 'out');
     colormap(ax1, tmap)
     hold on;
     plot([0 22],[0 0],':k','LineWidth',1.5)
     plot([0 22],[-19.7 -19.7],':k','LineWidth',1.5)
     plot([0 22],[31.5 31.5],':k','LineWidth',1.5)    
     ylabel(' ')
-    title(['d^{18}O - d^{18}O_{tmin} [',char(8240),']'])
+    title(['d^{18}O - d^{18}O_{t0} [',char(8240),']'])
     text(-3.3, 75, 'd', 'fontsize',32, 'clipping','off')
     ylim([-30 60])
     caxis([-1.2 1.2])
@@ -382,14 +393,14 @@ ax1 = subplot(322);
     box off
 ax2 = subplot(324);
     pcolor(1:n,t_comp2,wspd_comp2_sort(st,1:end-1)'); shading flat
-    colorbar
+    colorbar('TickDirection', 'out');
     colormap(ax2, tmap)
     hold on;
     plot([0 22],[0 0],':k','LineWidth',1.5)
     plot([0 22],[-19.7 -19.7],':k','LineWidth',1.5)
     plot([0 22],[31.5 31.5],':k','LineWidth',1.5)    
     ylabel(' ')
-    title('U - U_{tmin} [m/s]')
+    title('U - U_{t0} [m/s]')
     text(-3.3, 75, 'e', 'fontsize',32, 'clipping','off')
     ylim([-30 60])
     caxis([-6 6])
@@ -399,7 +410,7 @@ ax2 = subplot(324);
     box off 
 ax3 = subplot(326);
     pcolor(1:n,t_comp2,prec_comp2_sort(st,1:end-1)'); shading flat
-    colorbar('YTick', [0.02 0.1 1 5])
+    cb = colorbar('YTick', [0.02 0.1 1 5], 'TickDirection', 'out');
     colormap(ax3, bw)
     hold on;
     plot([0 22],[0 0],':k','LineWidth',1.5)
@@ -418,11 +429,17 @@ ax3 = subplot(326);
 
 % set figure settings
 set(findall(gcf,'-property','LineWidth'),'LineWidth',1.5)
-set(findall(gcf,'-property','Fontsize'),'FontSize',28)
+set(findall(gcf,'-property','Fontsize'),'FontSize',20)
 set(findall(gcf,'-property','Fontweight'), 'Fontweight','normal')
 set(findall(gcf,'-property','TickLength'),'TickLength',[.02,.1])
 
-saveas(gcf, 'rank14cp','epsc')
-saveas(gcf, 'rank14cp','svg')
-saveas(gcf, 'rank14cp','png')
-saveas(gcf, 'rank14cp','pdf')
+orient landscape
+% saveas(gcf, 'rank14cp','epsc')
+% saveas(gcf, 'rank14cp','svg')
+% saveas(gcf, 'rank14cp','png')
+% saveas(gcf, 'rank14cp','pdf')
+
+saveas(gcf, 'rank14cp2','epsc')
+saveas(gcf, 'rank14cp2','svg')
+saveas(gcf, 'rank14cp2','png')
+saveas(gcf, 'rank14cp2','pdf')
