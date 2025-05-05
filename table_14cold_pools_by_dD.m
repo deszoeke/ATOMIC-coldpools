@@ -129,7 +129,7 @@ semilogy(DiffT(subset), max(0.01,psum(subset)), '.', 'markersize',10, 'linestyle
 r = corrcoef(DiffT(subset), psum(subset));
 text(1.6, 2e-2, sprintf('R^2=%0.2f',r(2,1)^2));
 xlim([0,4])
-ylim([0.01,1])
+ylim([0.01,1.5])
 ylabel('rain [mm]')
 xlabel('-(T_{min} - T_0) [°C]')
 text(-2.4, 1, 'c')
