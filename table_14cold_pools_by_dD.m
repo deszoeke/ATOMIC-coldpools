@@ -7,7 +7,10 @@ clearvars -except Taf qair wspd rh prec u v t_min_ind ...
                   Taf_comp2 t_comp2 dD_comp2 d18O_comp2 q_iso_comp2 DXS_comp2...
                   qair_comp2 wspd_comp2 rh_comp2 prec_comp2 u_comp2 v_comp2
 % there's no prec variable
-i17 = [65,67:78,82:84,86];
+prate = ncread('data/EUREC4A_ATOMIC_RonBrown_1min_nav_met_sea_20200109-20200212_v1.3.nc', 'prate'); % mm/h
+%[sum(prate)/60] = mm
+
+i17 = [65,67:78,82:84,86]; % chron order
 Taf_comp2 = Taf_comp2(i17,:);
 wspd_comp2 = wspd_comp2(i17,:);
 qair_comp2 = qair_comp2(i17,:);
@@ -16,14 +19,14 @@ rh_comp2 = rh_comp2(i17,:);
 u_comp2 = u_comp2(i17,:);
 v_comp2 = v_comp2(i17,:);
 
-j17 = [1,3:14,18:20,22];
+j17 = [1,3:14,18:20,22]; % chron order
 d18O_comp2 = d18O_comp2(j17,:);
 dD_comp2 = dD_comp2(j17,:);
 DXS_comp2 = DXS_comp2(j17,:);
 
-subset = [1:3, 5:8, 11:17]; % cuts to 14 events
+subset = [1:3, 5:8, 11:17]; % cuts to 14 events in dD order
 
-%% Identifying the strongest and weakest cold pools based on dD
+%% sort cold pools by dD
 num_vector = i17;
 % old way:
 % delta_dD = dD(t_max_ind(num_vector)-factor) - dD(t_min_ind(num_vector)-factor); 
@@ -31,18 +34,18 @@ num_vector = i17;
 mxdD = NaN(size(num_vector));
 for i = 1:length(num_vector)
     nv = num_vector(i);
-    mxdD(i) = max(dD((t_max_ind(nv):t_end_ind(nv))-factor));
+    mxdD(i) = max(dD((t_max_ind(nv):t_end_ind(nv))-factor)); % chron order
 end
-delta_dD = dD(t_max_ind(num_vector)-factor) - mxdD';
+delta_dD = dD(t_max_ind(num_vector)-factor) - mxdD'; % chron order
 % try ranking from dD sort of 14 events in excel
-% rankdD_cronOrder = [7, 13, 10, 5, 3, 4, 1, 6, 8, 12, 14, 9, 11, 2];
 cp_vector = [delta_dD, num_vector', (1:length(num_vector))'];
 sorted_cp = sortrows(cp_vector,1,'descend');
-cp_order = sorted_cp(:,3);
-cp_order100 = sorted_cp(:,2);
-% cp_order = rankdD_cronOrder;
-% i14 = i17(subset);
-% cp_order100 = i14(rankdD_cronOrder);
+delta_dD_sort = sorted_cp(:,1); % sorted delta_dD
+cp_order = sorted_cp(:,3);    % sorts chron-ordered data by dD
+cp_order100 = sorted_cp(:,2); % num_vector=i17 sorted by dD
+% cp_order100 = i17(cp_order)
+cp_order100_subset = i17(cp_order(subset));
+
 
 sz = size(Taf_comp2);
 Taf_comp2_sort = NaN(sz);
@@ -60,8 +63,8 @@ for k = 1:length(cp_order)
     prec_comp2_sort(k,:)= prec_comp2(cp_order(k),:);
     qair_comp2_sort(k,:)= qair_comp2(cp_order(k),:)-qair(t_max_ind(cp_order100(k)));
     wspd_comp2_sort(k,:)= wspd_comp2(cp_order(k),:)-wspd(t_max_ind(cp_order100(k)));
-    DXS_comp2_sort(k,:) = DXS_comp2(cp_order(k),:) -DXS(t_max_ind(cp_order100(k))-factor);
-    dD_comp2_sort(k,:)  = dD_comp2(cp_order(k),:)  -dD(t_max_ind(cp_order100(k))-factor);
+    DXS_comp2_sort(k,:) = DXS_comp2(cp_order(k),:) -DXS( t_max_ind(cp_order100(k))-factor);
+    dD_comp2_sort(k,:)  = dD_comp2(cp_order(k),:)  -dD(  t_max_ind(cp_order100(k))-factor);
     d18O_comp2_sort(k,:)= d18O_comp2(cp_order(k),:)-d18O(t_max_ind(cp_order100(k))-factor);
 end
 
@@ -76,53 +79,70 @@ q0 = qair(t_max_ind(cp_order100)); % -> 17 cold pools
 dD0 = dD(t_max_ind(cp_order100)-factor);
 % prec0 = prec(t_max_ind(cp_order100)); % no prec
 
-DiffdD = dD(t_max_ind(cp_order100)-factor) - dD0; % grr...subscripts
+DiffdD = dD(t_min_ind(cp_order100)-factor) - dD0;
 
 % find max quantities in each cold pool
 qmax = NaN(length(cp_order100),1);
 pmax = NaN(length(cp_order100),1);
+psum = NaN(length(cp_order100),1);
 dDmax = NaN(length(cp_order100),1);
 for i = 1:length(cp_order100)
     cpi = cp_order100(i);
     qmax(i) = max( qair(t_max_ind(cpi):t_min_ind(cpi)+10) );
-    pmax(i) = max( prec_comp2(i,1:80) );
-    dDmax(i) = max( dD_comp2(i,1:80) );
+    pmax(i) = max( prec_comp2_sort(i,1:80), [], 2);
+    % psum(i) = sum( prec_comp2_sort(i, -10<t_comp2<30) ); % composite time index not suitable
+    psum(i) = sum(prate(t_max_ind(cpi):t_min_ind(cpi)),'omitnan')/60; % -> mm
+    dDmax(i) = max( dD_comp2_sort(i,1:80), [], 2);
 end
 
-
 clf()
-% subplot(4,4,1)
-% plot(DiffT(subset), DiffT(subset), '.', 'markersize',10, 'linestyle','none')
-% % xlim([0,4])
-% % ylim([0,2])
-% ylabel('q(t_{min})-q(t_0), q_{max}-q(t_0)')
-% xlabel('-(T_{min} - T_{max})')
+subplot(3,4,1)
+% plot(DiffT(subset), -delta_dD_sort(subset), '.', 'markersize',10, 'linestyle','none')
+% hold on
+plot(DiffT(subset), DiffdD(subset), '.', 'markersize',10, 'linestyle','none')
+% plot(DiffT(subset), dDmax(subset), '.', 'markersize',10, 'linestyle','none') % composite but same as above
+r = corrcoef(DiffT(subset), DiffdD(subset));
+text(0.2, 5.5, sprintf('R^2=%0.2f',r(2,1)^2));
+xlim([0,4])
+ylim([0,7])
+ylabel('{\delta}D(t_{min})-{\delta}D(t_0) [10^{-3}]') %, {\delta}D_{max}-{\delta}D(t_0)')
+xlabel('-(T_{min} - T_0) [°C]')
+text(-2.4, 7, 'a')
+axis square
 
-clf()
-subplot(4,4,1)
-plot(DiffT(subset), -delta_dD(subset), '.', 'markersize',10, 'linestyle','none')
-hold on
-plot(DiffT(subset), dDmax(subset)-dD0(subset), '.', 'markersize',10, 'linestyle','none')
-% xlim([0,4])
-% ylim([0,2])
-ylabel('{\delta}D(t_{min})-{\delta}D(t_0), {\delta}D_{max}-{\delta}D(t_0)')
-xlabel('-(T_{min} - T_{max})')
-
-subplot(4,4,5)
+subplot(3,4,5)
 plot(DiffT(subset), Diffq(subset), '.', 'markersize',10, 'linestyle','none')
-hold on
-plot(DiffT(subset), qmax(subset)-q0(subset)', '.', 'markersize',10, 'linestyle','none')
+% hold on
+% plot(DiffT(subset), qmax(subset)-q0(subset)', '.', 'markersize',10, 'linestyle','none')
+r = corrcoef(DiffT(subset), Diffq(subset));
+text(0.2, 1.2, sprintf('R^2=%0.2f',r(2,1)^2));
 xlim([0,4])
 ylim([0,2])
-ylabel('q(t_{min})-q(t_0), q_{max}-q(t_0)')
-xlabel('-(T_{min} - T_{max})')
+ylabel('q(t_{min})-q(t_0) [g/kg]') %, q_{max}-q(t_0)')
+xlabel('-(T_{min} - T_0) [°C]')
+text(-2.4, 2, 'b')
+axis square
 
-subplot(4,4,6) % no relationship in scatter plot
-plot(DiffT(subset), pmax(subset), '.', 'markersize',10, 'linestyle','none')
+subplot(3,4,9) % no relationship in scatter plot
+% plot(DiffT(subset), pmax(subset), '.', 'markersize',10, 'linestyle','none')
+semilogy(DiffT(subset), max(0.01,psum(subset)), '.', 'markersize',10, 'linestyle','none')
+r = corrcoef(DiffT(subset), psum(subset));
+text(1.6, 2e-2, sprintf('R^2=%0.2f',r(2,1)^2));
 xlim([0,4])
-ylim([0,2])
-ylabel('max(P)')
-xlabel('-(T_{min} - T_{max})')
+ylim([0.01,1])
+ylabel('rain [mm]')
+xlabel('-(T_{min} - T_0) [°C]')
+text(-2.4, 1, 'c')
+axis square
+
+saveas(gcf, 'table1_fig.eps')
+saveas(gcf, 'table1_fig.png')
+saveas(gcf, 'table1_fig.pdf')
+saveas(gcf, 'table1_fig.svg')
+
+% effectively reads max, cumulatives off Fig 7
+maxdD   = max(  dD_comp2_sort(subset, -25<t_comp2<45), [], 2);
+cumprec = sum(prec_comp2_sort(subset, -25<t_comp2<45), [], 2);
 
 
 % Eliminating NaN values and duplicating last row and last column for inclusion
@@ -142,6 +162,7 @@ DXS_comp2_sort(ncp+1,:) = DXS_comp2_sort(ncp,:);
 DXS_comp2_sort(:,112) = DXS_comp2_sort(:,111);
 d18O_comp2_sort(ncp+1,:) = d18O_comp2_sort(ncp,:);
 d18O_comp2_sort(:,112) = d18O_comp2_sort(:,111);
+
 
 %% load colormaps
 try
