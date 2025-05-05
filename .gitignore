@@ -9,6 +9,7 @@ Manifest.toml
 *.mat
 *.eps
 *.svg
+*.pdf
 *.png
 *.nc
 *.asv
