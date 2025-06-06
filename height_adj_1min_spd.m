@@ -54,8 +54,8 @@ L      = interp1(dnmid, L10                            ,time_height_adj,'linear'
 th_m = (Ta + 273.15).*(1e5./pm).^(Rd/Cp); % (Potential Temp in degrees K)
 % th_ob = th_m + (thstar./k).*(log(zrf/zm)-psi_T(zrf./L)+psi_T(zm./L));
 % q_ob  = qa + (qstar./k).*(log(zrf/zm)-psi_T(zrf./L)+psi_T(zm./L));
-th_ob = th_m + adj_t(tstar,L, zm,zrf);
-q_ob  = qa   + adj_t(qstar,L, zm,zrf);
+th_ob = th_m + adj_t(thstar,L, zm,zrf);
+q_ob  = qa   + adj_t( qstar,L, zm,zrf);
 
 end
 
