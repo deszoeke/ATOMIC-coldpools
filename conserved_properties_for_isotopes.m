@@ -1,6 +1,12 @@
+% conserved_properties_for_isotopes.m
+%
 % Applying the extrapolation and mixing fraction analysis to RHB data in
 % order to obtain isotope concentrations for entrained and downdraft end members
-% Last modified: Nov 16 2022
+% EQM Last modified: Nov 16 2022
+% SPdeS tweaked some paths 2025-06-05
+
+addpath('./thermo'); 
+
 %% Air type: observed %%
 % q and theta @ 400m
 zrf = 400; % [in meters]; reference height
@@ -8,7 +14,7 @@ zm = 17;   % [in meters]; measurement level
 Rd = 287.04;
 Cp = 1005.7;
 [th_ob,q_ob,t_adj] = height_adj(zrf,zm,Rd,Cp);
-load '2nd_leg_sounding_data_10min_linear_interp.mat' t
+load 'data/2nd_leg_sounding_data_10min_linear_interp.mat' t
 pos1 = find(t_adj>=t(1)); % rounding up to closest (in time) PSD surface data point!!!
 pos_adj = pos1(1);
 clearvars pos1
@@ -16,8 +22,8 @@ q_ob = q_ob(pos_adj:pos_adj+length(t)-1);   % keeping 2nd leg data only
 th_ob = th_ob(pos_adj:pos_adj+length(t)-1); % keeping 2nd leg data only
 t_10min = t;
 % Loading iso data %
-load('iso_data_1min_intervals_FLAGGED_w_runningmean.mat');% RHB Picarro data
-load 'cold_pool_flag_1min.mat' t1min
+load('data/iso_data_1min_intervals_FLAGGED_w_runningmean.mat');% RHB Picarro data
+load 'data/cold_pool_flag_1min.mat' t1min
 ind0 = find(t1min>=iso_time(1));
 ind0 = ind0(1);
 % Incorporating isotope data %
@@ -41,7 +47,7 @@ for l = 1:length(t_10min)
     pos(l) = pos1(1);
     clearvars pos1
 end
-load '1min_res_PSD_surface_variables_FLAGGED_w_runningmean.mat' sst slp Ta rh
+load 'data/1min_res_PSD_surface_variables_FLAGGED_w_runningmean.mat' sst slp Ta rh
 T = Ta(pos(1:end))+273.15; % in degrees Kelvin
 SLP = slp(pos(1:end)); % [in hPa]
 SST = sst(pos(1:end)); % [in degrees C]
@@ -51,7 +57,7 @@ RH  =  rh(pos(1:end));  % in percent
 %% Air type: surface [using Craig-Gordon] %%
 % Incorporating isotope data %
 h_prime = 0.875; % relative humidity at which we are modeling the iso ratios
-filename = 'EUREC4A_ATOMIC_RonBrown_1min_nav_met_sea_20200109-20200212_v1.3.nc';
+filename = 'data/EUREC4A_ATOMIC_RonBrown_1min_nav_met_sea_20200109-20200212_v1.3.nc';
 Tliq = ncread(filename,'tskin'); % liquid temperature at [???]m [in degrees C]
 [T_skin,~] = colocate_in_time(filename,Tliq);
 % [dD_surf,d18O_surf] = air_types_iso(dD_ob,d18O_ob,'surface',T_skin',RH'/100,h_prime);
@@ -64,7 +70,7 @@ de_surf = dD_surf - (8*d18O_surf); % deuterium excess
 
 %% Air type: entrained %%
 % q and theta @ 1km
-load '2nd_leg_sounding_data_10min_linear_interp.mat' q th h
+load 'data/2nd_leg_sounding_data_10min_linear_interp.mat' q th h
 h_low = [ 800  900 1000 1100 1200];
 h_hi  = [1000 1100 1200 1300 1400];
 q_ent_1km  = q(h==1e3,:)*1e3; % check units for q_inth, looks like is cg/kg
@@ -91,7 +97,7 @@ for k = 12:size(q,2)
     clearvars h6
 end
 thw_index = find(h==1e3);
-load '2nd_leg_sounding_data_10min_linear_interp.mat' thw
+load 'data/2nd_leg_sounding_data_10min_linear_interp.mat' thw
 for k = 1:size(thw,2)
     if trade_inv(k) >= 1e3
         trade_index = find(h==trade_inv(k));
@@ -100,7 +106,7 @@ for k = 1:size(thw,2)
         th_dd(k) = NaN; % trade inversion
     end
 end
-addpath('C:\Users\quinones\Documents\Data\thermo')
+% addpath('C:\Users\quinones\Documents\Data\thermo')
 q_dd = qs(1e3*1e2,th_dd-273.15)*1e3; % q_d in g/kg    
     % qs(p,T) is saturation specific humidity based on Wexler's formula for es with enhancement factor (see es.m).
     % p [Pa], T [degrees C], qs [kg/kg]
@@ -137,7 +143,7 @@ end
 % Yss = normpdf(X,mean(fss,'omitnan'),std(fss,'omitnan'));
 % Yen = normpdf(X,mean(fen,'omitnan'),std(fen,'omitnan'));
 %% Cold pool times
-load 'cold_pool_flag_1min.mat' cold_pool_flag_1min
+load 'data/cold_pool_flag_1min.mat' cold_pool_flag_1min
 cold_pool_flag_10min = cold_pool_flag_1min(1:10:end);
 ind1 = find(t_adj>=t_10min(1));
 ind1 = ind1(1);
@@ -220,7 +226,7 @@ for k = 4 %1:size(dD_ent,1)
     xlabel('\theta [K]')
     ylabel(['\deltaD [',char(8240),']'])
     set(findall(gcf,'-property','Fontsize'),'FontSize',30)
-    set(findall(gcf,'-property','TickLength'),'TickLength',[.05 .05])
+    set(findall(gcf,'-property','TickLength'),'TickLength', [.05 .05])
     set(findall(gcf,'-property','LineWidth'),'LineWidth',1)
     box on
     axis square
@@ -262,7 +268,7 @@ for k = 4 % 1:size(dD_ent,1)
     ylabel(['DXS [',char(8240),']'])
     xlabel(['\deltaD [',char(8240),']'])
     set(findall(gcf,'-property','Fontsize'),'FontSize',30)
-    set(findall(gcf,'-property','TickLength'),'TickLength',[.05 .05])
+    set(findall(gcf,'-property','TickLength'),'TickLength', [.05 .05])
     set(findall(gcf,'-property','LineWidth'),'LineWidth',1)
     box on
     axis square
@@ -298,7 +304,7 @@ for k = 4 %1:size(dD_ent,1)
     ylabel('q [g/kg]')
     xlabel('\theta [K]')
     set(findall(gcf,'-property','Fontsize'),'FontSize',30)
-    set(findall(gcf,'-property','TickLength'),'TickLength',[.05 .05])
+    set(findall(gcf,'-property','TickLength'),'TickLength', [.05 .05])
     set(findall(gcf,'-property','LineWidth'),'LineWidth',1)
     box on
     axis square

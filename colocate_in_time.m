@@ -6,7 +6,7 @@ function [new_var,new_time] = colocate_in_time(filename,old_var)
     % RH  = ncread(filename,'rhair')/100;
     
     % Co-locating RH & T_L variable in time %
-    load '2nd_leg_sounding_data_10min_linear_interp.mat' t
+    load 'data/2nd_leg_sounding_data_10min_linear_interp.mat' t
     pos_i = 999999*ones(size(t));
     for l = 1:length(t)
         pos2 = find(time_T>=t(l)); % rounding up to closest isotope surface data point!!!

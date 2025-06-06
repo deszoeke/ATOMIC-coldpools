@@ -3,8 +3,9 @@ data/
 thermo/
 cbrewer/
 
-# link
+# links
 data
+thermo
 
 Manifest.toml
 .DS_Store

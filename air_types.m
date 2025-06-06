@@ -8,7 +8,7 @@ switch type
 %         disp('surface')
         SLP = var1; % [in hPa]
         T = var2; % [in degrees C]
-        addpath('C:\Users\quinones\Documents\Data\thermo')
+        % addpath('C:\Users\quinones\Documents\Data\thermo')
         q_type = qs(SLP*100,T)*1e3; % in g/kg; slp must be in Pa and T in degrees C
         th_type = (T + 273.15).*(1e5./(SLP*1e2)).^(Rd/Cp); % (Potential Temp in degrees K)
     case 'downdraft'

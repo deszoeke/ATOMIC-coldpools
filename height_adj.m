@@ -1,6 +1,6 @@
 function [th_ob,q_ob,time_height_adj] = height_adj(zrf,zm,Rd,Cp)
     k =  0.4; % von Karman constant
-    filename = 'EUREC4A_ATOMIC_RonBrown_10min_nav_met_sea_flux_20200109-20200212_v1.3.nc';
+    filename = 'data/EUREC4A_ATOMIC_RonBrown_10min_nav_met_sea_flux_20200109-20200212_v1.3.nc';
     qa = ncread(filename,'qair'); % air specific humidity from PSL RH at height ztq [g/kg]
     Ta = ncread(filename,'tair'); % air temperature at 17m [in degrees C]
     qstar = ncread(filename,'qstar'); % specific humidity scaling parameter ['g/kg']
