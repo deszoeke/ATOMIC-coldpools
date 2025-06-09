@@ -142,8 +142,13 @@ for j = 1:2  % chronological index
         plotlims(q_adj, dD, dt_adj,isotime, cp_dt(i,ind(1)),cp_dt(i,ind(1))+hours(1), '.-', 'color',cmap(2+2*(j-1),:));
     end
 
+    text(11, -65, char(uint8('a')-1+j), 'fontsize',14)
     title(string(tonset(j)), 'fontweight','normal')
-    axis tight
+    axis square
+    ax = gca();
+    ax.XAxis.MinorTick       = 'on';
+    ax.XAxis.MinorTickValues = 10:1:22;
+    ax.TickLength=[0.04, 0.04];
     xlabel('q (10^{-3} kg kg^{-1})')
     ylabel(['\deltaD (', char(8240), ')'])
     ylim([-76, -64]); xlim([10, 22])
@@ -152,5 +157,6 @@ end
 saveas(gcf, 'q-dD_cps.eps', 'epsc')
 saveas(gcf, 'q-dD_cps.svg')
 saveas(gcf, 'q-dD_cps.png')
+saveas(gcf, 'q-dD_cps.pdf')
 
 % CP 9 and 10 have no data
