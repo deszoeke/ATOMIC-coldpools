@@ -1,8 +1,8 @@
 % function [] = q_dD_framework_cold_pools(cp_num)
 R_VSMOW = 155.76*10^(-6); % FOR Deuterium
 %% Loading datasets
-load '1min_res_PSD_surface_variables_FLAGGED_w_runningmean.mat' qair t1min Ta rr sst slp
-load 'iso_data_1min_intervals_FLAGGED_w_runningmean.mat' d18O dD DXS iso_time
+load 'data/1min_res_PSD_surface_variables_FLAGGED_w_runningmean.mat' qair t1min Ta rr sst slp
+load 'data/iso_data_1min_intervals_FLAGGED_w_runningmean.mat' d18O dD DXS iso_time
 ind = find(t1min>=iso_time(1));
 ind = ind(1);
 Taf   = Ta(ind:ind+length(iso_time)-1);   % Ta filtered   => 11-min running average
@@ -285,8 +285,8 @@ DXScoldnan(DXScoldnan==0) = NaN;
 d18Ocoldnan(d18Ocoldnan==0) = NaN;
 
 %% Craig-Gordon surface estimates 
-load 'RHS_Eq9_MJ79_LIMITED.mat' alpha_e alpha_e_D del_oc del_oc_D
-load 'conserved_variables_10minLIMITED.mat' q_en q_surf time_q 
+load 'data/RHS_Eq9_MJ79_LIMITED.mat' alpha_e alpha_e_D del_oc del_oc_D
+load 'data/conserved_variables_10minLIMITED.mat' q_en q_surf time_q 
 delta_e_D = ((1./alpha_e_D)*(1+del_oc_D) - 1) * 1000;
 delta_e_O = ((1./alpha_e)*(1+del_oc) - 1) * 1000;
 for k = 1:length(max_ind)

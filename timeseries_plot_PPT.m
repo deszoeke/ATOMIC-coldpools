@@ -1,14 +1,14 @@
 % Script to plot timeseries figure with cold pools times shaded and min T
 % times dotted
 %% Normalizing time for the iso data
-filename = 'EUREC4A_ATOMIC_RonBrown_Isotope-Analyzer_1min_20200126-20200210_v1.0.nc';
+filename = 'data/EUREC4A_ATOMIC_RonBrown_Isotope-Analyzer_1min_20200126-20200210_v1.0.nc';
 dD = ncread(filename,'dD'); %
 d18O = ncread(filename,'d18O'); %
 time = ncread(filename,'time'); % in 'seconds since 2020-01-01 00:00:00'
 time = datenum('01012020','mmddyyyy') + time*(1/(3600*24));
 inlet_flag = ncread(filename,'inlet_flag'); %
 
-filename = 'EUREC4A_ATOMIC_RonBrown_1min_nav_met_sea_20200109-20200212_v1.3.nc';
+filename = 'data/EUREC4A_ATOMIC_RonBrown_1min_nav_met_sea_20200109-20200212_v1.3.nc';
 time_rr = ncread(filename,'time'); % in 'seconds since 2020-01-01 00:00:00'
 time_rr = datenum('01012020','mmddyyyy') + time_rr/3600/24;
 rdir_o = ncread(filename,'rdir'); % original/"raw" variable
@@ -28,7 +28,7 @@ for k = 1:length(time)
     rdir(k) = rdir_o(time_rr==time(k));
 end
 ship_flag = zeros(size(rdir));
-ship_flag(rdir>-135 & rdir>45) = 1; % 1 = bad wind dir
+ship_flag(rdir<-135 & rdir>45) = 1; % 1 = bad wind dir % SPD fixed
 
 dD(ship_flag==1 | inlet_flag==1) = NaN;
 d18O(ship_flag==1 | inlet_flag==1) = NaN;
@@ -39,8 +39,8 @@ d18O(ship_flag==1 | inlet_flag==1) = NaN;
 DXS = dD - 8*d18O;
 
 %%
-load('cold_pool_flag_1min.mat')
-load('workspace_100_cp_detection_algorithm_1min.mat')
+load('data/cold_pool_flag_1min.mat')
+load('data/workspace_100_cp_detection_algorithm_1min.mat')
 
 %% Timeseries plot for the WIW poster %%
 figure;

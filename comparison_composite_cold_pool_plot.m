@@ -149,15 +149,16 @@ subplot(729)
     set(findall(gcf,'-property','TickLength'),'TickLength',[.05,.1])  
     
 %% Plotting the 16 cold pools that overlap with isotopic data
-Taf_comp2 = Taf_comp2([65,67,69:78,82:84,86]-1,:);
-wspd_comp2 = wspd_comp2([65,67,69:78,82:84,86]-1,:);
-qair_comp2 = qair_comp2([65,67,69:78,82:84,86]-1,:);
-prec_comp2 = prec_comp2([65,67,69:78,82:84,86]-1,:);
-rh_comp2 = rh_comp2([65,67,69:78,82:84,86]-1,:);
-u_comp2 = u_comp2([65,67,69:78,82:84,86]-1,:);
-v_comp2 = v_comp2([65,67,69:78,82:84,86]-1,:);
-sh_comp2 = sh_comp2([65,67,69:78,82:84,86]-1,:);
-lh_comp2 = lh_comp2([65,67,69:78,82:84,86]-1,:);
+% already subset to 15!
+% Taf_comp2 = Taf_comp2([65,67,69:78,82:84,86]-1,:);
+% wspd_comp2 = wspd_comp2([65,67,69:78,82:84,86]-1,:);
+% qair_comp2 = qair_comp2([65,67,69:78,82:84,86]-1,:);
+% prec_comp2 = prec_comp2([65,67,69:78,82:84,86]-1,:);
+% rh_comp2 = rh_comp2([65,67,69:78,82:84,86]-1,:);
+% u_comp2 = u_comp2([65,67,69:78,82:84,86]-1,:);
+% v_comp2 = v_comp2([65,67,69:78,82:84,86]-1,:);
+% sh_comp2 = sh_comp2([65,67,69:78,82:84,86]-1,:);
+% lh_comp2 = lh_comp2([65,67,69:78,82:84,86]-1,:);
 
 %%
 subplot(722)
