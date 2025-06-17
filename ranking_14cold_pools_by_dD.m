@@ -420,7 +420,7 @@ ax3 = subplot(326);
     title('rain rate [mm/hr]')
     text(-3.3, 75, 'f', 'fontsize',32, 'clipping','off')
     ylim([-30 60])
-    caxis([2e-2 5])
+    clim([2e-2 5])
     set(gca,'ColorScale','log')
     set(gca,'TickDir','out'); % The only other option is 'in'
     xticks(1.5:1:18.5)
@@ -439,7 +439,34 @@ orient landscape
 % saveas(gcf, 'rank14cp','png')
 % saveas(gcf, 'rank14cp','pdf')
 
-saveas(gcf, 'rank14cp2','epsc')
-saveas(gcf, 'rank14cp2','svg')
-saveas(gcf, 'rank14cp2','png')
-saveas(gcf, 'rank14cp2','pdf')
+% saveas(gcf, 'rank14cp2','epsc')
+% saveas(gcf, 'rank14cp2','svg')
+% saveas(gcf, 'rank14cp2','png')
+% saveas(gcf, 'rank14cp2','pdf')
+
+%% plot comp_mean
+st = [ 1     2     3     5     6     7     8    11    12    13    14    15    16    17 ];
+clf()
+ch = 'a';
+ax = vert_axes_stack(6);
+plot_time_comp(ax(1), t_comp2, Taf_comp2(st,:), [0.8, 0.5, 0])
+ylabel(ax(1), 'T (°C)')
+text(ax(1), -55, 25.7, string(char(ch))); ch=ch+1;
+plot_time_comp(ax(2), t_comp2, qair_comp2(st,:), [0.1, 0.6, 0.2])
+ylabel(ax(2), 'q (g/kg)')
+text(ax(2), -55, 15.3, string(char(ch))); ch=ch+1;
+plot_time_comp(ax(3), t_comp2, dD_comp2(st,:), [0.1, 0.8, 0.6])
+ylabel(ax(3), '\deltaD (‰)')
+text(ax(3), -55, -71, string(char(ch))); ch=ch+1;
+plot_time_comp(ax(4), t_comp2, d18O_comp2(st,:), [0.1, 0.6, 1])
+ylabel(ax(4), '\delta^{18}O (‰)')
+text(ax(4), -55, -10.25, string(char(ch))); ch=ch+1;
+plot_time_comp(ax(5), t_comp2, DXS_comp2(st,:), 'k')
+ylabel(ax(5), 'DXS (‰)')
+text(ax(5), -55, 11.5, string(char(ch))); ch=ch+1;
+plot_time_comp(ax(6), t_comp2, prec_comp2(st,:), 0.6.*[1 1 1])
+ylabel(ax(6), 'rain (mm/h)')
+text(ax(6), -55, 1.1, string(char(ch)));
+set(ax(1:5), 'xticklabel', [])
+
+
