@@ -1,5 +1,6 @@
 % Testing viability of including Rayleigh evap. of liquid in q-dD diagram
-    addpath C:\Users\quinones\Documents\Data\thermo
+
+% addpath(".\thermo")
 p = 980 * 10^2; % near-surface pressure in Pa
 qv = 15; % units: [g/kg]; mass of water vapor per mass of dry air
 T = 294; % temp of dry air

@@ -446,27 +446,64 @@ orient landscape
 
 %% plot comp_mean
 st = [ 1     2     3     5     6     7     8    11    12    13    14    15    16    17 ];
+colors = [[0.8, 0.5, 0]; [0.1, 0.6, 0.2]; [0.1, 0.8, 0.6]; [0.1, 0.6, 1]; [0, 0, 0]; 0.6+[0, 0, 0]];
 clf()
 ch = 'a';
 ax = vert_axes_stack(6);
 plot_time_comp(ax(1), t_comp2, Taf_comp2(st,:), [0.8, 0.5, 0])
 ylabel(ax(1), 'T (°C)')
-text(ax(1), -55, 25.7, string(char(ch))); ch=ch+1;
+text(ax(1), -55, 25, string(char(ch)), 'FontSize',13); ch=ch+1;
 plot_time_comp(ax(2), t_comp2, qair_comp2(st,:), [0.1, 0.6, 0.2])
 ylabel(ax(2), 'q (g/kg)')
-text(ax(2), -55, 15.3, string(char(ch))); ch=ch+1;
+text(ax(2), -55, 15.0, string(char(ch)), 'FontSize',13); ch=ch+1;
 plot_time_comp(ax(3), t_comp2, dD_comp2(st,:), [0.1, 0.8, 0.6])
 ylabel(ax(3), '\deltaD (‰)')
-text(ax(3), -55, -71, string(char(ch))); ch=ch+1;
+text(ax(3), -55, -67, string(char(ch)), 'FontSize',13); ch=ch+1;
 plot_time_comp(ax(4), t_comp2, d18O_comp2(st,:), [0.1, 0.6, 1])
 ylabel(ax(4), '\delta^{18}O (‰)')
-text(ax(4), -55, -10.25, string(char(ch))); ch=ch+1;
+text(ax(4), -55, -9.7, string(char(ch)), 'FontSize',13); ch=ch+1;
 plot_time_comp(ax(5), t_comp2, DXS_comp2(st,:), 'k')
 ylabel(ax(5), 'DXS (‰)')
-text(ax(5), -55, 11.5, string(char(ch))); ch=ch+1;
+text(ax(5), -55, 13, string(char(ch)), 'FontSize',13); ch=ch+1;
 plot_time_comp(ax(6), t_comp2, prec_comp2(st,:), 0.6.*[1 1 1])
 ylabel(ax(6), 'rain (mm/h)')
-text(ax(6), -55, 1.1, string(char(ch)));
+text(ax(6), -55, 1.1, string(char(ch)), 'FontSize',13);
 set(ax(1:5), 'xticklabel', [])
 
+% add strongest 2 events
+% 07-Feb-2020 12:29:00
+plot(ax(1),t_comp2,  Taf_comp2( 8,:), '--', 'color',[    0.8000    0.5000         0])
+plot(ax(2),t_comp2, qair_comp2( 8,:), '--', 'color',[    0.1000    0.6000    0.2000])
+plot(ax(3),t_comp2,   dD_comp2( 8,:), '--', 'color',[    0.1000    0.8000    0.6000])
+plot(ax(4),t_comp2, d18O_comp2( 8,:), '--', 'color',[    0.1000    0.6000    1.0000])
+plot(ax(5),t_comp2,  DXS_comp2( 8,:), '--', 'color',[         0         0         0])
+plot(ax(6),t_comp2, max(1e-4,prec_comp2( 8,:)), '--', 'color',[    0.6000    0.6000    0.6000])
+% 10-Feb-2020 15:59:00
+plot(ax(1),t_comp2,  Taf_comp2(17,:), '-.', 'color',[    0.8000    0.5000         0])
+plot(ax(2),t_comp2, qair_comp2(17,:), '-.', 'color',[    0.1000    0.6000    0.2000])
+plot(ax(3),t_comp2,   dD_comp2(17,:), '-.', 'color',[    0.1000    0.8000    0.6000])
+plot(ax(4),t_comp2, d18O_comp2(17,:), '-.', 'color',[    0.1000    0.6000    1.0000])
+plot(ax(5),t_comp2,  DXS_comp2(17,:), '-.', 'color',[         0         0         0])
+plot(ax(6),t_comp2, max(1e-4,prec_comp2(17,:)), '-.', 'color',[    0.6000    0.6000    0.6000])
 
+set(ax(6), 'yscale','log', 'ytick',10.^(-3:1), ...
+    'yticklabel',["","10^{-2}","","10^0",""], ...
+    'ylim',[0.99e-3, 1.01e1])
+xlabel(ax(6), 'composite time (minute)')
+% set(ax(1), 'XTickLabel', ["","","t_0","t_{min}","t_{end}","",""], 'XAxisLocation','top')
+for i=1:6; ax(i).FontSize = 13; end
+
+% composite time gridlines
+for i=1:length(ax)
+    plot(ax(i), -19.7+[0 0], ax(i).YLim, 'k-')
+    plot(ax(i),       [0 0], ax(i).YLim, 'k-')
+    plot(ax(i),  31.5+[0 0], ax(i).YLim, 'k-')
+end
+text(ax(1), -19.7, 27, "t_0", 'horizontalalignment','center', 'fontsize',13, 'clipping','off')
+text(ax(1),    0 , 27, "t_{min}", 'horizontalalignment','center', 'fontsize',13, 'clipping','off')
+text(ax(1),  31.5, 27, "t_{end}", 'horizontalalignment','center', 'fontsize',13, 'clipping','off')
+
+fmt = ["epsc"; "svg"; "png"; "pdf"];
+for i=1:length(fmt)
+    saveas(gcf, 'composite_6panel_1col',fmt(i))
+end

@@ -1,6 +1,6 @@
 function [q_lost,dD_lost,f_lost] = Rayleigh_liquid_evap(p,qv,T,dD0)
 % p[Pa],qv[g/kg],T[K],dD0[permil]
-addpath C:\Users\quinones\Documents\Data\thermo
+% addpath C:\Users\quinones\Documents\Data\thermo
 % p = 980 * 10^2; % near-surface pressure in Pa
 % qv = 15; % units: [g/kg]; mass of water vapor per mass of dry air
 % T = 294; % temp of dry air in Kelvin

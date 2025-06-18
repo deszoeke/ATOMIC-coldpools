@@ -7,7 +7,7 @@ height = (1 - 2 * margins - (n - 1) * gap) / n;
 
 for k = 1:n
     bottom = 1 - margins - k * height - (k - 1) * gap;
-    ax(k) = axes('Position', [0.1, bottom, 0.8, height]);
+    ax(k) = axes('Position', [0.1, bottom, 0.8, height], 'fontsize',14);
     
     % Example plot for each axis
     % plot(rand(10,1));
