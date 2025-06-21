@@ -1,7 +1,4 @@
 %% mixing fractions in isotopic space q-q*dD %%
-% [fen, fss, fdd] = th_q_to_mixfraction(th_ob,q_ob, th_en,q_en, th_surf,q_surf, th_d,q_d);
-% figure; hold on; % for all cps in single plot
-% set(gcf, 'Position', [1 1 750 650]);
 
 q_dD_framework_cold_pools
 
@@ -17,12 +14,22 @@ fss = 9999*ones(size(c));
 fee = 9999*ones(size(c));
 t_cp = 9999*ones(size(c));
 
-%% for iso mixing fraction timeseries plot
-    % iso_fen = 9999*ones(size(b));
-    % iso_fdd = 9999*ones(size(b));
-    % iso_fss = 9999*ones(size(b));
+yellow = [0.9290 0.6940 0.1250];
+orange = [0.8500 0.3250 0.0980];
+blue = [0 0.4470 0.7410];
 
-for i = [2:11,13:16] %[7,8] %[9,14:15] %[8,10,11,13,16] %1:length(max_ind) %[2:7,9,14:15] %1:length(max_ind)-1 %
+fmt = ["epsc"; "svg"; "png"; "pdf"];
+
+% figure;
+
+clf(); hold on;
+j = plot([0 1],[0 0],'-k'); j.Annotation.LegendInformation.IconDisplayStyle = 'off';
+j = plot([0 0],[0 1],'-k'); j.Annotation.LegendInformation.IconDisplayStyle = 'off'; 
+j = plot([1 0],[0 1],'-k'); j.Annotation.LegendInformation.IconDisplayStyle = 'off';
+plot(0,1, 'ko', 'markersize',10, 'markerfacecolor',blue);   % fee=1; fss = 0 and fen = 0
+plot(1,0, 'ko', 'markersize',10, 'markerfacecolor',yellow);% fss=1; fee = 0 and fen = 0
+plot(0,0, 'ko', 'markersize',10, 'markerfacecolor',orange); % fen=1; fee = 0 and fss = 0
+for i = [8, 16] % [2:11,13:16] %[7,8] %[9,14:15] %[8,10,11,13,16] %1:length(max_ind) %[2:7,9,14:15] %1:length(max_ind)-1 %
     q_bg  = qcoldnan(i,1:61);
     dD_bg = q_bg.*dDcoldnan(i,1:61);
     q_cp  = qcold(i,1:61);
@@ -40,102 +47,63 @@ for i = [2:11,13:16] %[7,8] %[9,14:15] %[8,10,11,13,16] %1:length(max_ind) %[2:7
     dD_ev = q_ev.*(dD_lost(f_lost==f)*ones(1,61));
     [fen, fss, fee] = x_y_to_mixfraction(dD_cp,q_cp, dD_en,q_en, dD_surf,q_surf, dD_ev,q_ev);
     [fen_bg, fss_bg, fee_bg] = x_y_to_mixfraction(dD_bg,q_bg, dD_en,q_en, dD_surf,q_surf, dD_ev,q_ev);
-    fdd=1-fen-fss;
-    fdd_bg = 1-fen_bg-fss_bg; %?
+    fdd = 1 - fen - fss;
+    fdd_bg = 1 - fen_bg - fss_bg;
 
-% for iso mixing fraction timeseries plot
-% iso_fen(i) = fen(1);
-% iso_fss(i) = fss(1);
-% iso_fdd(i) = fdd(1);
-   
     % Calculating the mass of water going into the mixing fractions
     % This methodology only applies to when fen == 0, correct?
     % Otherwise the linear relationship does not hold anymore, right?
     ind = find(fen>0 & fen<0.1); % for when fen == 0
     dummy = 1:length(fen); % for the entire dataset, for plotting limits
-    % [fw1,fw2] = mass_mixing_test(ind,fee,fss,q_ev,q_surf);
     [fwd1,fwd2] = mass_mixing_test(dummy,fee,fss,q_ev,q_surf);
     [fw1,fw2,fw3,q] = mass_mixing(dummy,fee,fss,fen,q_ev,q_surf,q_en);
-    %     fa1 = fee(ind);
-    %     fa2 = fss(ind);
-    %     q1 = q_ev(ind);
-    %     q2 = q_surf(ind);
-    %     q = fa1.*q1 + fa2.*q2;
-    %     fw1 = (fa1.*q1)./q;
-    %     fw2 = (fa2.*q2)./q;
 
     % Calculating linear fit in mixing fraction space
     X = fss(~isnan(fss));
     Y = fee(~isnan(fee));
-    % N = 1; % linear polynomial
-    % [P,S,MU] = polyfit(X,Y,N);
-    % Xeval = 0:0.1:1;
-    % cloud_fit = polyval(P,Xeval,S,MU);
-    % slope(i) = (cloud_fit(end)-cloud_fit(1))./(Xeval(end)-Xeval(1));
-    % cloud_fit2 = slope(i).*Xeval + cloud_fit(1);
-    %     n = length(X);
-    %     slope(i) = (n*sum(X.*Y)-(sum(X).*sum(Y)))./((n*sum(X.^2))-(sum(X)).^2);
-    %     int(i) = ((sum(X.^2)*sum(Y))-(sum(X)*sum(X.*Y)))./((n*sum(X.^2))-(sum(X)).^2);
-    %     S = sqrt(sum((Y-(slope(i).*X)-int(i)).^2)./(n-2));
-    %     Error_slope(i) = S.*sqrt(n./((n*sum(X.^2))-(sum(X).^2)));
-    %     disp((Error_slope(i)/slope(i))*100)
     mdl = fitlm(X,Y);
     Error_slope(i) = mdl.Rsquared.Adjusted; % R-squared
     slope(i) = mdl.Coefficients.Estimate(2);
-%     max_fen(i) = max(fen,[],'omitnan');
-%     max_fss(i) = max(fss,[],'omitnan');    
-%     max_fee(i) = max(fee,[],'omitnan');
-%     min_fen(i) = min(fen,[],'omitnan');
-%     min_fss(i) = min(fss,[],'omitnan');    
-%     min_fee(i) = min(fee,[],'omitnan');
-    Xeval = 0:0.1:1;
+    Xeval = 0:0.1:0.9;
     cloud_fit2 = slope(i).*Xeval + mdl.Coefficients.Estimate(1);
 
-% Plots for isotopes vapor mixing fractions %%
-    % Using specific humidity
-    % set(gcf, 'Position', [1 1 900 500]);
-    figure; hold on;
-    j = scatter(fss_bg,fee_bg,15,[.5 .5 .5],'filled');
-    j.Annotation.LegendInformation.IconDisplayStyle = 'off';
-    j = scatter(fss,fee,30,'k');
-    j.Annotation.LegendInformation.IconDisplayStyle = 'off';
-    % scatter(fss,fee,25,dD_cp,'filled');
-    j = scatter(fss,fee,25,dD_cp./q_cp,'filled'); % color coded by dD
-    % j = scatter(fss,fee,25,(t_cp-t_cp(1))*24*60,'filled'); % COLOR CODED BY TIME
-    j.Annotation.LegendInformation.IconDisplayStyle = 'off';
-    colormap(flip(jet(15)))
-    han = colorbar;
-    % han.YLabel.String = 'q*\deltaD';% [',char(8240),']'];
-    han.YLabel.String = ['\deltaD [',char(8240),']'];
-%     han.YLabel.String = ('minutes since cp onset');
-    j = plot([0 1],[0 0],'-k');
-    j.Annotation.LegendInformation.IconDisplayStyle = 'off';
-    j = plot([0 0],[0 1],'-k');
-    j.Annotation.LegendInformation.IconDisplayStyle = 'off';
-    j = plot([1 0],[0 1],'-k');
-    j.Annotation.LegendInformation.IconDisplayStyle = 'off';
-    % set(gca,'Xdir','reverse')
-    plot(Xeval,cloud_fit2,'-','LineWidth',1)
-    text(0.45,0.8,['slope = ',num2str(round(slope(i),2)),''])
-    xlim([-0.2 1])
-    ylim([-0.2 1])
-    xlabel('surface fraction')
-    ylabel('evaporatee fraction')
-    text(0.6,0.9,['CP#',num2str(i),''])
-    set(findall(gcf,'-property','Fontsize'),'FontSize',18)
-    box on
-    title('BL air mixture fraction')
-    axis square
-    caxis([min(dD_cp./q_cp) max(dD_cp./q_cp)])
-    scatter(0,1,55,'k')% fee=1; fss = 0 and fen = 0
-    scatter(1,0,55,[.5 .5 .5],'filled')% fss=1; fee = 0 and fen = 0
-    scatter(0,0,55,'k','filled')% fen=1; fee = 0 and fss = 0
-    %legend('linear fit','Location','southeast')
-% Saving figure in different formats
-%     saveas(gcf,['mixing_fractions_qdD_vs_q_CP#',num2str(i),'_wslope.png'])
-%     saveas(gcf,['mixing_fractions_qdD_vs_q_CP#',num2str(i),'_wslope.fig'])
+    % Plots for isotopes vapor mixing fractions %%
+    j = scatter(fss_bg,fee_bg,15,[.5 .5 .5],'filled'); j.Annotation.LegendInformation.IconDisplayStyle = 'off';
+    [~, ipk] = min(fen);
+    front = 1:ipk;
+    j = scatter(fss(front),fee(front), 80,'k>'); j.Annotation.LegendInformation.IconDisplayStyle = 'off';
+    j = scatter(fss(front),fee(front), 60,dD_cp(front)./q_cp(front),'>', 'filled'); j.Annotation.LegendInformation.IconDisplayStyle = 'off';
+    wake  = ipk:length(fss);
+    j = scatter(fss(wake),fee(wake),50,'ko'); j.Annotation.LegendInformation.IconDisplayStyle = 'off';
+    j = scatter(fss(wake),fee(wake),25,dD_cp(wake)./q_cp(wake),'filled'); % color coded by dD j.Annotation.LegendInformation.IconDisplayStyle = 'off';
+
+    plot(Xeval,cloud_fit2,'k:','LineWidth',1)
+    % text(0.45,0.8,['slope = ',num2str(round(slope(i),2)),''])
+    slope(i)
+end
+% finish up plot
+box on
+title('mixture fraction', 'fontweight','normal')
+axis square
+clim([-72, -64])
+colormap(flip(jet(15)))
+han = colorbar;
+han.YLabel.String = ['\deltaD [',char(8240),']'];
+xlim([-0.15 1.1])
+ylim([-0.15 1.1])
+xlabel('surface fraction')
+ylabel('hydrometeor fraction')
+set(findall(gcf,'-property','Fontsize'),'FontSize',18)
+
+% Save figure in different formats
+for i = 1:length(fmt)
+    saveas(gcf, "mixture_fractions_iso", fmt(i))
 end
 
+% END
+% comment the rest out...
+
+%{
 %% Allocating variables for calculating cold pool age estimates in a separate script
 % Script name: cold_pool_age_estimates.m
 % Variables saved:
@@ -168,9 +136,7 @@ save('mixing_fractions_vars.mat','mf_t_cp','mf_fee','mf_fen','mf_fss','mf_fee_bg
     cloud_fit2 = slope(i).*Xeval + cloud_fit(1);
 
 %% Plots for conserved properties air mixing fractions %%
-yellow = [0.9290 0.6940 0.1250];
-orange = [0.8500 0.3250 0.0980];
-blue = [0 0.4470 0.7410];
+
 % Using fen,fss,fdd from conserved properties
 % PLOT #1
 %   Same axes as water mixing fractions
@@ -394,3 +360,4 @@ ylabel(h,'cold pool start time','Rotation',270)
 axis square
 h.TickLabels = datestr(h.Ticks,'dd/mmm');
 caxis([datenum('01/28/2020','mm/dd/yyyy') datenum('02/11/2020','mm/dd/yyyy')])
+%}
