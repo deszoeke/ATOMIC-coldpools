@@ -31,7 +31,7 @@ Ta = ncread(filename,'tair'); % air temperature at 17m [in degrees C]
 %     rdir(k) = rdir_o(time_rdir==time_v(k));
 % end
 % ship_flag = zeros(size(rdir));
-% ship_flag(rdir>-135 & rdir>45) = 1; % 1 = bad wind dir
+% ship_flag(rdir<-135 & rdir>45) = 1; % 1 = bad wind dir
 % 
 %   dD_v(ship_flag==1 | inlet_flag==1) = NaN;
 % d18O_v(ship_flag==1 | inlet_flag==1) = NaN;

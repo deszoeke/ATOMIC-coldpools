@@ -14,7 +14,7 @@ function [th_ob,q_ob,time_height_adj] = height_adj(zrf,zm,Rd,Cp)
     
     % Using our ship_flag, not the one from the PSD surface data, and only for the variables it has an impact on: wind variables[???]
     ship = zeros(size(rdir));
-    ship(rdir>-135 & rdir>45) = 1; % 1 = bad wind direction
+    ship(rdir<-135 & rdir>45) = 1; % 1 = bad wind direction
     Ta(ship==1)= NaN;   % air temperature at 17m [in degrees C]
     qa(ship==1)= NaN;   % specific humidity; units: g/kg
     qstar(ship==1)= NaN;    

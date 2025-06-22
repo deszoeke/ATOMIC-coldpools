@@ -23,7 +23,7 @@ for k = 1:length(time)
     rdir(k) = rdir_o(time_rr==time(k));
 end
 ship_flag = zeros(size(rdir));
-ship_flag(rdir>-135 & rdir>45) = 1; % 1 = bad wind dir
+ship_flag(rdir<-135 & rdir>45) = 1; % 1 = bad wind dir
 % ship_flag = ncread(filename,'ship_flag'); %
 inlet_flag = ncread(filename,'inlet_flag'); %
 

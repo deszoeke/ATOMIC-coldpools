@@ -18,7 +18,7 @@ Ta = ncread(filename,'tair'); % air temperature at 17m [in degrees C]
 rdir = ncread(filename,'rdir'); % original/"raw" variable
 % Using our ship_flag, not the one from the PSD surface data, and only for the variables it has an impact on: wind variables[???]
 ship = zeros(size(rdir));
-ship(rdir>-135 & rdir>45) = 1; % 1 = bad wind direction
+ship(rdir<-135 & rdir>45) = 1; % 1 = bad wind direction
     % ship = ncread(filename,'ship_contamination_flag'); % ship contamination index for quality control
     %        % Value of 0 implies no significant maneuver nor bad wind direction during the average and is good data.
     %        % Interpolated from 10min data to 1min. This flag is a combination of several criteria including relative
@@ -449,7 +449,7 @@ for k = 1:length(time)
     rdir(k) = rdir_o(time_rr==time(k));
 end
 ship_flag = zeros(size(rdir));
-ship_flag(rdir>-135 & rdir>45) = 1; % 1 = bad wind dir
+ship_flag(rdir<-135 & rdir>45) = 1; % 1 = bad wind dir
 % ship_flag = ncread(filename,'ship_flag'); %
 
 dD(ship_flag==1 | inlet_flag==1) = NaN;
