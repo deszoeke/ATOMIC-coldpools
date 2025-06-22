@@ -220,8 +220,8 @@ for k = 4 %1:size(dD_ent,1)
     scatter(th_dd(iso_cold_pool_flag==flag),dD_dd(k,iso_cold_pool_flag==flag),15,[0 0.4470 0.7410],'filled')
 %     scatter(th_dd(iso_cold_pool_flag==flag),d18O_dd(k,iso_cold_pool_flag==flag),15,[0 0.4470 0.7410],'filled')
 %     scatter(mean(th_dd(iso_cold_pool_flag==flag),'omitnan'),mean(dD_dd(k,iso_cold_pool_flag==flag),'omitnan'),50,[0 0.4470 0.7410],'filled')
-%     ylim([-96 -61]); % xlim([-84 -56])
-    xlim([290 302.5]); % ylim([-4 42])
+    ylim([-92 -62]);
+    xlim([290 302.5]);
 %     ylabel(['DXS [',char(8240),']'])
     xlabel('\theta [K]')
     ylabel(['\deltaD [',char(8240),']'])
