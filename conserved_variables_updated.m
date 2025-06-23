@@ -7,7 +7,7 @@ Cp = 1005.7;
 [th_ob,q_ob,t_adj] = height_adj(zrf,zm,Rd,Cp);
 
 % addpath('C:\Users\estef\Documents\Research Year 2020-2021\Recovery_PersonalLaptop_09022020\OneDrive\Documents\ATOMIC_Files\RHB raw files')
-load('2nd_leg_sounding_data_10min_linear_interp.mat')
+load('data/2nd_leg_sounding_data_10min_linear_interp.mat')
 
 pos_adj = 999999*ones(size(t));
 for l = 1:length(t)
@@ -20,20 +20,20 @@ for l = 1:length(t)
     clearvars pos1
 end
 
-q_ob = q_ob(pos_adj(1:end-1));
+q_ob = q_ob(pos_adj(1:end-1)); % length 2140
 th_ob = th_ob(pos_adj(1:end-1));
 
 t_10min = t;
 
 %% Loading and replacing previous sounding data
 % Going from 10 min to 4 hours for the next 3 air types
-load('full_214_soundings_Level2_h&p_same_size.mat'); % data at 4hr intervals
+load('data/full_214_soundings_Level2_h&p_same_size.mat'); % data at 4hr intervals
 % or load ('sounding_data_Level2_h&p_same_size.mat')
 % or load ('2hPa_radiosonde_data_ATOMIC.m')
 
 % Using only 2nd leg sounding data
 ind = find(t>=t_10min(1));
-t = t(ind(1):end);
+t = t(ind(1):end); % length 100
 
 %% Air type: entrained
 % q and theta @ 1km
@@ -100,7 +100,8 @@ th_en = mean(th(h>=1100 & h<=1300,ind(1):end-1),'omitnan');
         end
     end
 %   addpath('/Users/estefania/Documents/Research Year 2020-2021/Recovery_PersonalLaptop_09022020/OneDrive/Documents/ATOMIC_Files/RHB raw files/thermo')
-    addpath('C:\Users\quinones\Documents\Data\thermo')
+%   addpath('C:\Users\quinones\Documents\Data\thermo')
+
     q_d = qs(1e3*1e2,th_d-273.15)*1e3; % q_d in g/kg    
 %   qs(p,T) is saturation specific humidity based on Wexler's formula for es with enhancement factor (see es.m).
 %   p [Pa], T [degrees C], qs [kg/kg]
@@ -134,7 +135,7 @@ th_en = mean(th(h>=1100 & h<=1300,ind(1):end-1),'omitnan');
 
 %% Air type: surface
 % q and theta @ 1m(?)
-load ('1min_res_PSD_surface_variables_FLAGGED_w_runningmean.mat');
+load ('data/1min_res_PSD_surface_variables_FLAGGED_w_runningmean.mat');
 % p = 1000; % mb or hPa
 % qv = qs;
 % Pi = (p/100000).^((Rd/Cp)*(1-0.28*qv));
@@ -142,26 +143,34 @@ load ('1min_res_PSD_surface_variables_FLAGGED_w_runningmean.mat');
 % Temp = th.*Pi;
 % qsat = qs(p*100,temp); % (saturation specific humidity in g/kg)
 
-pos = 999999*ones(size(t));
-for l = 1:length(t)
-    if l == length(t)
-        break
-    end
-    pos1 = find(t1min>=t(l)); % rounding up to closest (in time) PSD surface data point!!!
-                              % try rounding to nearest (in space) data point
-    pos(l) = pos1(1);
-    clearvars pos1
-end
-SLP = slp(pos(1:end-1)); % [in hPa]
-T = sst(pos(1:end-1)); % [in degrees C]
-q_surf = qs(SLP'*100,T')*1e3; % in g/kg; slp must be in Pa and T in degrees C
-% q_test = qs_full(pos(7:end-1)); % [in g/kg]
-th_surf = (T' + 273.15).*(1e5./(SLP'*1e2)).^(Rd/Cp); % (Potential Temp in degrees K)
-q_surf = q_surf';
-th_surf = th_surf';
+% interpolates to sounding times
+% pos = 999999*ones(size(t));
+% for l = 1:length(t)
+%     if l == length(t)
+%         break
+%     end
+%     pos1 = find(t1min>=t(l)); % rounding up to closest (in time) PSD surface data point!!!
+%                               % try rounding to nearest (in space) data point
+%     pos(l) = pos1(1);
+%     clearvars pos1
+% end
+% SLP = slp(pos(1:end-1)); % [in hPa]
+% T = sst(pos(1:end-1)); % [in degrees C]
+% q_surf = qs(SLP'*100,T')*1e3; % in g/kg; slp must be in Pa and T in degrees C
+% % q_test = qs_full(pos(7:end-1)); % [in g/kg]
+% th_surf = (T' + 273.15).*(1e5./(SLP'*1e2)).^(Rd/Cp); % (Potential Temp in degrees K)
+% q_surf = q_surf';
+% th_surf = th_surf';
+%
+% correct to 10 minute means
+intit = @(x) interp1(t1min, x, t_10min(1:end-1), 'previous');
+SLP = intit(slp)';
+T = intit(sst)';
+q_surf = qs(SLP'*100,T')*1e3;
+th_surf = (T + 273.15).*(1e5./(SLP*1e2)).^(Rd/Cp);
 
 %% Loading iso data
-load('iso_data_1min_intervals_FLAGGED_w_runningmean.mat');
+load('data/iso_data_1min_intervals_FLAGGED_w_runningmean.mat');
 
 % Incorporating isotope data %
 pos_i = 9999*ones(size(t_10min));
@@ -189,6 +198,7 @@ iso_de = iso_dD - 8*iso_d18O; % deuterium excess
 
 %% Plots %%
 figure;
+clf;
 scatter(th_ob,q_ob,15,'k')
 hold on;
 scatter(th_en,q_en,10,[0.8500 0.3250 0.0980],'filled')
@@ -204,14 +214,15 @@ set(findall(gcf,'-property','Fontsize'),'FontSize',30)
 set(findall(gcf,'-property','TickLength'),'TickLength',[.05 .05])
 set(findall(gcf,'-property','LineWidth'),'LineWidth',1)
 box on
-hold on;text(294.25,21.5,'surface','FontSize',15)
-hold on;text(295,9,'entrained','FontSize',15)
-hold on;text(289.5,11,'downdraft','FontSize',15)
+hold on;text(294.25,21.5,'surface','FontSize',18)
+hold on;text(295,9,'entrained','FontSize',18)
+hold on;text(289.5,11,'downdraft','FontSize',18)
 % legend('observed')
 axis square
 
 %% With iso data
 figure;
+clf;
 scatter(th_en,q_en,25,[0.8500 0.3250 0.0980],'filled')
 hold on;
 scatter(th_ob,q_ob,30,'k')
@@ -230,7 +241,7 @@ ylabel('q [g/kg]')
 xlabel('\theta [K]')
 set(findall(gcf,'-property','Fontsize'),'FontSize',30)
 box on
-legend('entrained','observed','downdraft','surface')
+% legend('entrained','observed','downdraft','surface')
 
 %% Saving data in .mat file %%
 time_soundings = t(7:end-1)';
