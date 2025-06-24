@@ -88,7 +88,7 @@ addpath(genpath("deps"))
 [bw]=cbrewer2('seq', 'Greys', 12);
 
 %% Plots
-
+%{
 % 6-panel plot w/ d18O
 figure;
 st = subset([1:end, end]);
@@ -211,7 +211,7 @@ set(findall(gcf,'-property','Fontweight'), 'Fontweight','normal')
 set(findall(gcf,'-property','TickLength'),'TickLength',[.02,.1])
 
 orient landscape
-
+%}
 % saveas(gcf, 'rank14cp2','epsc')
 % saveas(gcf, 'rank14cp2','svg')
 % saveas(gcf, 'rank14cp2','png')
@@ -219,7 +219,6 @@ orient landscape
 
 
 %% plot comp_mean
-%{
 st = [ 1     2     3     5     6     7     8    11    12    13    14    15    16    17 ];
 colors = [[0.8, 0.5, 0]; [0.1, 0.6, 0.2]; [0.1, 0.8, 0.6]; [0.1, 0.6, 1]; [0, 0, 0]; 0.6+[0, 0, 0]];
 clf()
@@ -277,9 +276,8 @@ end
 text(ax(1), -19.7, 27, "t_0", 'horizontalalignment','center', 'fontsize',13, 'clipping','off')
 text(ax(1),    0 , 27, "t_{min}", 'horizontalalignment','center', 'fontsize',13, 'clipping','off')
 text(ax(1),  31.5, 27, "t_{end}", 'horizontalalignment','center', 'fontsize',13, 'clipping','off')
-%}
 
-% fmt = ["epsc"; "svg"; "png"; "pdf"];
+fmt = ["epsc"; "svg"; "png"; "pdf"];
 % for i=1:length(fmt)
 %     saveas(gcf, 'composite_6panel_1col',fmt(i))
 % end
