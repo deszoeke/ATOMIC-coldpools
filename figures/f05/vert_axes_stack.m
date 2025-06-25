@@ -2,7 +2,7 @@ function ax = vert_axes_stack(n)
 % n = 6; % number of axes
 
 margins = 0.08; % top and bottom margins as fraction of figure
-gap = 0.02; % no gap between axes
+gap = 0.02; % gap between axes
 height = (1 - 2 * margins - (n - 1) * gap) / n;
 
 for k = 1:n

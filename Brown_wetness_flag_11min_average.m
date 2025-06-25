@@ -1,12 +1,12 @@
 %% Ron H. Brown isotope analizer timeseries
 % Loading Meteor data for comparison [OPTIONAL]
-filename = 'M161_Picarro_Level1.nc';
+filename = 'data/M161_Picarro_Level1.nc';
 d18O_Meteor = ncread(filename,'delta_18_16'); %
 dD_Meteor   = ncread(filename,'delta_D'); %
 time_Meteor = datenum('01012020','mmddyyyy') + ncread(filename,'time')*(1/(3600*24)); % from 'seconds since 2020-01-01 00:00:00' to MatLab time
 dxs_Meteor = dD_Meteor - 8*d18O_Meteor;
 
-filename = 'EUREC4A_ATOMIC_RonBrown_Isotope-Analyzer_1min_20200126-20200210_v1.0.nc';
+filename = 'data/EUREC4A_ATOMIC_RonBrown_Isotope-Analyzer_1min_20200126-20200210_v1.0.nc';
 dD = ncread(filename,'dD'); %
 d18O = ncread(filename,'d18O'); %
 dD_o = ncread(filename,'dD'); % original/"raw" variable
@@ -31,7 +31,7 @@ d18Os = movmean(d18O,11,'omitnan');
 dxss = dDs - 8*d18Os;
 
 %% Rain data
-filename = 'EUREC4A_ATOMIC_RonBrown_1min_nav_met_sea_20200109-20200212_v1.3.nc';
+filename = 'data/EUREC4A_ATOMIC_RonBrown_1min_nav_met_sea_20200109-20200212_v1.3.nc';
 time_rr = ncread(filename,'time'); % in 'seconds since 2020-01-01 00:00:00'
 time_rr = datenum('01012020','mmddyyyy') + time_rr*(1/(3600*24));
 rr_o = ncread(filename,'prate'); % original/"raw" variable; rain rate in mm/hr
@@ -45,7 +45,7 @@ end
 rr(inlet_flag==1) = NaN;
 
 %% Precip data
-filename = 'EUREC4A_ATOMIC_RonBrown_Precipitation-Isotope-Ratios_20200105-20200212_v1.0.nc';
+filename = 'data/EUREC4A_ATOMIC_RonBrown_Precipitation-Isotope-Ratios_20200105-20200212_v1.0.nc';
 dDp = ncread(filename,'dD'); %
 d18Op = ncread(filename,'d18O'); %
 ctime = ncread(filename,'collection_time'); %

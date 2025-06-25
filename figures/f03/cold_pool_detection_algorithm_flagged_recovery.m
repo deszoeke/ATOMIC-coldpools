@@ -1,5 +1,5 @@
 %% cold pool detection algorith following Vogel et al. 2020 and Vogel (2017) %%
-% Last updated on 05/24/2022
+% Last updated on 02/15/2023
 % By E. Quiñones Meléndez (quinones@oregonstate.edu)
 
 % Using entire RHB air temp timeseries
@@ -11,14 +11,14 @@
 
 % Using entire RHB air temp timeseries
 % Loading 1-min data
-filename = 'data/EUREC4A_ATOMIC_RonBrown_1min_nav_met_sea_20200109-20200212_v1.3.nc';
+filename = 'EUREC4A_ATOMIC_RonBrown_1min_nav_met_sea_20200109-20200212_v1.3.nc';
 t1min = ncread(filename,'time'); % time of the met data in 'seconds since 2020-01-01 00:00:00UTC'
 t1min = t1min/3600/24 + datenum('20200101','yyyymmdd');
 Ta = ncread(filename,'tair'); % air temperature at 17m [in degrees C]
 rdir = ncread(filename,'rdir'); % original/"raw" variable
 % Using our ship_flag, not the one from the PSD surface data, and only for the variables it has an impact on: wind variables[???]
 ship = zeros(size(rdir));
-ship(rdir<-135 & rdir>45) = 1; % 1 = bad wind direction % SPD fixed
+ship(rdir<-135 & rdir>45) = 1; % 1 = bad wind direction
     % ship = ncread(filename,'ship_contamination_flag'); % ship contamination index for quality control
     %        % Value of 0 implies no significant maneuver nor bad wind direction during the average and is good data.
     %        % Interpolated from 10min data to 1min. This flag is a combination of several criteria including relative
@@ -34,7 +34,7 @@ u = wspd.*cosd(270-wdir); % eastward wind speed, m/s
 v = wspd.*sind(270-wdir); % northward wind speed, m/s
 sst = ncread(filename,'tskin'); % skin-level sea surface temperature [in degrees C]
 
-filename = 'data/EUREC4A_ATOMIC_RonBrown_10min_nav_met_sea_flux_20200109-20200212_v1.3.nc';
+filename = 'EUREC4A_ATOMIC_RonBrown_10min_nav_met_sea_flux_20200109-20200212_v1.3.nc';
 sh = ncread(filename,'hs_bulk'); % 10min resolution; sensible heat flux COARE 3.6 bulk model; surface_downward_sensible_heat_flux; units: W/m^2; range:[-52.3062,  11.8809]
 lh = ncread(filename,'hl_bulk'); % 10min resolution; latent heat flux COARE 3.6 bulk model;   surface_downward_latent_heat_flux;   units: W/m^2; range:[-397.0974,-58.9983]
 t10min = ncread(filename,'time'); %
@@ -77,11 +77,64 @@ lh(ship==1)= NaN;   % latent heat flux COARE 3.6 bulk model;   surface_downward_
 [t_max,t_min,t_max_ind,t_min_ind,t_end,t_end_ind,~,~,delta_T,T_max,T_min,Taf] = cold_pool_detection_algorithm(t1min,Ta);
 % Ta is filtered within the cold_pool_detection_algorithm function!
 
+%%    FLAG for recovery times    %%
+%           AND                   %
+%  FLAG for peak cold pool times  %
+% Defining peak cold pool times as the 5-minute period centered on the
+% minimum temperature time (t_min)
+recovery_flag_1min = zeros(size(t1min));
+peak_flag_1min = zeros(size(t1min));
+for k = 1:length(t_max)
+    ii  = t_min_ind(k):t_end_ind(k);
+    iii = t_min_ind(k)-3:t_min_ind(k)+2;
+    recovery_flag_1min(ii) = 1;
+    peak_flag_1min(iii) = 1;
+end
+% recovery_flag_1min = 1 means value corresponds to a time flagged within a
+% cold pool RECOVERY
+% recovery_flag_1min = 0 means value corresponds to a time flagged within a
+% cold pool FRONT
+
+% for plotting purposes
+figure;
+plot(t1min(recovery_flag_1min==1),Ta(recovery_flag_1min==1),'.b')
+hold on;
+plot(t1min(recovery_flag_1min==0),Ta(recovery_flag_1min==0),'.k')
+plot(t1min(peak_flag_1min==1),Ta(peak_flag_1min==1),'.r')
+datetick('x','mm/dd','keeplimits','keepticks')
+title('cold pool recovery flag'); ylim([22 28])
+
+% for plotting purposes
+figure;
+plot(t1min,Ta,'k')
+hold on;
+ylim([22 28])
+yyaxis right
+plot(t1min,recovery_flag_1min,'-r','Color','r')
+datetick('x','mm/dd','keeplimits','keepticks')
+title('cold pool recovery flag'); ylim([-1 2])
+
+figure;
+plot(t1min,Ta,'k')
+hold on;
+ylim([22 28])
+yyaxis right
+plot(t1min,peak_flag_1min,'-r','Color','r')
+datetick('x','mm/dd','keeplimits','keepticks')
+title('cold pool peak flag'); ylim([0 1])
+
+% plotting all the temp that correspond to cold pool times
+figure;
+plot(t1min(cp_matrix(~isnan(cp_matrix))),Taf(cp_matrix(~isnan(cp_matrix))),'ok')
+datetick('x','mm/dd','keeplimits','keepticks')
+title('cold pool temp')
+
+2+2;
 %% Identifying the strongest and weakest cold pools based on delta_T
-num_vector = 1:length(t_max); %
-date_vector = t_max;
-cp_vector = [delta_T(num_vector)', num_vector', date_vector'];
-sorted_cp = sortrows(cp_vector,1);
+% num_vector = 1:length(t_max); %
+% date_vector = t_max;
+% cp_vector = [delta_T(num_vector)', num_vector', date_vector'];
+% sorted_cp = sortrows(cp_vector,1);
 
 %% FLAG for cold pool times (indexes)
 cold_pool_flag_1min = zeros(size(t1min));
@@ -349,7 +402,7 @@ end
     box on
     grid on
    
-clearvars -except rdir wdir ship bgwindow t_comp t_max0_matrix t_min0_matrix cp_matrix t1min t_comp2 Taf_comp2 Ta_comp2 prec_comp2 qair_comp2 wspd_comp2 rh_comp2 sh_comp2 lh_comp2 wdir_comp2 qs_comp2 u_comp2 v_comp2 t_max t_min t_max_ind t_min_ind t_end t_end_ind Taf qair wspd rh prec u v
+clearvars -except bgwindow t_comp t_max0_matrix t_min0_matrix cp_matrix t1min t_comp2 Taf_comp2 Ta_comp2 prec_comp2 qair_comp2 wspd_comp2 rh_comp2 sh_comp2 lh_comp2 wdir_comp2 qs_comp2 u_comp2 v_comp2 t_max t_min t_max_ind t_min_ind t_end t_end_ind Taf qair wspd rh prec u v
     
 %% Incorporating background data for 60 min before and after t_min
 % bgwindow = 40; % min
@@ -379,14 +432,14 @@ clearvars -except rdir wdir ship bgwindow t_comp t_max0_matrix t_min0_matrix cp_
 %     grid on
 
 %% Normalizing time for the iso data
-filename = 'data/EUREC4A_ATOMIC_RonBrown_Isotope-Analyzer_1min_20200126-20200210_v1.0.nc';
+filename = 'EUREC4A_ATOMIC_RonBrown_Isotope-Analyzer_1min_20200126-20200210_v1.0.nc';
 dD = ncread(filename,'dD'); %
 d18O = ncread(filename,'d18O'); %
 time = ncread(filename,'time'); % in 'seconds since 2020-01-01 00:00:00'
 time = datenum('01012020','mmddyyyy') + time*(1/(3600*24));
 inlet_flag = ncread(filename,'inlet_flag'); %
 
-filename = 'data/EUREC4A_ATOMIC_RonBrown_1min_nav_met_sea_20200109-20200212_v1.3.nc';
+filename = 'EUREC4A_ATOMIC_RonBrown_1min_nav_met_sea_20200109-20200212_v1.3.nc';
 time_rr = ncread(filename,'time'); % in 'seconds since 2020-01-01 00:00:00'
 time_rr = datenum('01012020','mmddyyyy') + time_rr/3600/24;
 rdir_o = ncread(filename,'rdir'); % original/"raw" variable
@@ -396,7 +449,7 @@ for k = 1:length(time)
     rdir(k) = rdir_o(time_rr==time(k));
 end
 ship_flag = zeros(size(rdir));
-ship_flag(rdir<-135 & rdir>45) = 1; % 1 = bad wind dir % SPD fixed rdir<-135
+ship_flag(rdir<-135 & rdir>45) = 1; % 1 = bad wind dir
 % ship_flag = ncread(filename,'ship_flag'); %
 
 dD(ship_flag==1 | inlet_flag==1) = NaN;
@@ -762,8 +815,7 @@ subplot(5,2,10)
     set(findall(gcf,'-property','TickLength'),'TickLength',[.05,.1])
     
 %% Plots
-% addpath('C:\Users\estef\Documents\MATLAB\addaxis6')
-addpath('./addaxis6')
+addpath('C:\Users\estef\Documents\MATLAB\addaxis6')
 orange = [0.8500 0.3250 0.0980];
 blue = [0 0.4470 0.7410];
 green = [0.4196 0.5569 0.1373];
@@ -783,7 +835,7 @@ figure;
     box on
     grid on
 % subplot(212)
-%    addaxis(t_comp2,nanmean(q_iso_comp2),'-','LineWidth',2,'Color',blue)
+    addaxis(t_comp2,nanmean(q_iso_comp2),'-','LineWidth',2,'Color',blue)
 %     hold on;
 %     plot(t_comp2,nanmean(Taf_comp2)+std(Taf_comp2,'omitnan'),'-','Color',orange)
 %     plot(t_comp2,nanmean(Taf_comp2)-std(Taf_comp2,'omitnan'),'-','Color',orange)
@@ -797,13 +849,12 @@ figure;
     addaxislabel(3,'(-1)*T_a [\circC]')
 % legend('mean')%,'std','median')
 set(findall(gcf,'-property','Fontsize'),'FontSize',26)
-% ^ broken
 
 %% Timeseries plot for the WIW poster %%
 figure;
 subplot(212)
     yyaxis right
-    % plot(t_avg_1min,dD,'-k','LineWidth',2) % Unrecognized function or variable 't_avg_1min'.
+    plot(t_avg_1min,dD,'-k','LineWidth',2)
     hold on;
     plot(t1min,cold_pool_flag_1min*-80,'-r')
     xticklabels([29:1:31,1:11])
@@ -851,7 +902,7 @@ figure;
 histogram(del_dD)
 xlim([-0.4 0.4])
 xlabel('\DeltadD [change in dD]')
-cand = find(del_dD<-0.05); % candidates positions % fixed!
+cand = find(del_D<-0.05); % candidates positions
 
 for k = 1:size(dD_comp,1)
     test(k) = dD_comp(k,21) - dD_comp(k,1);
@@ -864,8 +915,6 @@ set(findall(gcf,'-property','Fontsize'),'FontSize',20)
 grid on
 
 %% Vogel paper plots
-% the variables needed are cleared??
-%{
 figure;
 subplot(211)
 plot(t1min,Ta,'-k','LineWidth',.5)
@@ -884,4 +933,3 @@ plot(t1min,nanmean(del_T/10)*ones(size(t1min)),'-k','LineWidth',.5)
 datetick('x','HHAM mm/dd','keeplimits')
 ylabel('\deltaT [\circC]')
 xlabel('time [UTC]')
-%}

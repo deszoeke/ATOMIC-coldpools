@@ -135,10 +135,10 @@ xlabel('-(T_{min} - T_0) [°C]')
 text(-2.4, 1, 'c')
 axis square
 
-saveas(gcf, 'table1_fig.eps')
-saveas(gcf, 'table1_fig.png')
-saveas(gcf, 'table1_fig.pdf')
-saveas(gcf, 'table1_fig.svg')
+% saveas(gcf, 'table1_fig.eps')
+% saveas(gcf, 'table1_fig.png')
+% saveas(gcf, 'table1_fig.pdf')
+% saveas(gcf, 'table1_fig.svg')
 
 % effectively reads max, cumulatives off Fig 7
 maxdD   = max(  dD_comp2_sort(subset, -25<t_comp2<45), [], 2);
