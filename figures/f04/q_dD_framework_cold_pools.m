@@ -233,9 +233,11 @@ axs = findall(gcf(), 'Type', 'axes'); % 5 axes
 for i = 1:length(axs)
     axs(i).XLim = [datenum(2020,1,29), datenum(2020,2,11)];
     axs(i).XTick = datenum(2020,1,29):1:datenum(2020,2,11);
-    datetick(axs(i), 'x','dd','keeplimits','keepticks')
-    % newdt = cellstr(axs(i).XTickLabel);
-    % newdt(mod((1:length(newdt))-1, 7)~=0) = '';
+    datetick(axs(i), 'x','mmmdd','keeplimits','keepticks')
+    newdt = cellstr(axs(i).XTickLabel);
+    newdt(mod((1:length(newdt))-1-2, 5)~=0) = {''};
+    axs(i).XTickLabel = newdt;
+    axs(i).XTickLabelRotation = 0;
     % lines = axs(i).Children;
     % arrayfun( @(l) set(l, 'Color', [0 0 0]), lines)
     % yl = axs(i).YLim; dy = yl(2)-yl(1);

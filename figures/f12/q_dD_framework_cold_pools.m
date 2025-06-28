@@ -19,37 +19,48 @@ rrf(rrf<=0) = NaN;
 %% Identifying cold pools
 del_T = Taf(2:end)-Taf(1:end-1);
 cand  = find(del_T<-0.05); % candidates positions
+
 %% for plotting purposes
-% figure; 
-subplot(511);hold on;
-    plot(t1min,Ta);
-    plot(time,Taf,'LineWidth',1)
-    ylabel('Abs Temp [K]')
-    datetick('x','mmm/dd','keeplimits','keepticks')
-subplot(512);hold on;
-    plot(t1min,qair)
-    plot(time,qairf,'LineWidth',1)
-    datetick('x','mmm/dd','keeplimits','keepticks')
-    ylabel('q [g/kg]')
-subplot(513);hold on;
-    plot(time,dD)
-    plot(time,dDf,'LineWidth',1)
-    datetick('x','mmm/dd','keeplimits','keepticks')
-    ylabel('\deltaD [permil]')
-    yyaxis right
-    plot(time,rrf,'-b')
-    ylabel('RR [mm/hr]')
-subplot(514);hold on;
-    plot(time,d18O)
-    plot(time,d18Of,'LineWidth',1)
-    datetick('x','mmm/dd','keeplimits','keepticks')
-    ylabel('\delta^1^8O [permil]')
-subplot(515);hold on;
-    plot(time,DXS)
-    plot(time,DXSf,'LineWidth',1)
-    datetick('x','mmm/dd','keeplimits','keepticks')
-    ylabel('DXS [permil]')
-xlabel('2020')
+% figure; % not this one
+% clf;
+% subplot(511);hold on;
+%     plot(t1min,Ta);
+%     plot(time,Taf,'LineWidth',1)
+%     ylabel('T_{air} (\circ{C})')
+%     datetick('x','mmmdd','keeplimits','keepticks')
+% subplot(512);hold on;
+%     plot(t1min,qair)
+%     plot(time,qairf,'LineWidth',1)
+%     datetick('x','mmmdd','keeplimits','keepticks')
+%     ylabel('q (g/kg)')
+% subplot(513);hold on;
+%     plot(time,dD, 'color','k')
+%     plot(time,dDf,'LineWidth',1, 'color','k')
+%     datetick('x','mmmdd','keeplimits','keepticks')
+%     ylabel(['\deltaD (' char(8240) ')'])
+%     yyaxis right
+%     plot(time,rrf,'-b')
+%     ylabel('rain (mm/h)')
+% subplot(514);hold on;
+%     plot(time,d18O)
+%     plot(time,d18Of,'LineWidth',1)
+%     datetick('x','mmmdd','keeplimits','keepticks')
+%     ylabel(['\delta^1^8O (' char(8240) ')'])
+% subplot(515);hold on;
+%     plot(time,DXS)
+%     plot(time,DXSf,'LineWidth',1)
+%     datetick('x','mmmdd','keeplimits','keepticks')
+%     ylabel(['DXS (' char(8240) ')'])
+% xlabel('2020')
+% 
+% axs = findall(gcf(), 'Type', 'axes'); % 5 axes
+% for i = 1:length(axs)
+%     axs(i).XLim = [datenum(2020,1,29), datenum(2020,2,11)];
+%     lines = axs(i).Children;
+%     arrayfun( @(l) set(l, 'Color', [0 0 0]), lines)
+% end
+
+
 
 %% Separating candidates [28 possible cold pools]
 c=1;
@@ -152,26 +163,179 @@ hold on;
 for k = 1:length(t_max)-1
     patch([t(max_ind(k)) t(max_ind(k)) t(end_ind(k)) t(end_ind(k))],[-1 1 1 -1],[.8 .8 .8],'EdgeColor','none')
 end
-plot(t,cold_pool_flag_1min*16,'-r','Color','r')
+% plot(t,cold_pool_flag_1min*16,'-r','Color','r')
+area(t, 1e3 * (-1 + 2*cold_pool_flag_1min),-1e3, 'FaceColor',0.75+[0 0 0], 'EdgeColor','none') %'Color','r')
 ylim([0 1])
 datetick('x','mmm/dd','keeplimits','keepticks')
 title('cold pool flag'); 
-grid on
+% grid on
 
-%% for plotting purposes
-% figure;
-% subplot(511); 
-%     hold on;
+% Fig. 4 - plot with cold pools shaded gray
+clrs = colororder();
+clf;
+subplot(511)
+    area(t, 1e3 * (-1 + 2*cold_pool_flag_1min),-1e3, 'FaceColor',0.7+[0 0 0], 'EdgeColor','none'); hold on;
+    % plot(t1min,Ta);
+    plot(time,Taf,'LineWidth',1, 'color','k')
+    yl = ylim();
+    ylim([23, 28]);
+    ylabel('T_{air} (\circ{C})')
+    datetick('x','mmmdd','keeplimits','keepticks')
+    yl = gca().YLim;
+    text(datenum(2020,1,29,6,0,0), 0.9*yl(2)+0.1*yl(1), char('a'))
+subplot(512)
+    area(t, 1e3 * (-1 + 2*cold_pool_flag_1min),-1e3, 'FaceColor',0.7+[0 0 0], 'EdgeColor','none'); hold on;
+    % plot(t1min,qair)
+    plot(time,qairf,'LineWidth',1, 'color','k')
+    yl = ylim();
+    ylim([12, 17]);
+    datetick('x','mmmdd','keeplimits','keepticks')
+    ylabel('q (g/kg)')
+    yl = gca().YLim;
+    text(datenum(2020,1,29,6,0,0), 0.2*yl(2)+0.8*yl(1), char('b'))
+subplot(513)
+    area(t, 1e3 * (-1 + 2*cold_pool_flag_1min),-1e3, 'FaceColor',0.7+[0 0 0], 'EdgeColor','none'); hold on;
+    % plot(time,dD, 'color','k')
+    plot(time,dDf,'LineWidth',1, 'color','k')
+    yl = ylim();
+    ylim([-80, -64]);
+    datetick('x','mmmdd','keeplimits','keepticks')
+    ylabel(['\deltaD (' char(8240) ')'])
+    yyaxis right
+    ax = gca(); ax.YAxis(2).Color = [0 0 0];
+    area(time,rrf, 'facecolor', clrs(1,:), 'edgecolor',clrs(1,:))
+    ylabel('rain (mm/h)')
+    yl = gca().YLim;
+    text(datenum(2020,1,29,6,0,0), 0.9*yl(2)+0.1*yl(1), char('c'))
+subplot(514)
+    area(t, 1e3 * (-1 + 2*cold_pool_flag_1min),-1e3, 'FaceColor',0.7+[0 0 0], 'EdgeColor','none'); hold on;
+    % plot(time,d18O)
+    plot(time,d18Of,'LineWidth',1, 'color','k')
+    yl = ylim();
+    ylim([-12, -9]);
+    datetick('x','mmmdd','keeplimits','keepticks')
+    ylabel(['\delta^1^8O (' char(8240) ')'])
+    yl = gca().YLim;
+    text(datenum(2020,1,29,6,0,0), 0.9*yl(2)+0.1*yl(1), char('d'))
+subplot(515)
+    area(t, 1e3 * (-1 + 2*cold_pool_flag_1min),-1e3, 'FaceColor',0.7+[0 0 0], 'EdgeColor','none'); hold on;
+    % plot(time,DXS)
+    plot(time,DXSf,'LineWidth',1, 'color','k')
+    yl = ylim();
+    ylim([8, 17]);
+    datetick('x','mmmdd','keeplimits','keepticks')
+    ylabel(['DXS (' char(8240) ')'])
+    yl = gca().YLim;
+    text(datenum(2020,1,29,6,0,0), 0.9*yl(2)+0.1*yl(1), char('e'))
+xlabel('2020')
+
+axs = findall(gcf(), 'Type', 'axes'); % 5 axes
+for i = 1:length(axs)
+    axs(i).XLim = [datenum(2020,1,29), datenum(2020,2,11)];
+    axs(i).XTick = datenum(2020,1,29):1:datenum(2020,2,11);
+    datetick(axs(i), 'x','dd','keeplimits','keepticks')
+    % newdt = cellstr(axs(i).XTickLabel);
+    % newdt(mod((1:length(newdt))-1, 7)~=0) = '';
+    % lines = axs(i).Children;
+    % arrayfun( @(l) set(l, 'Color', [0 0 0]), lines)
+    % yl = axs(i).YLim; dy = yl(2)-yl(1);
+    % text(axs(i), datenum(2020,1,29,12,0,0), yl(2)-0.1*dy, char('a'))
+end
+
+fmt = ["png", "epsc", "pdf", "svg"];
+set(gcf, 'Renderer', 'painters');
+for i = 1:length(fmt)
+    saveas(gcf, "timeseries_leg2_TqdDd18Odxs_Fig4", fmt(i))
+end
+
+% zoom in on Feb 7-11
+clf;
+subplot(511)
+    area(t, 1e3 * (-1 + 2*cold_pool_flag_1min),-1e3, 'FaceColor',0.7+[0 0 0], 'EdgeColor','none'); hold on;
+    % plot(t1min,Ta);
+    plot(time,Taf,'LineWidth',1, 'color','k')
+    yl = ylim();
+    ylim([23, 28]);
+    ylabel('T_{air} (\circ{C})')
+    datetick('x','dd','keeplimits','keepticks')
+    yl = gca().YLim;
+    text(datenum(2020,2,7,3,0,0), 0.9*yl(2)+0.1*yl(1), char('f'))
+subplot(512)
+    area(t, 1e3 * (-1 + 2*cold_pool_flag_1min),-1e3, 'FaceColor',0.7+[0 0 0], 'EdgeColor','none'); hold on;
+    % plot(t1min,qair)
+    plot(time,qairf,'LineWidth',1, 'color','k')
+    yl = ylim();
+    ylim([12, 17]);
+    datetick('x','dd','keeplimits','keepticks')
+    ylabel('q (g/kg)')
+    yl = gca().YLim;
+    text(datenum(2020,2,7,3,0,0), 0.2*yl(2)+0.8*yl(1), char('g'))
+subplot(513)
+    area(t, 1e3 * (-1 + 2*cold_pool_flag_1min),-1e3, 'FaceColor',0.7+[0 0 0], 'EdgeColor','none'); hold on;
+    % plot(time,dD, 'color','k')
+    plot(time,dDf,'LineWidth',1, 'color','k')
+    yl = ylim();
+    ylim([-80, -64]);
+    datetick('x','dd','keeplimits','keepticks')
+    ylabel(['\deltaD (' char(8240) ')'])
+    yyaxis right
+    ax = gca(); ax.YAxis(2).Color = [0 0 0];
+    area(time,rrf, 'facecolor', clrs(1,:), 'edgecolor',clrs(1,:)) % ylim([0,5])
+    ylabel('rain (mm/h)')
+    yl = gca().YLim;
+    text(datenum(2020,2,7,3,0,0), 0.9*yl(2)+0.1*yl(1), char('h'))
+subplot(514)
+    area(t, 1e3 * (-1 + 2*cold_pool_flag_1min),-1e3, 'FaceColor',0.7+[0 0 0], 'EdgeColor','none'); hold on;
+    % plot(time,d18O)
+    plot(time,d18Of,'LineWidth',1, 'color','k')
+    yl = ylim();
+    ylim([-12, -9]);
+    datetick('x','dd','keeplimits','keepticks')
+    ylabel(['\delta^1^8O (' char(8240) ')'])
+    yl = gca().YLim;
+    text(datenum(2020,2,7,3,0,0), 0.9*yl(2)+0.1*yl(1), char('i'))
+subplot(515)
+    area(t, 1e3 * (-1 + 2*cold_pool_flag_1min),-1e3, 'FaceColor',0.7+[0 0 0], 'EdgeColor','none'); hold on;
+    % plot(time,DXS)
+    plot(time,DXSf,'LineWidth',1, 'color','k')
+    yl = ylim();
+    ylim([8, 17]);
+    ylabel(['DXS (' char(8240) ')'])
+    yl = gca().YLim;
+    text(datenum(2020,2,7,3,0,0), 0.9*yl(2)+0.1*yl(1), char('j'))
+xlabel('Feb 2020')
+
+axs = findall(gcf(), 'Type', 'axes'); % 5 axes
+for i = 1:length(axs)
+    axs(i).XLim = [datenum(2020,2,7), datenum(2020,2,11)];
+    axs(i).XTick = datenum(2020,2,7):1:datenum(2020,2,11);
+    datetick(axs(i), 'x','dd','keeplimits','keepticks')
+    lines = axs(i).Children;
+    % arrayfun( @(l) set(l, 'Color', [0 0 0]), lines)
+    % yl = axs(i).YLim; dy = yl(2)-yl(1);
+    % text(axs(i), datenum(2020,1,29,12,0,0), yl(2)-0.1*dy, char('a'))
+end
+
+fmt = ["png", "epsc", "pdf", "svg"];
+set(gcf, 'Renderer', 'painters');
+for i = 1:length(fmt)
+    saveas(gcf, "timeseries_Feb7-11_TqdDd18Odxs_Fig4", fmt(i))
+    % print(gcf, '-depsc2', '-painters', "timeseries_Feb7-11_TqdDd18Odxs_Fig4.epsc")
+end
+
+
+%% old broken plot
+% figure; clf;
+% subplot(511); hold on;
 %     for k = 1:length(t_max)
 %         patch([t(max_ind(k)) t(max_ind(k)) t(end_ind(k)) t(end_ind(k))],[-1 1 1 -1].*max(Ta),[.8 .8 .8],'EdgeColor','none')
 %     end
-%     plot(date_t,Ta)
+%     plot(date_t,Ta) % date_t not defined!!
 %     plot(date_t,Taf,'LineWidth',2)
 %     ylim([min(Ta) max(Ta)])
 %     ylabel('Abs Temp [K]')
 %     datetick('x','HH:MM','keeplimits','keepticks')
-% subplot(512); 
-%     hold on;
+% subplot(512); hold on;
 %     for k = 1:length(t_max)
 %         patch([t(max_ind(k)) t(max_ind(k)) t(end_ind(k)) t(end_ind(k))],[-1 1 1 -1].*max(q),[.8 .8 .8],'EdgeColor','none')
 %     end
@@ -180,8 +344,7 @@ grid on
 %     ylim([min(q) max(q)])
 %     ylabel('q [g/kg]')
 %     datetick('x','HH:MM','keeplimits','keepticks')
-% subplot(513); 
-%     hold on;
+% subplot(513); hold on;
 %     for k = 1:length(t_max)
 %         patch([t(max_ind(k)) t(max_ind(k)) t(end_ind(k)) t(end_ind(k))],[-1 1 1 -1].*min(dD),[.8 .8 .8],'EdgeColor','none')
 %     end
@@ -190,8 +353,7 @@ grid on
 %     ylim([min(dD) max(dD)])
 %     ylabel('\deltaD [permil]')
 %     datetick('x','HH:MM','keeplimits','keepticks')
-% subplot(514); 
-%     hold on;
+% subplot(514); hold on;
 %     for k = 1:length(t_max)
 %         patch([t(max_ind(k)) t(max_ind(k)) t(end_ind(k)) t(end_ind(k))],[-1 1 1 -1].*min(d18O),[.8 .8 .8],'EdgeColor','none')
 %     end
@@ -200,8 +362,7 @@ grid on
 %     ylim([min(d18O) max(d18O)])
 %     ylabel('\delta^1^8O [permil]')
 %     datetick('x','HH:MM','keeplimits','keepticks')
-% subplot(515); 
-%     hold on;
+% subplot(515); hold on;
 %     for k = 1:length(t_max)
 %         patch([t(max_ind(k)) t(max_ind(k)) t(end_ind(k)) t(end_ind(k))],[-1 1 1 -1].*min(DXS),[.8 .8 .8],'EdgeColor','none')
 %     end
@@ -212,6 +373,8 @@ grid on
 %     datetick('x','HH:MM','keeplimits','keepticks')
 % xlabel('Feb-09-2020')
 % set(findall(gcf,'-property','Fontsize'),'FontSize',14)
+
+
 
 %% cold pool matrices
 for k = 1:length(max_ind)
@@ -253,11 +416,11 @@ end
 % 'w' subscript for wake
 for k = 1:length(max_ind)
     dummy = t(min_ind(k):end_ind(k));
-    tcoldw(k,1:length(dummy)) = t(min_ind(k):end_ind(k));
-    qcoldw(k,1:length(dummy)) = qairf(min_ind(k):end_ind(k));
-    dDcoldw(k,1:length(dummy))= dD(min_ind(k):end_ind(k));
-   DXScoldw(k,1:length(dummy))= DXS(min_ind(k):end_ind(k));    
-  d18Ocoldw(k,1:length(dummy))= d18O(min_ind(k):end_ind(k));
+    tcoldw(   k,1:length(dummy)) = t(min_ind(k):end_ind(k));
+    qcoldw(   k,1:length(dummy)) = qairf(min_ind(k):end_ind(k));
+    dDcoldw(  k,1:length(dummy)) = dD(min_ind(k):end_ind(k));
+    DXScoldw( k,1:length(dummy)) = DXS(min_ind(k):end_ind(k));    
+    d18Ocoldw(k,1:length(dummy)) = d18O(min_ind(k):end_ind(k));
 end
 
 %% converting zeros in NaN's
