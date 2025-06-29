@@ -72,10 +72,10 @@ https://opensource.org/license/mit
 
 3. Links to publications related to the dataset:
 
-https://ir.library.oregonstate.edu/concern/datasets/br86bc57n
-https://essd.copernicus.org/articles/13/1759/2021/
-https://essd.copernicus.org/articles/15/465/2023/
-https://acp.copernicus.org/articles/23/12671/2023/
+https://ir.library.oregonstate.edu/concern/datasets/3x816w31b
+https://essd.copernicus.org/articles/13/1759/2021/				  NOAA Ron Brown ship data
+https://essd.copernicus.org/articles/15/465/2023/                                 EUREC4A-iso data
+https://essd.copernicus.org/articles/13/3281/2021/essd-13-3281-2021-assets.html   NOAA WP-3 aircraft data
 
 4. Links to other publicly accessible locations of the data:
 Related datasets landing page:
