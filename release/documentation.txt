@@ -111,13 +111,41 @@ DATA & FILE OVERVIEW
 File List
 
 documentation.txt               This file
-
 Project.toml                    List of required Julia packages.
-
 Figures 1-13 are organized in directories labeled f01 - f13.
-
 data/                           Data directory 
-The data directory should be symbolically linked into the figure directories.
+
+./data:
+
+NetCDF files:
+EUREC4A_ATOMIC_P3_Flight-Level_20200117_v1.1.nc                                  NOAA WP-3 aircraft ATOMIC data
+EUREC4A_ATOMIC_P3_Isotope-Analyzer_Water-Vapor-1Hz_20200117_v1.1.nc              EUREC4A-iso NOAA WP-3 aircraft ATOMIC isotope data
+EUREC4A_ATOMIC_RonBrown_10min_nav_met_sea_flux_20200109-20200212_v1.3.nc         NOAA PSL Ron Brown ship ATOMIC 10-min meteorological and flux data
+EUREC4A_ATOMIC_RonBrown_1min_nav_met_sea_20200109-20200212_v1.3.nc               NOAA PSL Ron Brown ship ATOMIC 1-min meteorological data
+EUREC4A_ATOMIC_RonBrown_Ceilometer_15s_20200109-20200212_v1.1.nc                 NOAA PSL ceilometer cloud base height data
+EUREC4A_ATOMIC_RonBrown_Isotope-Analyzer_1min_20200126-20200210_v1.0.nc          EUREC4A-iso NOAA Ron Brown isotope analyzer data
+EUREC4A_ATOMIC_RonBrown_Precipitation-Isotope-Ratios_20200105-20200212_v1.0.nc   EUREC4A-iso precipitation isotope ratios collected from NOAA Ron Brown
+G16V04.0.ATOMIC.2020039.1800.PX.02K.NC                                           GOES-16 satellite retrievals
+G16V04.0.ATOMIC.2020039.1820.PX.02K.NC                                           GOES-16 satellite retrievals
+G16V04.0.ATOMIC.2020041.1620.PX.02K.NC                                           GOES-16 satellite retrievals
+G16V04.0.ATOMIC.2020041.1640.PX.02K.NC                                           GOES-16 satellite retrievals
+cloud_module_iso_profiles.nc                                                     Cloud modlues meteorology and isotope profiles from the NOAA WP-3 gridded to constant height levels (Dean Henze)
+
+MAT files:
+1min_res_PSD_surface_variables_FLAGGED_w_runningmean.mat                         NOAA PSL 1-minute surface meteorology subset and filtered
+2nd_leg_sounding_data_10min_linear_interp.mat                                    radiosonde data for ATOMIC leg 2
+RHS_Eq9_MJ79_LIMITED.mat                                                         data for computing isotope ratio of evaporative flux according to Craig and Gordon (1965), using Merlivat and Jouzel (1979)
+cold_pool_detection_workspace_17.mat                                             detecting times of cold pools intermediately saved
+cold_pool_flag_1min.mat                                                          times and indices of cold pools
+cold_pool_flag_1min_UPDATED_for_iso_times.mat                                    times of cold pools indexed for the isotope data
+conserved_variables_10min&mixing_fractions.mat                                   10-minute conserved meteorological variables and mixture fractions intermediately saved
+conserved_variables_10minLIMITED.mat                                             10-minute conserved meteorological variables intermediately saved
+full_214_soundings_Level2_h&p_same_size.mat                                      radiosonde data
+full_214_soundings_Level2_h_p_same_size.mat                                      radiosonde data
+iso_data_1min_intervals_FLAGGED_w_runningmean.mat                                isotope data flagged for relative wind, 1-minute resolution
+mixing_fractions_vars.mat                                                        mixing fraction data
+mixing_fractions_vars_f12.mat                                                    mixing fraction data for Fig. 12
+workspace_17_cp_detection_algorithm_11min.mat                                    intermediate saved data
 
 ./f01:
 soundings_10min_interp_plots.m  Plots timeheight profiles.
@@ -147,7 +175,6 @@ cp2_fig3.pdf                    .
 cp2_fig3.png                    .
 cp2_fig3.svg                    .
 
-
 ./f04:
 q_dD_framework_cold_pools.m                     Plot the timeseries
 t_end_w_max_length.m                            Matlab dependency
@@ -165,139 +192,131 @@ plot_time_comp.m                Plot the composite time series of 14 cold pools
 ranking_14cold_pools_by_dD.m    Analysis dependency
 vert_axes_stack.m               Plotting function
 deps:
-    cbrewer2                Matlab colorbrewer colormap package.
-    colorspace              Depenency of cbrewer2.
+    cbrewer2                    Matlab colorbrewer colormap package.
+    colorspace                  Depenency of cbrewer2.
 
 ./f06:
-Project.toml                            Required Julia packages.
-RHB_GOES_fig_2coldpools.ipynb           Julia noteboor for plotting GOES images.
+Project.toml                    Required Julia packages.
+RHB_GOES_fig_2coldpools.ipynb   Julia noteboor for plotting GOES images.
 
 ./f07:
-table1_fig.eps
-table1_fig.pdf
-table1_fig.png
-table1_fig.svg
-table_14cold_pools_by_dD.m
+table_14cold_pools_by_dD.m      Scatter plots comparing variables across cold pool events
+table1_fig.eps                  Figure files
+table1_fig.pdf                  .
+table1_fig.png                  .
+table1_fig.svg                  .
 
 ./f08:
-rank14cp2.eps
-rank14cp2.pdf
-rank14cp2.png
-rank14cp2.svg
-ranking_14cold_pools_by_dD.m
-workspace_17_cp_detection_algorithm_11min.mat
+ranking_14cold_pools_by_dD.m    Color cold pool variables on composite time axes, ranked by strength
+rank14cp2.eps                   Figure files
+rank14cp2.pdf                   .
+rank14cp2.png                   .
+rank14cp2.svg                   .
 
 ./f09:
-adj_t.m
-air_types_iso.m
-con_prop_thq_ab.eps
-con_prop_thq_ab.pdf
-con_prop_thq_ab.png
-con_prop_thq_ab.svg
-conserved_variables_updated_sd.m
-height_adj.m
-qs.m
-th_q_to_mixfraction.m
+conserved_variables_updated_sd.m    Plot conserved properties theta vs. q
+adj_t.m                             Matlab analysis and plotting dependencies
+air_types_iso.m                     .
+height_adj.m                        .
+qs.m                                .
+th_q_to_mixfraction.m               .
+con_prop_thq_ab.eps                 Figure files
+con_prop_thq_ab.pdf                 .
+con_prop_thq_ab.png                 .
+con_prop_thq_ab.svg                 .
 
 ./f10:
-adj_t.m
-air_types.m
-air_types_iso.m
-colocate_in_time.m
-con_prop_dD_4panel.eps
-con_prop_dD_4panel.pdf
-con_prop_dD_4panel.png
-con_prop_dD_4panel.svg
-conserved_properties_for_isotopes.m
-conserved_properties_for_isotopes_4panel.m
-delta_E_eqm.m
-height_adj.m
-iso_estimates_from_centroid_approach.m
-psi_T.m
-th_q_to_mixfraction.m
+conserved_properties_for_isotopes_4panel.m      Theta-q and deuterium-q plots
+adj_t.m                                         Matlab analysis and plotting dependencies
+air_types.m                                     .
+air_types_iso.m                                 .
+colocate_in_time.m                              .
+conserved_properties_for_isotopes.m             .
+height_adj.m                                    .
+delta_E_eqm.m                                   .
+iso_estimates_from_centroid_approach.m          .
+psi_T.m                                         .
+th_q_to_mixfraction.m                           .
+con_prop_dD_4panel.eps                          Figure files
+con_prop_dD_4panel.pdf                          .
+con_prop_dD_4panel.png                          .
+con_prop_dD_4panel.svg                          .
 
 ./f11:
-adj_t.m
-air_types.m
-air_types_iso.m
-colocate_in_time.m
-conserved_properties_for_isotopes.m
-delta_E_eqm.m
-height_adj.m
-iso_estimates_from_centroid_approach.m
-lambda_mass_flux.m
-plot_q_dD.m
-plotlims.m
-plotqd.m
-psi_T.m
-th_q_to_mixfraction.m
+plot_q_dD.m                                     Make q-dD plots of Fig. 11
+adj_t.m                                         flux-gradient similarity adjustment for temperature
+air_types.m                                     compute source air properties
+air_types_iso.m                                 compute source air isotope properties
+colocate_in_time.m                              utility
+conserved_properties_for_isotopes.m             isotope conserved properties calculations
+delta_E_eqm.m                                   isotope concentration of ocean evaporation
+height_adj.m                                    adjust to different heights by flux-gradient similarity
+iso_estimates_from_centroid_approach.m          extrapolate entrainment end member
+lambda_mass_flux.m                              subcloud moisture residence time
+plotlims.m                                      plot utility
+plotqd.m                                        plot utility
+psi_T.m                                         universal stability function of T for flux-gradient similarity
+th_q_to_mixfraction.m                           compute meteorological mixing fractions
 
 ./f12:
-Rayleigh_curve_evap.m
-Rayleigh_liquid_evap.m
-b2rcolormap.m
-inset_plot.m
-mass_mixing.m
-mass_mixing_test.m
-mixing_fractions_iso_space_sd.m
-mixing_fractions_vars_f12.mat
-mixing_line_slope_yint.m
-mixture_fractions_iso.eps
-mixture_fractions_iso.pdf
-mixture_fractions_iso.png
-mixture_fractions_iso.svg
-q_dD_framework_cold_pools.m
-t_end_w_max_length.m
-x_y_to_mixfraction.m
+mixing_fractions_iso_space_sd.m                 Plot isotope mixing fractions for 2 strongest cold pool fronts and wakes
+Rayleigh_curve_evap.m                           Rayleigh evaporation for rain liquid
+Rayleigh_liquid_evap.m                          Rayleigh evaporation for rain liquid
+b2rcolormap.m                                   plot utility
+inset_plot.m                                    plot utility
+mass_mixing.m                                   mass mixing fractions of observations from 3 sources
+mass_mixing_test.m                              residual dependency
+mixing_line_slope_yint.m                        regression and slope of mixing line
+q_dD_framework_cold_pools.m                     compute sources, fractions from q and dD
+t_end_w_max_length.m                            plot utility
+x_y_to_mixfraction.m                            plot utility
+mixture_fractions_iso.eps                       Figure files
+mixture_fractions_iso.pdf                       .
+mixture_fractions_iso.png                       .
+mixture_fractions_iso.svg                       .
 
 ./f13:
-lambda_mass_flux.m
-plot_W_iso_ages.m
-regress_transform_cp.m
+plot_W_iso_ages.m                               Plot nondimensional timescales of wake recoveries
+lambda_mass_flux.m                              moisture residence timescale
+regress_transform_cp.m                          Compute regressions of mixing fractions from isotopes
 
 -----------------------------------------
 CODE-SPECIFIC INFORMATION: 
 -----------------------------------------
 
 1. Installation 
-We recommend installing juliaup or the Julia binaries from https://julialang.org/downloads/.
-
-We installed a Julia (v.1.10.4) 
-Jupyter kernel using IJulia (v.1.24.2).
-We ran Jupyter notebooks in Microsoft Visual Studio Code v.1.90.1
-with the Jupyter VSCode extension v2024.5.0.
+Code run and plots generated in Matlab R2023b.
+For Julia, we installed a Julia (v.1.11.5) using juliaup.
+We ran Jupyter notebooks in Microsoft Visual Studio Code v.1.101.2
+with the Jupyter VSCode extension prerelease version 2025.6.20250627.
 
 2. Requirements
-The calculations depend on Julia packages. 
-Specific packages installed are in `Project.toml`:
-
-DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
-ForwardDiff = "f6369f11-7733-5829-9624-2563aa707210"
-Interpolations = "a98d9a8b-a2ab-59e6-89dd-64a1c18fca59"
-Latexify = "23fbe1c1-3f47-55db-b15f-69d7ec21a316"
-NCDatasets = "85f8d34a-cbdd-5861-8df4-14fed0d494ab"
-Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
-Psychro = "9516f557-4a54-5a79-b954-c272e753c77a"
-PyPlot = "d330b81b-6aea-500a-939a-2ce795aea3ee"
-Revise = "295af30f-e4ad-537b-8983-00126c2a3abe"
-Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
-Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
-
-We recommend installing your own up-to-date set of the dependencies
-by default with the package manager. (This is what the authors do.)
-To do so, start Julia in the working directory and run the contents of
-`env.jl`. 
-The Julia package manager will then create a Julia environment
-satisfying the dependencies in the working directory.
+Specific Matlab dependencies are included in the release. 
+Julia dependencies are listed in `Project.toml` for each figure directory.
+The authors install the up-to-date set of the dependencies
+by default with the package manager (as of 2025-06-27).
+To do so, start Julia in the working directory, and do
+```
+using Pkg
+Pkg.activate(".")
+Pkg.resolve() # optional
+Pkg.instantiate()
+```
+The Julia package manager will install the dependencies in the Julia 
+environment in the working directory.
 
 3. Usage
 
-Open the Jupyter notebooks with `.ipynb` extensions.
-Adapt paths to your local environment. Use `.` for the 
-current working directory.
-If not already running, start a Julia kernel from the pulldown
-menu in the notebook.
-Run the cells in the .ipynb notebook in order.
+Link the `data` directory into each figure folder `f`xx.
+Navigate to the working directory `f`xx for each figure xx.
+
+Matlab m-file:
+Open and run the first m-file in Matlab.
+
+Julia notebook: 
+Open the Jupyter notebook listed above in the folder.
+Start/select a Julia kernel in the notebook.
+Run the cells in .ipynb notebooks in order.
 
 4. Support
 The authors extend no warantee or expectation of support, 
@@ -305,13 +324,13 @@ express or implied, for the contents of this package.
 
 5. Runtime requirements
 The code runs on a desktop. 
-Runtime requirements (Jupyter, Julia, and code dependencies) are listed above.
+Runtime requirements (Matlab, Jupyter, Julia, and code dependencies) are listed above.
 
 6. Contributing
 This ScholarsArchive repository is a snapshot. 
 A version-controlled working copy is maintained 
 in a private GitHub repository. 
-https://github.com/deszoeke/Rayleigh/tree/main/release
+https://github.com/deszoeke/ATOMIC-coldpools/tree/main/release
 Users interested in contributing to this project
 may contact the author for an invitation to access it.
 
