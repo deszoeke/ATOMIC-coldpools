@@ -1,0 +1,190 @@
+This documentation file was generated on 2024-06-24 by S.P. de Szoeke.
+
+
+-------------------
+# GENERAL INFORMATION
+-------------------
+
+
+1. Title of Dataset
+Shallow cumulus rain drop evaporation and isotope model notebooks
+
+2. Creator Information
+de Szoeke, Simon P.
+Professor
+Oregon State University
+College of Earth, Ocean, and Atmospheric Sciences
+Address: 104 CEOAS Admin Building, Oregon State University, Corvallis, OR 97331, USA
+Email: simon.deszoeke@oregonstate.edu
+ORCID: https://orcid.org/0000-0003-2017-473X
+
+Published by Oregon State University
+
+-------------------
+CONTEXTUAL INFORMATION
+-------------------
+
+1. Abstract for the dataset
+
+Matlab and Julia functions plot analyses of observations below
+shallow cumulus clouds, demonstrating the 
+meteorological, thermodynamic, and isotopic signals in 
+atmospheric cold pools observed at the surface in the
+2020 ATOMIC / EUREC4A-iso field campaign.
+Vapor evaporated from rain and ocean water is modeled.
+Water vapor in strong cold pools, associated with rain are enriched in heavy
+isotopes, suggesting evaporation of rain enriches air in evaporatively
+cooled downdrafts that generate them.
+
+
+2. Context of the research project that this dataset was collected for.
+
+The programs were written to analyze data from EUREC4A-iso,
+and to provide general meteorological, thermodynamic, and 
+physical insight on cloud and precipitation processes.
+
+3. Dates of data collection:
+2020-01-05 to 2020-04-29
+
+4. Geographic location of data collection:
+Northwestern tropical Atlantic Ocean	
+West: -85.1016
+East: -48.103
+South: 6.1679
+North: 18.5706
+
+5. Funding sources that supported the collection of the data:
+This work was supported by NSF award number 1937780
+NOAA award number NA19OAR4310375686, 
+and ONR award number N000142212042. This material is based upon
+work supported by the NSF grant no AGS-1938108.
+
+--------------------------
+SHARING/ACCESS INFORMATION
+-------------------------- 
+
+
+1. Licenses/restrictions placed on the software:
+The whole and all parts of this software are licensed under an MIT license.
+https://opensource.org/license/mit
+
+3. Links to publications related to the dataset:
+
+https://ir.library.oregonstate.edu/concern/datasets/br86bc57n
+https://essd.copernicus.org/articles/13/1759/2021/
+https://essd.copernicus.org/articles/15/465/2023/
+https://acp.copernicus.org/articles/23/12671/2023/
+
+4. Links to other publicly accessible locations of the data:
+Related datasets landing page:
+https://www.ncei.noaa.gov/access/metadata/landing-page/bin/iso?id=gov.noaa.nodc:ATOMIC-2020
+https://catalog.data.gov/dataset/atomic-ship-rain-sampler-rainwater-isotope-ratios-from-samples-taken-aboard-noaa-ship-ronald-h-
+
+5. Recommended citation for the data:
+de Szoeke, S.P. (2024) Code for open-science analysis and figures for "Evaporation in cold pools beneath trade cumulus clouds" [Data Set; Analysis Software]. Oregon State University.
+
+
+6. Dataset Digital Object Identifier (DOI)
+https://doi.org/
+
+7. Limitations to reuse
+Reuse permitted with citation.
+
+
+--------------------------
+VERSIONING AND PROVENANCE
+-------------------------- 
+Version: 0.1
+Last modification date: 2025-06-28
+
+
+--------------------------
+METHODOLOGICAL INFORMATION
+--------------------------
+
+Data and methods used are described in ESS Open Archive article:
+https://essopenarchive.org/
+
+---------------------
+DATA & FILE OVERVIEW
+---------------------
+File List
+
+documentation.txt               This file
+Figures 1-13 are organized in directories labeled f01 - f13.
+Necessary data are in the data directory. The data directory should be
+symbolically linked into the figure directories.
+
+env.jl                          Julia code for installing required packages.
+Project.toml                    List of requested packages installed.
+rain_samples.ipynb              Jupyter notebook for computing isotopes of rain sampels (Julia kernel).
+total_drop_evap_CaseEQ2.ipynb   Jupyter notebook for idealized sensitivity experiments.
+total_drop_evap_dsdwidth.ipynb  Jupyter notebook for cases CP and Sarkar23.
+
+
+-----------------------------------------
+CODE-SPECIFIC INFORMATION: 
+-----------------------------------------
+
+1. Installation 
+We recommend installing juliaup or the Julia binaries from https://julialang.org/downloads/.
+
+We installed a Julia (v.1.10.4) 
+Jupyter kernel using IJulia (v.1.24.2).
+We ran Jupyter notebooks in Microsoft Visual Studio Code v.1.90.1
+with the Jupyter VSCode extension v2024.5.0.
+
+2. Requirements
+The calculations depend on Julia packages. 
+Specific packages installed are in `Project.toml`:
+
+DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+ForwardDiff = "f6369f11-7733-5829-9624-2563aa707210"
+Interpolations = "a98d9a8b-a2ab-59e6-89dd-64a1c18fca59"
+Latexify = "23fbe1c1-3f47-55db-b15f-69d7ec21a316"
+NCDatasets = "85f8d34a-cbdd-5861-8df4-14fed0d494ab"
+Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
+Psychro = "9516f557-4a54-5a79-b954-c272e753c77a"
+PyPlot = "d330b81b-6aea-500a-939a-2ce795aea3ee"
+Revise = "295af30f-e4ad-537b-8983-00126c2a3abe"
+Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
+Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
+
+We recommend installing your own up-to-date set of the dependencies
+by default with the package manager. (This is what the authors do.)
+To do so, start Julia in the working directory and run the contents of
+`env.jl`. 
+The Julia package manager will then create a Julia environment
+satisfying the dependencies in the working directory.
+
+3. Usage
+
+Open the Jupyter notebooks with `.ipynb` extensions.
+Adapt paths to your local environment. Use `.` for the 
+current working directory.
+If not already running, start a Julia kernel from the pulldown
+menu in the notebook.
+Run the cells in the .ipynb notebook in order.
+
+4. Support
+The authors extend no warantee or expectation of support, 
+express or implied, for the contents of this package.
+
+5. Runtime requirements
+The code runs on a desktop. 
+Runtime requirements (Jupyter, Julia, and code dependencies) are listed above.
+
+6. Contributing
+This ScholarsArchive repository is a snapshot. 
+A version-controlled working copy is maintained 
+in a private GitHub repository. 
+https://github.com/deszoeke/Rayleigh/tree/main/release
+Users interested in contributing to this project
+may contact the author for an invitation to access it.
+
+-----------------------------------------
+HUMAN SUBJECT RESEARCH STUDY INFORMATION: 
+-----------------------------------------
+
+This study does not involve human subjects and was not evaluated by an 
+Institutional Review Board (IRB) or any other Ethics Committee.

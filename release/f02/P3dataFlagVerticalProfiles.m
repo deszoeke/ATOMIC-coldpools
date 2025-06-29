@@ -5,7 +5,6 @@
 adri_data = ncinfo('data/EUREC4A_ATOMIC_P3_Isotope-Analyzer_Water-Vapor-1Hz_20200117_v1.1.nc');
 p3_data = ncinfo('data/EUREC4A_ATOMIC_P3_Flight-Level_20200117_v1.1.nc');
 % Variables: Time dD d18O
-dean_flags = ncinfo('data/P3_with_vertlocflags_20200210.nc');
 % Variables: Time dD d18O qs thetaEs thetav RH Ta ws wd alt
 %% Separating profiles for each flight %%
 % date = ['0131'; '0203'; '0204'; '0205'; '0209'; '0210']; % dates that coincide with cold pools

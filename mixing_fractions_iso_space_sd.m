@@ -123,7 +123,7 @@ Yeval(i,1:11) = cloud_fit2;
 
 % Saving variables for calculating cold pool age estimates in a separate script
 % Script name: cold_pool_age_estimates.m
-save('mixing_fractions_vars.mat','mf_t_cp','mf_fee','mf_fen','mf_fss','mf_fee_bg','mf_fen_bg','mf_fss_bg','mf_dD_cp','slope','Xeval','Yeval');
+save('data/mixing_fractions_vars_f12.mat','mf_t_cp','mf_fee','mf_fen','mf_fss','mf_fee_bg','mf_fen_bg','mf_fss_bg','mf_dD_cp','slope','Xeval','Yeval');
 
 %% Calculating linear fit in mixing fraction space
     X = fw2(~isnan(fw2));
