@@ -81,7 +81,7 @@ https://www.ncei.noaa.gov/access/metadata/landing-page/bin/iso?id=gov.noaa.nodc:
 https://catalog.data.gov/dataset/atomic-ship-rain-sampler-rainwater-isotope-ratios-from-samples-taken-aboard-noaa-ship-ronald-h-
 
 5. Recommended citation for the data:
-de Szoeke, S.P. (2024) Code for open-science analysis and figures for "Evaporation in cold pools beneath trade cumulus clouds" [Data Set; Analysis Software]. Oregon State University.
+de Szoeke, S.P. (2025) Code for open-science analysis and figures for "Evaporation in cold pools beneath trade cumulus clouds" [Data Set; Analysis Software]. Oregon State University.
 
 
 6. Dataset Digital Object Identifier (DOI)
@@ -111,16 +111,149 @@ DATA & FILE OVERVIEW
 File List
 
 documentation.txt               This file
+
+Project.toml                    List of required Julia packages.
+
 Figures 1-13 are organized in directories labeled f01 - f13.
-Necessary data are in the data directory. The data directory should be
-symbolically linked into the figure directories.
 
-env.jl                          Julia code for installing required packages.
-Project.toml                    List of requested packages installed.
-rain_samples.ipynb              Jupyter notebook for computing isotopes of rain sampels (Julia kernel).
-total_drop_evap_CaseEQ2.ipynb   Jupyter notebook for idealized sensitivity experiments.
-total_drop_evap_dsdwidth.ipynb  Jupyter notebook for cases CP and Sarkar23.
+data/                           Data directory 
+The data directory should be symbolically linked into the figure directories.
 
+./f01:
+soundings_10min_interp_plots.m  Plots timeheight profiles.
+b2rcolormap.m                   Matlab colormap
+timeheight_q_thw_th.eps         Figure files
+timeheight_q_thw_th.pdf         .
+timeheight_q_thw_th.png         .
+timeheight_q_thw_th.svg         .
+
+./f02:
+P3_profiles.ipynb               Julia notebook plots P3 profiles
+VaporSat.jl                     Computes saturation specific humidity and wet-bulb temperature.
+Project.toml                    List of required Julia packages
+Manifest.toml                   Autoinstalled Julia dependencies
+P3dataFlagVerticalProfiles.m    Deprecated
+P3_profiles.eps                 Figure files
+P3_profiles.pdf                 .
+P3_profiles.png                 .
+P3_profiles.svg                 .
+
+./f03:
+cp2_feb10_eg_for_schmatic.m     Plot an example cold pool with timing labels.
+cold_pool_detection_algorithm_flagged_recovery.m 
+vert_axes_stack.m               Plotting function
+cp2_fig3.eps                    Figure files
+cp2_fig3.pdf                    .
+cp2_fig3.png                    .
+cp2_fig3.svg                    .
+
+
+./f04:
+q_dD_framework_cold_pools.m                     Plot the timeseries
+t_end_w_max_length.m                            Matlab dependency
+timeseries_Feb7-11_TqdDd18Odxs_Fig4.eps         Figure files
+timeseries_Feb7-11_TqdDd18Odxs_Fig4.pdf         .
+timeseries_Feb7-11_TqdDd18Odxs_Fig4.png         .
+timeseries_Feb7-11_TqdDd18Odxs_Fig4.svg         .
+timeseries_leg2_TqdDd18Odxs_Fig4.eps            .
+timeseries_leg2_TqdDd18Odxs_Fig4.pdf            .
+timeseries_leg2_TqdDd18Odxs_Fig4.png            .
+timeseries_leg2_TqdDd18Odxs_Fig4.svg            .
+
+./f05:
+plot_time_comp.m                Plot the composite time series of 14 cold pools
+ranking_14cold_pools_by_dD.m    Analysis dependency
+vert_axes_stack.m               Plotting function
+deps:
+    cbrewer2                Matlab colorbrewer colormap package.
+    colorspace              Depenency of cbrewer2.
+
+./f06:
+Project.toml                            Required Julia packages.
+RHB_GOES_fig_2coldpools.ipynb           Julia noteboor for plotting GOES images.
+
+./f07:
+table1_fig.eps
+table1_fig.pdf
+table1_fig.png
+table1_fig.svg
+table_14cold_pools_by_dD.m
+
+./f08:
+rank14cp2.eps
+rank14cp2.pdf
+rank14cp2.png
+rank14cp2.svg
+ranking_14cold_pools_by_dD.m
+workspace_17_cp_detection_algorithm_11min.mat
+
+./f09:
+adj_t.m
+air_types_iso.m
+con_prop_thq_ab.eps
+con_prop_thq_ab.pdf
+con_prop_thq_ab.png
+con_prop_thq_ab.svg
+conserved_variables_updated_sd.m
+height_adj.m
+qs.m
+th_q_to_mixfraction.m
+
+./f10:
+adj_t.m
+air_types.m
+air_types_iso.m
+colocate_in_time.m
+con_prop_dD_4panel.eps
+con_prop_dD_4panel.pdf
+con_prop_dD_4panel.png
+con_prop_dD_4panel.svg
+conserved_properties_for_isotopes.m
+conserved_properties_for_isotopes_4panel.m
+delta_E_eqm.m
+height_adj.m
+iso_estimates_from_centroid_approach.m
+psi_T.m
+th_q_to_mixfraction.m
+
+./f11:
+adj_t.m
+air_types.m
+air_types_iso.m
+colocate_in_time.m
+conserved_properties_for_isotopes.m
+delta_E_eqm.m
+height_adj.m
+iso_estimates_from_centroid_approach.m
+lambda_mass_flux.m
+plot_q_dD.m
+plotlims.m
+plotqd.m
+psi_T.m
+th_q_to_mixfraction.m
+
+./f12:
+Rayleigh_curve_evap.m
+Rayleigh_liquid_evap.m
+b2rcolormap.m
+inset_plot.m
+mass_mixing.m
+mass_mixing_test.m
+mixing_fractions_iso_space_sd.m
+mixing_fractions_vars_f12.mat
+mixing_line_slope_yint.m
+mixture_fractions_iso.eps
+mixture_fractions_iso.pdf
+mixture_fractions_iso.png
+mixture_fractions_iso.svg
+q_dD_framework_cold_pools.m
+t_end_w_max_length.m
+x_y_to_mixfraction.m
+
+./f13:
+lambda_mass_flux.m
+plot_W_iso_ages.m
+regress_transform_cp.m
 
 -----------------------------------------
 CODE-SPECIFIC INFORMATION: 
