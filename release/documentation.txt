@@ -12,8 +12,22 @@ Cold pools isotope analyses software
 2. Creator Information
 de Szoeke, Simon P.
 Professor
+Oregon State University
+College of Earth, Ocean, and Atmospheric Sciences
+Address: 104 CEOAS Admin Building, Oregon State University, Corvallis, OR 97331, USA
+Email: simon.deszoeke@oregonstate.edu
+ORCID: https://orcid.org/0000-0003-2017-473X
+
 Quiñones Meléndez, Estefanía
 PhD.
+Oregon State University
+College of Earth, Ocean, and Atmospheric Sciences
+Address: 104 CEOAS Admin Building, Oregon State University, Corvallis, OR 97331, USA
+ORCID: https://orcid.org/0000-0002-9496-5158
+
+3. Contact
+de Szoeke, Simon P.
+Professor
 Oregon State University
 College of Earth, Ocean, and Atmospheric Sciences
 Address: 104 CEOAS Admin Building, Oregon State University, Corvallis, OR 97331, USA
@@ -72,25 +86,33 @@ https://opensource.org/license/mit
 
 3. Links to publications related to the dataset:
 
-https://ir.library.oregonstate.edu/concern/datasets/3x816w31b
-https://essd.copernicus.org/articles/13/1759/2021/				  NOAA Ron Brown ship data
-https://essd.copernicus.org/articles/15/465/2023/                                 EUREC4A-iso data
-https://essd.copernicus.org/articles/13/3281/2021/essd-13-3281-2021-assets.html   NOAA WP-3 aircraft data
+NOAA Ron Brown ship data:
+Quinn, P. K., Thompson, E. J., Coffman, D. J., Baidar, S., Bariteau, L., Bates, T. S., Bigorre, S., Brewer, A., de Boer, G., de Szoeke, S. P., Drushka, K., Foltz, G. R., Intrieri, J., Iyer, S., Fairall, C. W., Gaston, C. J., Jansen, F., Johnson, J. E., Krüger, O. O., … Zuidema, P. (2021). Measurements from the RV Ronald H. Brown and related platforms as part of the Atlantic Tradewind Ocean-Atmosphere Mesoscale Interaction Campaign (ATOMIC). Earth System Science Data, 13(4), 1759–1790. https://doi.org/10.5194/essd-13-1759-2021
+
+
+EUREC4A-iso data:
+Bailey, A., Aemisegger, F., Villiger, L., Los, S. A., Reverdin, G., Quiñones Meléndez, E., Acquistapace, C., Baranowski, D. B., Böck, T., Bony, S., Bordsdorff, T., Coffman, D., de Szoeke, S. P., Diekmann, C. J., Dütsch, M., Ertl, B., Galewsky, J., Henze, D., Makuch, P., … Thompson, E. J. (2023). Isotopic measurements in water vapor, precipitation, and seawater during EUREC4A. Earth System Science Data, 15(1), 465–495. https://doi.org/10.5194/essd-15-465-2023
+
+
+NOAA WP-3 aircraft data:
+Pincus, R., Fairall, C. W., Bailey, A., Chen, H., Chuang, P. Y., de Boer, G., Feingold, G., Henze, D., Kalen, Q. T., Kazil, J., Leandro, M., Lundry, A., Moran, K., Naeher, D. A., Noone, D., Patel, A. J., Pezoa, S., PopStefanija, I., Thompson, E. J., … Zuidema, P. (2021). Observations from the NOAA P-3 aircraft during ATOMIC. Earth System Science Data, 13(7), 3281–3296. https://doi.org/10.5194/essd-13-3281-2021
+
 
 4. Links to other publicly accessible locations of the data:
 Related datasets landing page:
-https://www.ncei.noaa.gov/access/metadata/landing-page/bin/iso?id=gov.noaa.nodc:ATOMIC-2020
+
+NOAA Physical Sciences Laboratory (2020). The Atlantic Tradewind Ocean-Atmosphere Mesoscale Interaction Campaign (ATOMIC), Barbados, Jan 17 - Feb 12, 2020. NOAA National Centers for Environmental Information. Dataset. https://www.ncei.noaa.gov/archive/accession/ATOMIC-2020.
+
+Quiñones Meléndez, Estefanía; de Szoeke, Simon; Noone, David (2022). ATOMIC ship rain sampler : Rainwater isotope ratios from samples taken aboard NOAA Ship Ronald H. Brown in the North Atlantic Ocean, near Barbados: Atlantic Tradewind Ocean-Atmosphere Mesoscale Interaction Campaign 2020-01-05 to 2020-02-11 (NCEI Accession 0244402). [indicate subset used]. NOAA National Centers for Environmental Information. Dataset. https://doi.org/10.25921/bbje-6y41.
 https://catalog.data.gov/dataset/atomic-ship-rain-sampler-rainwater-isotope-ratios-from-samples-taken-aboard-noaa-ship-ronald-h-
 
 5. Recommended citation for the data:
-de Szoeke, S.P., Quiñones Meléndez, E (2025) Scientific analysis programs for figures for "Evaporation in cold pools beneath trade cumulus clouds" [Data Set; Analysis Software]. Oregon State University.
+de Szoeke, S.P., Quiñones Meléndez, E (2025) Scientific analysis programs for figures for "Evaporation in cold pools beneath trade cumulus clouds" [Data Set; Analysis Software]. Oregon State University. https://doi.org/10.7267/3x816w31b
 
 
 6. Dataset Digital Object Identifier (DOI)
-https://doi.org/
+https://doi.org/10.7267/3x816w31b
 
-7. Limitations to reuse
-Reuse permitted with citation.
 
 
 --------------------------
