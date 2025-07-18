@@ -172,6 +172,7 @@ subplot(325)
     set(gca,'TickDir','out'); % The only other option is 'in'
     xticks(1.5:1:18.5)
     xticklabels({'','13','','11','','9','','7','','5','','3','','1'})
+    xlabel('\delta{D} rank')
     box off
 % right column
 ax1 = subplot(322);
@@ -225,6 +226,7 @@ ax3 = subplot(326);
     set(gca,'TickDir','out'); % The only other option is 'in'
     xticks(1.5:1:18.5)
     xticklabels({'','13','','11','','9','','7','','5','','3','','1'})
+    xlabel('\delta{D} rank')
     box off
 
 % set figure settings
@@ -235,10 +237,10 @@ set(findall(gcf,'-property','TickLength'),'TickLength',[.02,.1])
 
 orient landscape
 
-% saveas(gcf, 'rank14cp2','epsc')
-% saveas(gcf, 'rank14cp2','svg')
-% saveas(gcf, 'rank14cp2','png')
-% saveas(gcf, 'rank14cp2','pdf')
+saveas(gcf, 'rank14cp2','epsc')
+saveas(gcf, 'rank14cp2','svg')
+saveas(gcf, 'rank14cp2','png')
+saveas(gcf, 'rank14cp2','pdf')
 
 
 %% plot comp_mean
