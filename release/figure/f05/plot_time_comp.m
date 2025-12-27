@@ -22,12 +22,19 @@
 % FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 % OTHER DEALINGS IN THE SOFTWARE.
 function plot_time_comp(ax, t_comp2, y, color)
-    me = mean(y, 'omitnan');
-    se = std(y, 'omitnan') / sqrt(size(y,1));
 
-    plot(ax, t_comp2, me, '-', 'linewidth',1.7, 'color',color);
+    % background mean for each event
+    bkm = @(T) mean(T(:,t_comp2<-19.7),2);
+    % standard deviation of background mean among events
+    sbk = @(T) std(bkm(T));
+
+    me = mean(y, 'omitnan');
+    % se = sqrt( std(y, 'omitnan').^2 - sbk(y)^2 ); % can be negative
+    se = std(y-bkm(y), 'omitnan');
+
+    plot(ax, t_comp2, me, '-', 'linewidth',1.4, 'color',color);
     hold(ax, 'on');
-    plot(ax, t_comp2, me + se, '-', 'linewidth',0.7, 'color',color);
-    plot(ax, t_comp2, me - se, '-', 'linewidth',0.7, 'color',color);
+    plot(ax, t_comp2, me + se, '-', 'linewidth',0.5, 'color',color);
+    plot(ax, t_comp2, me - se, '-', 'linewidth',0.5, 'color',color);
     plot(ax, t_comp2, median(y, 'omitnan'), '.', 'color',color);
 end
