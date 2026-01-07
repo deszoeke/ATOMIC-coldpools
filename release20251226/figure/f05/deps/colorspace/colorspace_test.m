@@ -21,24 +21,33 @@
 % WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
 % FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 % OTHER DEALINGS IN THE SOFTWARE.
-function ax = vert_axes_stack(n)
-% n = 6; % number of axes
+% Transform accuracy test
+% Test script for colorspace
 
-margins = 0.08; % top and bottom margins as fraction of figure
-gap = 0.02; % gap between axes
-height = (1 - 2 * margins - (n - 1) * gap) / n;
+% Pascal Getreuer 2006-2010
 
-for k = 1:n
-    bottom = 1 - margins - k * height - (k - 1) * gap;
-    ax(k) = axes('Position', [0.1, bottom, 0.8, height], 'fontsize',14);
-    
-    % Example plot for each axis
-    % plot(rand(10,1));
-    
-    % Optional: remove x-axis labels except bottom
-    if k < n
-        ax(k).XTickLabel = [];
-    end
+
+fprintf(['\nTransform accuracy test\n\n',...
+      'To verify the invertibility of the color transfomations, this test\n',...
+      'transforms sRGB data to a space, inverts, and compares with the\n',...
+      'original data.\n']);
+N = 1e5;            % Number of points to test
+A = rand(N,3);      % Generate points uniformly in the sRGB colorspace
+
+% Include pure black and pure white
+A(1,:) = 0;
+A(2,:) = 1;
+
+Space = {'YPbPr', 'YCbCr', 'JPEG-YCbCr', 'YDbDr', 'YIQ','YUV', 'HSV', ...
+      'HSL', 'HSI', 'XYZ', 'Lab', 'Luv', 'LCH', 'CAT02 LMS'};
+fprintf('\n Transform          RMSE Error   Max Error\n\n');
+
+for k = 1:length(Space)
+   B = colorspace([Space{k},'<-RGB'],A);  % Convert to Space{k}
+   R = colorspace(['RGB<-',Space{k}],B);  % Convert back to sRGB
+   RMSE = sqrt(mean((A(:) - R(:)).^2));
+   MaxError = max(abs(A(:) - R(:)));
+   fprintf(' RGB<->%-10s   %9.2e    %9.2e\n', Space{k}, RMSE, MaxError);
 end
 
-end
+fprintf('\n\n');

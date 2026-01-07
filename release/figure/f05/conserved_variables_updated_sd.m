@@ -60,7 +60,7 @@ q_en  = mean(q(h>=1100 & h<=1300 ,ind:end),'omitnan')*1e3; % check units for q_i
 th_en = mean(th(h>=1100 & h<=1300,ind:end),'omitnan');
     
 %% Air type: downdraft from mean cloud layer 
-% % q and theta @ mean theta_w (wet-bub potential temp) above 1km and below the trade inversion line (6g/kg contour) for each sounding
+% % q and theta @ mean theta_w (wet-bulb potential temp) above 1km and below the trade inversion line (6g/kg contour) for each sounding
     % Extracting trade inversion height (mixed layer depth)
 for k = 1:size(q,2)
     h6 = double(h(q(:,k)*1000<=6));

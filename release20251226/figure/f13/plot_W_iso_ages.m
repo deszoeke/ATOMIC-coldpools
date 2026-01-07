@@ -21,24 +21,47 @@
 % WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
 % FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 % OTHER DEALINGS IN THE SOFTWARE.
-function ax = vert_axes_stack(n)
-% n = 6; % number of axes
+% plot_W_iso_ages.m
 
-margins = 0.08; % top and bottom margins as fraction of figure
-gap = 0.02; % gap between axes
-height = (1 - 2 * margins - (n - 1) * gap) / n;
+lambda_mass_flux; % -> lambda_W
+regress_transform_cp;
 
-for k = 1:n
-    bottom = 1 - margins - k * height - (k - 1) * gap;
-    ax(k) = axes('Position', [0.1, bottom, 0.8, height], 'fontsize',14);
-    
-    % Example plot for each axis
-    % plot(rand(10,1));
-    
-    % Optional: remove x-axis labels except bottom
-    if k < n
-        ax(k).XTickLabel = [];
+rankdD_cronOrder = [7, 13, 10, 5, 3, 4, 1, 6, 8, 12, 14, 9, 11, 2];
+
+clf()
+subplot(1,1,1, 'fontsize',14)
+hold on
+j = 0; % chronological index
+n = zeros(14,1);
+for i = [2:11, 13:16]
+    j = j + 1;
+    tdd = t_age_vec{i}(1);
+    p = proj{i};
+    [~, imx] = max(p);
+    ii = imx:find(isfinite(p) & p>=0, 1, 'last');
+    % p(p < 0) = NaN;
+    x = -log( p(ii) );
+    y = lambda_W(i) * 60 * (tdd + (0:length(x)-1)');
+    n(j) = sum(isfinite(p(ii)));
+    if n(j)>1
+        plot(x,y, '.-', 'LineWidth',1.4, 'MarkerSize',7)
+    else
+        plot(x,y,'.')
     end
+    text(x(end)+0.1, y(end)+0.01, sprintf("%i", rankdD_cronOrder(j)), 'FontSize',12)
 end
+axis tight
+ylim([-0.02, 0.4])
+xlim([-0.4, 8])
+plot([-0.4, 8], [0, 0], 'k-', 'LineWidth',0.2)
+plot([0, 0], [-0.02, 0.4], 'k-', 'LineWidth',0.2)
+plot([0, 0.4],[0, 0.4], 'k--', 'LineWidth',0.2)
+xlabel({'nondimensional','isotope age -log(g''/g''_{dd})'})
+ylabel({'nondimensional','water vapor age \lambda_{W,SBL}(t-t_{dd})'})
+axis square
 
-end
+% saveas(gcf, 'W_iso_ages2.eps', 'epsc')
+% saveas(gcf, 'W_iso_ages2.svg')
+% saveas(gcf, 'W_iso_ages2.png')
+
+% CP 9 and 10 have no data

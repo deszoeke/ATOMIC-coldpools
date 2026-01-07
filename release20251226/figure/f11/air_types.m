@@ -21,24 +21,23 @@
 % WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
 % FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 % OTHER DEALINGS IN THE SOFTWARE.
-function ax = vert_axes_stack(n)
-% n = 6; % number of axes
+function [q_type,th_type] = air_types(q,theta,h,type,var1,var2,var3)
+Rd = 287.04;
+Cp = 1005.7;
 
-margins = 0.08; % top and bottom margins as fraction of figure
-gap = 0.02; % gap between axes
-height = (1 - 2 * margins - (n - 1) * gap) / n;
-
-for k = 1:n
-    bottom = 1 - margins - k * height - (k - 1) * gap;
-    ax(k) = axes('Position', [0.1, bottom, 0.8, height], 'fontsize',14);
-    
-    % Example plot for each axis
-    % plot(rand(10,1));
-    
-    % Optional: remove x-axis labels except bottom
-    if k < n
-        ax(k).XTickLabel = [];
-    end
-end
-
+switch type 
+    case 'surface'
+        % var2 must be in degrees C
+%         disp('surface')
+        SLP = var1; % [in hPa]
+        T = var2; % [in degrees C]
+        % addpath('C:\Users\quinones\Documents\Data\thermo')
+        q_type = qs(SLP*100,T)*1e3; % in g/kg; slp must be in Pa and T in degrees C
+        th_type = (T + 273.15).*(1e5./(SLP*1e2)).^(Rd/Cp); % (Potential Temp in degrees K)
+    case 'downdraft'
+        disp('dd')
+    case 'entrained'
+        disp('entrained')
+    otherwise 
+        disp('ERROR: invalid type entry')
 end

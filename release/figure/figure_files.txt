@@ -1,0 +1,9 @@
+coldpool_tir_0208_0210.eps
+table1_fig.eps
+composite_6panel_1col.eps
+rank14cp2.eps
+con_prop_thq_ab.eps
+con_prop_dD_4panel.eps
+q-dD_cps.eps
+mixture_fractions_iso.eps
+W_iso_ages2.eps

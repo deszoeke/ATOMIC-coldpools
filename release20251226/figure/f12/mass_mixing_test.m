@@ -21,24 +21,12 @@
 % WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
 % FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 % OTHER DEALINGS IN THE SOFTWARE.
-function ax = vert_axes_stack(n)
-% n = 6; % number of axes
-
-margins = 0.08; % top and bottom margins as fraction of figure
-gap = 0.02; % gap between axes
-height = (1 - 2 * margins - (n - 1) * gap) / n;
-
-for k = 1:n
-    bottom = 1 - margins - k * height - (k - 1) * gap;
-    ax(k) = axes('Position', [0.1, bottom, 0.8, height], 'fontsize',14);
-    
-    % Example plot for each axis
-    % plot(rand(10,1));
-    
-    % Optional: remove x-axis labels except bottom
-    if k < n
-        ax(k).XTickLabel = [];
-    end
-end
-
-end
+% Valid for 2-member mixing %
+function [fw1,fw2] = mass_mixing_test(ind,fev,fss,q_ev,q_surf)    
+    fa1 = fev(ind);
+    fa2 = fss(ind);
+    q1 = q_ev(ind);
+    q2 = q_surf(ind);
+    q = fa1.*q1 + fa2.*q2;
+    fw1 = (fa1.*q1)./q;
+    fw2 = (fa2.*q2)./q;

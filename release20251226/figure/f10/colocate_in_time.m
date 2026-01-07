@@ -21,24 +21,24 @@
 % WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
 % FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 % OTHER DEALINGS IN THE SOFTWARE.
-function ax = vert_axes_stack(n)
-% n = 6; % number of axes
-
-margins = 0.08; % top and bottom margins as fraction of figure
-gap = 0.02; % gap between axes
-height = (1 - 2 * margins - (n - 1) * gap) / n;
-
-for k = 1:n
-    bottom = 1 - margins - k * height - (k - 1) * gap;
-    ax(k) = axes('Position', [0.1, bottom, 0.8, height], 'fontsize',14);
+function [new_var,new_time] = colocate_in_time(filename,old_var)
+    % filename = 'EUREC4A_ATOMIC_RonBrown_1min_nav_met_sea_20200109-20200212_v1.3.nc';
+    time_T = ncread(filename,'time');
+    time_T = time_T/3600/24 + datenum('20200101','yyyymmdd');
+    % T_L = ncread(filename,'tskin'); % liquid temperature at [???]m [in degrees C]
+    % RH  = ncread(filename,'rhair')/100;
     
-    % Example plot for each axis
-    % plot(rand(10,1));
-    
-    % Optional: remove x-axis labels except bottom
-    if k < n
-        ax(k).XTickLabel = [];
+    % Co-locating RH & T_L variable in time %
+    load 'data/2nd_leg_sounding_data_10min_linear_interp.mat' t
+    pos_i = 999999*ones(size(t));
+    for l = 1:length(t)
+        pos2 = find(time_T>=t(l)); % rounding up to closest isotope surface data point!!!
+                                        % try rounding to nearest data point
+        pos_i(l) = pos2(1);
+        clearvars pos2
     end
-end
-
+    time_RH = time_T(pos_i);
+    % new_RH = RH(pos_i);
+    new_var  = old_var(pos_i);
+    new_time = time_RH;
 end

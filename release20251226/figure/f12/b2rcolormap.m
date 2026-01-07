@@ -21,24 +21,25 @@
 % WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
 % FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 % OTHER DEALINGS IN THE SOFTWARE.
-function ax = vert_axes_stack(n)
-% n = 6; % number of axes
+function cmap = b2rcolormap(clevs)
+% Sets the colormap to a high-contrast nonclashing
+% blue-red colormap. clevs is the array of contour levels, or the
+% scalar number of levels. (Usually, enter the length
+% of the colormap + 1.)
+%
+% Simon de Szoeke
+% 1 Dec 2005
+% Thanks to Todd Mitchell at JISAO for the blue colormap.
 
-margins = 0.08; % top and bottom margins as fraction of figure
-gap = 0.02; % gap between axes
-height = (1 - 2 * margins - (n - 1) * gap) / n;
+%clevs = 10:10:100; %set your own
 
-for k = 1:n
-    bottom = 1 - margins - k * height - (k - 1) * gap;
-    ax(k) = axes('Position', [0.1, bottom, 0.8, height], 'fontsize',14);
-    
-    % Example plot for each axis
-    % plot(rand(10,1));
-    
-    % Optional: remove x-axis labels except bottom
-    if k < n
-        ax(k).XTickLabel = [];
-    end
+if length(clevs)==1
+  ncols = round(clevs)-1;
+else
+  ncols = length(clevs)-1;
 end
-
-end
+b = [230 255 255; 160 240 255; 80 180 255; 30 110 250; 10 50 200; 10 50 120 ]/255; 
+r = fliplr(b);
+n = length(b)+length(r);
+cmap = interp2((1:3)',(0:n-1)/(n-1),[flipud(b); r],(1:3)',(0:ncols-1)/(ncols-1),'linear');
+colormap(cmap);

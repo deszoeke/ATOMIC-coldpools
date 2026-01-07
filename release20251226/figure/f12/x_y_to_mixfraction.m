@@ -21,24 +21,22 @@
 % WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
 % FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 % OTHER DEALINGS IN THE SOFTWARE.
-function ax = vert_axes_stack(n)
-% n = 6; % number of axes
+function [fen, fss, fdd] = x_y_to_mixfraction(yml,xml, yen,xen, yss,xss, ydd,xdd)
+% [fen, fss, fdd] = th_q_to_mixfraction(thml,qml, then,qen, thss,qss, thdd,qdd)
+% Diagnoses BL air as a 3-part mixture fen + fss + fdd = 1
+% of entrained air, air in equilibrium with the sea surface,
+% and saturated downdraft air.
+% The mixing fractions of these 3 end members are inverted algebraically
+% from observed thml, qml as in de Szoeke (2018).
+%
+% (c) 2020-08-19 Simon P. de Szoeke 
 
-margins = 0.08; % top and bottom margins as fraction of figure
-gap = 0.02; % gap between axes
-height = (1 - 2 * margins - (n - 1) * gap) / n;
+% xen(xen>30)=NaN;
+% solves algebraically for mixing fractions fen,fss,fdd at each time
+kay=(yss-ydd)./(xdd-xss);
+beta=ydd+kay.*xdd;
+gamma=yen+kay.*xen-beta;
+fen=(yml+kay.*xml-beta)./gamma;
+fss=(xml-xdd-(xen-xdd).*fen)./(xss-xdd);
+fdd=1-fen-fss;
 
-for k = 1:n
-    bottom = 1 - margins - k * height - (k - 1) * gap;
-    ax(k) = axes('Position', [0.1, bottom, 0.8, height], 'fontsize',14);
-    
-    % Example plot for each axis
-    % plot(rand(10,1));
-    
-    % Optional: remove x-axis labels except bottom
-    if k < n
-        ax(k).XTickLabel = [];
-    end
-end
-
-end

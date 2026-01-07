@@ -21,24 +21,29 @@
 % WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
 % FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 % OTHER DEALINGS IN THE SOFTWARE.
-function ax = vert_axes_stack(n)
-% n = 6; % number of axes
+function inset_plot(i,tcold,Taf,cp_matrix,qairf,dDf,rrf)
+    axes('Position',[.69 .55 .15 .15])
+    box on
+    plot(tcold(i,1:61),Taf(cp_matrix(i,1:61)),'.');
+    datetick('x','HH:MM','keeplimits','keepticks')
+    ylabel('Ta [C]')
+    title(['CP #',num2str(i),'; onset on ',datestr(tcold(i,1))])
+%     ylim([22.5 28])
 
-margins = 0.08; % top and bottom margins as fraction of figure
-gap = 0.02; % gap between axes
-height = (1 - 2 * margins - (n - 1) * gap) / n;
+    axes('Position',[.69 .35 .15 .15])
+    box on
+    plot(tcold(i,1:61),qairf(cp_matrix(i,1:61)),'.');
+    datetick('x','HH:MM','keeplimits','keepticks')
+    ylabel('q [g/kg]')
+%     ylim([11 18])
 
-for k = 1:n
-    bottom = 1 - margins - k * height - (k - 1) * gap;
-    ax(k) = axes('Position', [0.1, bottom, 0.8, height], 'fontsize',14);
-    
-    % Example plot for each axis
-    % plot(rand(10,1));
-    
-    % Optional: remove x-axis labels except bottom
-    if k < n
-        ax(k).XTickLabel = [];
-    end
-end
+    axes('Position',[.69 .15 .15 .15])
+    box on
+    plot(tcold(i,1:61),dDf(cp_matrix(i,1:61)),'.');
+    datetick('x','HH:MM','keeplimits','keepticks')
+    ylabel('\deltaD [permil]')
+    yyaxis right
+    plot(tcold(i,1:61),rrf(cp_matrix(i,1:61)),'.r')
+    ylabel('RR [mm/hr]')
 
-end
+%     ylim([-80 -64])

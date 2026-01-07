@@ -21,24 +21,16 @@
 % WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
 % FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 % OTHER DEALINGS IN THE SOFTWARE.
-function ax = vert_axes_stack(n)
-% n = 6; % number of axes
+function qsat = qs(p,T)
+%  qs(p,T) is saturation specific humidity based on Wexler's formula for es
+%   with enhancement factor (see es.m).
+%   p [Pa], T [degrees C], qs [kg/kg]
+%   From A. L. Buck 1981: JAM, 20, 1527-1532.
+%   SPdeS 7 July 2004
 
-margins = 0.08; % top and bottom margins as fraction of figure
-gap = 0.02; % gap between axes
-height = (1 - 2 * margins - (n - 1) * gap) / n;
+Rd    = 287.04;
+Rv    = 461.5;
+RdoRv = Rd / Rv;
 
-for k = 1:n
-    bottom = 1 - margins - k * height - (k - 1) * gap;
-    ax(k) = axes('Position', [0.1, bottom, 0.8, height], 'fontsize',14);
-    
-    % Example plot for each axis
-    % plot(rand(10,1));
-    
-    % Optional: remove x-axis labels except bottom
-    if k < n
-        ax(k).XTickLabel = [];
-    end
-end
-
-end
+esat = es(T, p);
+qsat = RdoRv*esat ./ (p + (RdoRv-1)*esat);

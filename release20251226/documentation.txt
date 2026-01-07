@@ -1,0 +1,366 @@
+This documentation file was generated on 2024-06-24 by S.P. de Szoeke.
+
+
+-------------------
+# GENERAL INFORMATION
+-------------------
+
+
+1. Title of Dataset
+Cold pools isotope analyses software
+
+2. Creator Information
+de Szoeke, Simon P.
+Professor
+Oregon State University
+College of Earth, Ocean, and Atmospheric Sciences
+Address: 104 CEOAS Admin Building, Oregon State University, Corvallis, OR 97331, USA
+Email: simon.deszoeke@oregonstate.edu
+ORCID: https://orcid.org/0000-0003-2017-473X
+
+Quiñones Meléndez, Estefanía
+PhD.
+Oregon State University
+College of Earth, Ocean, and Atmospheric Sciences
+Address: 104 CEOAS Admin Building, Oregon State University, Corvallis, OR 97331, USA
+ORCID: https://orcid.org/0000-0002-9496-5158
+
+3. Contact
+de Szoeke, Simon P.
+Professor
+Oregon State University
+College of Earth, Ocean, and Atmospheric Sciences
+Address: 104 CEOAS Admin Building, Oregon State University, Corvallis, OR 97331, USA
+Email: simon.deszoeke@oregonstate.edu
+ORCID: https://orcid.org/0000-0003-2017-473X
+
+Published by Oregon State University
+
+-------------------
+CONTEXTUAL INFORMATION
+-------------------
+
+1. Abstract for the dataset
+
+Matlab and Julia functions plot analyses of observations below
+shallow cumulus clouds, demonstrating the 
+meteorological, thermodynamic, and isotopic signals in 
+atmospheric cold pools observed at the surface in the
+2020 ATOMIC / EUREC4A-iso field campaign.
+Vapor evaporated from rain and ocean water is modeled.
+Water vapor in strong cold pools, associated with rain are enriched in heavy
+isotopes, suggesting evaporation of rain enriches air in evaporatively
+cooled downdrafts that generate them.
+
+
+2. Context of the research project that this dataset was collected for.
+
+The programs were written to analyze data from EUREC4A-iso,
+and to provide general meteorological, thermodynamic, and 
+physical insight on cloud and precipitation processes.
+
+3. Dates of data collection:
+2020-01-05 to 2020-04-29
+
+4. Geographic location of data collection:
+Northwestern tropical Atlantic Ocean	
+West: -85.1016
+East: -48.103
+South: 6.1679
+North: 18.5706
+
+5. Funding sources that supported the collection of the data:
+This work was supported by NSF award number 1937780
+NOAA award number NA19OAR4310375686, 
+and ONR award number N000142212042. This material is based upon
+work supported by the NSF grant no AGS-1938108.
+
+--------------------------
+SHARING/ACCESS INFORMATION
+-------------------------- 
+
+
+1. Licenses/restrictions placed on the software:
+The whole and all parts of this software are licensed under an MIT license.
+https://opensource.org/license/mit
+
+3. Links to publications related to the dataset:
+
+NOAA Ron Brown ship data:
+Quinn, P. K., Thompson, E. J., Coffman, D. J., Baidar, S., Bariteau, L., Bates, T. S., Bigorre, S., Brewer, A., de Boer, G., de Szoeke, S. P., Drushka, K., Foltz, G. R., Intrieri, J., Iyer, S., Fairall, C. W., Gaston, C. J., Jansen, F., Johnson, J. E., Krüger, O. O., … Zuidema, P. (2021). Measurements from the RV Ronald H. Brown and related platforms as part of the Atlantic Tradewind Ocean-Atmosphere Mesoscale Interaction Campaign (ATOMIC). Earth System Science Data, 13(4), 1759–1790. https://doi.org/10.5194/essd-13-1759-2021
+
+
+EUREC4A-iso data:
+Bailey, A., Aemisegger, F., Villiger, L., Los, S. A., Reverdin, G., Quiñones Meléndez, E., Acquistapace, C., Baranowski, D. B., Böck, T., Bony, S., Bordsdorff, T., Coffman, D., de Szoeke, S. P., Diekmann, C. J., Dütsch, M., Ertl, B., Galewsky, J., Henze, D., Makuch, P., … Thompson, E. J. (2023). Isotopic measurements in water vapor, precipitation, and seawater during EUREC4A. Earth System Science Data, 15(1), 465–495. https://doi.org/10.5194/essd-15-465-2023
+
+
+NOAA WP-3 aircraft data:
+Pincus, R., Fairall, C. W., Bailey, A., Chen, H., Chuang, P. Y., de Boer, G., Feingold, G., Henze, D., Kalen, Q. T., Kazil, J., Leandro, M., Lundry, A., Moran, K., Naeher, D. A., Noone, D., Patel, A. J., Pezoa, S., PopStefanija, I., Thompson, E. J., … Zuidema, P. (2021). Observations from the NOAA P-3 aircraft during ATOMIC. Earth System Science Data, 13(7), 3281–3296. https://doi.org/10.5194/essd-13-3281-2021
+
+
+4. Links to other publicly accessible locations of the data:
+Related datasets landing page:
+
+NOAA Physical Sciences Laboratory (2020). The Atlantic Tradewind Ocean-Atmosphere Mesoscale Interaction Campaign (ATOMIC), Barbados, Jan 17 - Feb 12, 2020. NOAA National Centers for Environmental Information. Dataset. https://www.ncei.noaa.gov/archive/accession/ATOMIC-2020.
+
+Quiñones Meléndez, Estefanía; de Szoeke, Simon; Noone, David (2022). ATOMIC ship rain sampler : Rainwater isotope ratios from samples taken aboard NOAA Ship Ronald H. Brown in the North Atlantic Ocean, near Barbados: Atlantic Tradewind Ocean-Atmosphere Mesoscale Interaction Campaign 2020-01-05 to 2020-02-11 (NCEI Accession 0244402). [indicate subset used]. NOAA National Centers for Environmental Information. Dataset. https://doi.org/10.25921/bbje-6y41.
+https://catalog.data.gov/dataset/atomic-ship-rain-sampler-rainwater-isotope-ratios-from-samples-taken-aboard-noaa-ship-ronald-h-
+
+5. Recommended citation for the data:
+de Szoeke, S.P., Quiñones Meléndez, E (2025) Scientific analysis programs for figures for "Evaporation in cold pools beneath trade cumulus clouds" [Data Set; Analysis Software]. Oregon State University. https://doi.org/10.7267/3x816w31b
+
+
+6. Dataset Digital Object Identifier (DOI)
+https://doi.org/10.7267/3x816w31b
+
+
+
+--------------------------
+VERSIONING AND PROVENANCE
+-------------------------- 
+Version: 0.1
+Last modification date: 2025-06-28
+
+
+--------------------------
+METHODOLOGICAL INFORMATION
+--------------------------
+
+Data and methods used are described in ESS Open Archive article:
+https://essopenarchive.org/ TBA
+
+---------------------
+DATA & FILE OVERVIEW
+---------------------
+File List
+
+documentation.txt               This file
+Project.toml                    List of required Julia packages.
+Figures 1-13 are organized in directories labeled f01 - f13.
+data/                           Data directory 
+
+./data:
+
+NetCDF files:
+EUREC4A_ATOMIC_P3_Flight-Level_20200117_v1.1.nc                                  NOAA WP-3 aircraft ATOMIC data
+EUREC4A_ATOMIC_P3_Isotope-Analyzer_Water-Vapor-1Hz_20200117_v1.1.nc              EUREC4A-iso NOAA WP-3 aircraft ATOMIC isotope data
+EUREC4A_ATOMIC_RonBrown_10min_nav_met_sea_flux_20200109-20200212_v1.3.nc         NOAA PSL Ron Brown ship ATOMIC 10-min meteorological and flux data
+EUREC4A_ATOMIC_RonBrown_1min_nav_met_sea_20200109-20200212_v1.3.nc               NOAA PSL Ron Brown ship ATOMIC 1-min meteorological data
+EUREC4A_ATOMIC_RonBrown_Ceilometer_15s_20200109-20200212_v1.1.nc                 NOAA PSL ceilometer cloud base height data
+EUREC4A_ATOMIC_RonBrown_Isotope-Analyzer_1min_20200126-20200210_v1.0.nc          EUREC4A-iso NOAA Ron Brown isotope analyzer data
+EUREC4A_ATOMIC_RonBrown_Precipitation-Isotope-Ratios_20200105-20200212_v1.0.nc   EUREC4A-iso precipitation isotope ratios collected from NOAA Ron Brown
+G16V04.0.ATOMIC.2020039.1800.PX.02K.NC                                           GOES-16 satellite retrievals
+G16V04.0.ATOMIC.2020039.1820.PX.02K.NC                                           GOES-16 satellite retrievals
+G16V04.0.ATOMIC.2020041.1620.PX.02K.NC                                           GOES-16 satellite retrievals
+G16V04.0.ATOMIC.2020041.1640.PX.02K.NC                                           GOES-16 satellite retrievals
+cloud_module_iso_profiles.nc                                                     Cloud modlues meteorology and isotope profiles from the NOAA WP-3 gridded to constant height levels (Dean Henze)
+
+MAT files:
+1min_res_PSD_surface_variables_FLAGGED_w_runningmean.mat                         NOAA PSL 1-minute surface meteorology subset and filtered
+2nd_leg_sounding_data_10min_linear_interp.mat                                    radiosonde data for ATOMIC leg 2
+RHS_Eq9_MJ79_LIMITED.mat                                                         data for computing isotope ratio of evaporative flux according to Craig and Gordon (1965), using Merlivat and Jouzel (1979)
+cold_pool_detection_workspace_17.mat                                             detecting times of cold pools intermediately saved
+cold_pool_flag_1min.mat                                                          times and indices of cold pools
+cold_pool_flag_1min_UPDATED_for_iso_times.mat                                    times of cold pools indexed for the isotope data
+conserved_variables_10min&mixing_fractions.mat                                   10-minute conserved meteorological variables and mixture fractions intermediately saved
+conserved_variables_10minLIMITED.mat                                             10-minute conserved meteorological variables intermediately saved
+full_214_soundings_Level2_h&p_same_size.mat                                      radiosonde data
+full_214_soundings_Level2_h_p_same_size.mat                                      radiosonde data
+iso_data_1min_intervals_FLAGGED_w_runningmean.mat                                isotope data flagged for relative wind, 1-minute resolution
+mixing_fractions_vars.mat                                                        mixing fraction data
+mixing_fractions_vars_f12.mat                                                    mixing fraction data for Fig. 12
+workspace_17_cp_detection_algorithm_11min.mat                                    intermediate saved data
+
+./f01:
+soundings_10min_interp_plots.m  Plots timeheight profiles.
+b2rcolormap.m                   Matlab colormap
+timeheight_q_thw_th.eps         Figure files
+timeheight_q_thw_th.pdf         .
+timeheight_q_thw_th.png         .
+timeheight_q_thw_th.svg         .
+
+./f02:
+P3_profiles.ipynb               Julia notebook plots P3 profiles
+VaporSat.jl                     Computes saturation specific humidity and wet-bulb temperature.
+Project.toml                    List of required Julia packages
+Manifest.toml                   Autoinstalled Julia dependencies
+P3dataFlagVerticalProfiles.m    Deprecated
+P3_profiles.eps                 Figure files
+P3_profiles.pdf                 .
+P3_profiles.png                 .
+P3_profiles.svg                 .
+
+./f03:
+cp2_feb10_eg_for_schmatic.m     Plot an example cold pool with timing labels.
+cold_pool_detection_algorithm_flagged_recovery.m 
+vert_axes_stack.m               Plotting function
+cp2_fig3.eps                    Figure files
+cp2_fig3.pdf                    .
+cp2_fig3.png                    .
+cp2_fig3.svg                    .
+
+./f04:
+q_dD_framework_cold_pools.m                     Plot the timeseries
+t_end_w_max_length.m                            Matlab dependency
+timeseries_Feb7-11_TqdDd18Odxs_Fig4.eps         Figure files
+timeseries_Feb7-11_TqdDd18Odxs_Fig4.pdf         .
+timeseries_Feb7-11_TqdDd18Odxs_Fig4.png         .
+timeseries_Feb7-11_TqdDd18Odxs_Fig4.svg         .
+timeseries_leg2_TqdDd18Odxs_Fig4.eps            .
+timeseries_leg2_TqdDd18Odxs_Fig4.pdf            .
+timeseries_leg2_TqdDd18Odxs_Fig4.png            .
+timeseries_leg2_TqdDd18Odxs_Fig4.svg            .
+
+./f05:
+plot_time_comp.m                Plot the composite time series of 14 cold pools
+ranking_14cold_pools_by_dD.m    Analysis dependency
+vert_axes_stack.m               Plotting function
+deps:
+    cbrewer2                    Matlab colorbrewer colormap package.
+    colorspace                  Depenency of cbrewer2.
+
+./f06:
+Project.toml                    Required Julia packages.
+RHB_GOES_fig_2coldpools.ipynb   Julia noteboor for plotting GOES images.
+
+./f07:
+table_14cold_pools_by_dD.m      Scatter plots comparing variables across cold pool events
+table1_fig.eps                  Figure files
+table1_fig.pdf                  .
+table1_fig.png                  .
+table1_fig.svg                  .
+
+./f08:
+ranking_14cold_pools_by_dD.m    Color cold pool variables on composite time axes, ranked by strength
+rank14cp2.eps                   Figure files
+rank14cp2.pdf                   .
+rank14cp2.png                   .
+rank14cp2.svg                   .
+
+./f09:
+conserved_variables_updated_sd.m    Plot conserved properties theta vs. q
+adj_t.m                             Matlab analysis and plotting dependencies
+air_types_iso.m                     .
+height_adj.m                        .
+qs.m                                .
+th_q_to_mixfraction.m               .
+con_prop_thq_ab.eps                 Figure files
+con_prop_thq_ab.pdf                 .
+con_prop_thq_ab.png                 .
+con_prop_thq_ab.svg                 .
+
+./f10:
+conserved_properties_for_isotopes_4panel.m      Theta-q and deuterium-q plots
+adj_t.m                                         Matlab analysis and plotting dependencies
+air_types.m                                     .
+air_types_iso.m                                 .
+colocate_in_time.m                              .
+conserved_properties_for_isotopes.m             .
+height_adj.m                                    .
+delta_E_eqm.m                                   .
+iso_estimates_from_centroid_approach.m          .
+psi_T.m                                         .
+th_q_to_mixfraction.m                           .
+con_prop_dD_4panel.eps                          Figure files
+con_prop_dD_4panel.pdf                          .
+con_prop_dD_4panel.png                          .
+con_prop_dD_4panel.svg                          .
+
+./f11:
+plot_q_dD.m                                     Make q-dD plots of Fig. 11
+adj_t.m                                         flux-gradient similarity adjustment for temperature
+air_types.m                                     compute source air properties
+air_types_iso.m                                 compute source air isotope properties
+colocate_in_time.m                              utility
+conserved_properties_for_isotopes.m             isotope conserved properties calculations
+delta_E_eqm.m                                   isotope concentration of ocean evaporation
+height_adj.m                                    adjust to different heights by flux-gradient similarity
+iso_estimates_from_centroid_approach.m          extrapolate entrainment end member
+lambda_mass_flux.m                              subcloud moisture residence time
+plotlims.m                                      plot utility
+plotqd.m                                        plot utility
+psi_T.m                                         universal stability function of T for flux-gradient similarity
+th_q_to_mixfraction.m                           compute meteorological mixing fractions
+
+./f12:
+mixing_fractions_iso_space_sd.m                 Plot isotope mixing fractions for 2 strongest cold pool fronts and wakes
+Rayleigh_curve_evap.m                           Rayleigh evaporation for rain liquid
+Rayleigh_liquid_evap.m                          Rayleigh evaporation for rain liquid
+b2rcolormap.m                                   plot utility
+inset_plot.m                                    plot utility
+mass_mixing.m                                   mass mixing fractions of observations from 3 sources
+mass_mixing_test.m                              residual dependency
+mixing_line_slope_yint.m                        regression and slope of mixing line
+q_dD_framework_cold_pools.m                     compute sources, fractions from q and dD
+t_end_w_max_length.m                            plot utility
+x_y_to_mixfraction.m                            plot utility
+mixture_fractions_iso.eps                       Figure files
+mixture_fractions_iso.pdf                       .
+mixture_fractions_iso.png                       .
+mixture_fractions_iso.svg                       .
+
+./f13:
+plot_W_iso_ages.m                               Plot nondimensional timescales of wake recoveries
+lambda_mass_flux.m                              moisture residence timescale
+regress_transform_cp.m                          Compute regressions of mixing fractions from isotopes
+
+-----------------------------------------
+CODE-SPECIFIC INFORMATION: 
+-----------------------------------------
+
+1. Installation 
+Code run and plots generated in Matlab R2023b.
+For Julia, we installed a Julia (v.1.11.5) using juliaup.
+We ran Jupyter notebooks in Microsoft Visual Studio Code v.1.101.2
+with the Jupyter VSCode extension prerelease version 2025.6.20250627.
+
+2. Requirements
+Specific Matlab dependencies are included in the release. 
+Julia dependencies are listed in `Project.toml` for each figure directory.
+The authors install the up-to-date set of the dependencies
+by default with the package manager (as of 2025-06-27).
+To do so, start Julia in the working directory, and do
+```
+using Pkg
+Pkg.activate(".")
+Pkg.resolve() # optional
+Pkg.instantiate()
+```
+The Julia package manager will install the dependencies in the Julia 
+environment in the working directory.
+
+3. Usage
+
+Link the `data` directory into each figure folder `f`xx.
+Navigate to the working directory `f`xx for each figure xx.
+
+Matlab m-file:
+Open and run the first m-file in Matlab.
+
+Julia notebook: 
+Open the Jupyter notebook listed above in the folder.
+Start/select a Julia kernel in the notebook.
+Run the cells in .ipynb notebooks in order.
+
+4. Support
+The authors extend no warantee or expectation of support, 
+express or implied, for the contents of this package.
+
+5. Runtime requirements
+The code runs on a desktop. 
+Runtime requirements (Matlab, Jupyter, Julia, and code dependencies) are listed above.
+
+6. Contributing
+This ScholarsArchive repository is a snapshot. 
+A version-controlled working copy is maintained 
+in a private GitHub repository. 
+https://github.com/deszoeke/ATOMIC-coldpools/tree/main/release
+Users interested in contributing to this project
+may contact the author for an invitation to access it.
+
+-----------------------------------------
+HUMAN SUBJECT RESEARCH STUDY INFORMATION: 
+-----------------------------------------
+
+This study does not involve human subjects and was not evaluated by an 
+Institutional Review Board (IRB) or any other Ethics Committee.

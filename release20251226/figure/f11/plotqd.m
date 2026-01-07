@@ -21,24 +21,20 @@
 % WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
 % FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
 % OTHER DEALINGS IN THE SOFTWARE.
-function ax = vert_axes_stack(n)
-% n = 6; % number of axes
+function plotqd(q_surf_b, qi_surf, q_ent_b, qi_ent, n)
+% plotqd(q0,qi0, q1,qi1, n)
+% q - deltaD plot mixing line between end members 0,1.
 
-margins = 0.08; % top and bottom margins as fraction of figure
-gap = 0.02; % gap between axes
-height = (1 - 2 * margins - (n - 1) * gap) / n;
+    Rvsmow = 155.76e-6; % unitless, deuterium
 
-for k = 1:n
-    bottom = 1 - margins - k * height - (k - 1) * gap;
-    ax(k) = axes('Position', [0.1, bottom, 0.8, height], 'fontsize',14);
+    % isotope plotting helper functions
+    delta = @(qi,q) qi./(Rvsmow*q) - 1;
+    mixt = @(q1,q2,n) q1:(q2-q1)/n:q2;
+
+    qx = mixt(q_ent_b,q_surf_b,20);
+    dy = 1e3*delta( mixt(qi_ent,qi_surf, n), mixt(q_ent_b,q_surf_b, n) );
     
-    % Example plot for each axis
-    % plot(rand(10,1));
-    
-    % Optional: remove x-axis labels except bottom
-    if k < n
-        ax(k).XTickLabel = [];
-    end
-end
-
+    plot( qx, dy, 'k-')
+    plot( qx(1), dy(1), 'ko', 'MarkerEdgeColor','k', 'MarkerFaceColor','k') % entrainment
+    plot( qx(end), dy(end), 'ko', 'MarkerEdgeColor','k', 'MarkerFaceColor',1+[0, 0, 0]) % surface
 end
