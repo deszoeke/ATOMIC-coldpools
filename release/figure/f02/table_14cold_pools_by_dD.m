@@ -127,7 +127,7 @@ plot(DiffT(subset), DiffdD(subset), '.', 'markersize',10, 'linestyle','none')
 r = corrcoef(DiffT(subset), DiffdD(subset));
 text(0.2, 5.5, sprintf('R^2=%0.2f',r(2,1)^2));
 xlim([0,4])
-ylim([0,7])
+ylim([-0.1,7])
 ylabel('{\delta}D(t_{min})-{\delta}D(t_0) [10^{-3}]') %, {\delta}D_{max}-{\delta}D(t_0)')
 xlabel('-(T_{min} - T_0) [°C]')
 text(-2.4, 7, 'a')
@@ -138,9 +138,9 @@ plot(DiffT(subset), Diffq(subset), '.', 'markersize',10, 'linestyle','none')
 % hold on
 % plot(DiffT(subset), qmax(subset)-q0(subset)', '.', 'markersize',10, 'linestyle','none')
 r = corrcoef(DiffT(subset), Diffq(subset));
-text(0.2, 1.2, sprintf('R^2=%0.2f',r(2,1)^2));
+text(1.6, -0.2, sprintf('R^2=%0.2f',r(2,1)^2));
 xlim([0,4])
-ylim([0,2])
+ylim([-0.5,2])
 ylabel('q(t_{min})-q(t_0) [g/kg]') %, q_{max}-q(t_0)')
 xlabel('-(T_{min} - T_0) [°C]')
 text(-2.4, 2, 'b')
@@ -158,10 +158,10 @@ xlabel('-(T_{min} - T_0) [°C]')
 text(-2.4, 1, 'c')
 axis square
 
-% saveas(gcf, 'table1_fig.eps')
-% saveas(gcf, 'table1_fig.png')
-% saveas(gcf, 'table1_fig.pdf')
-% saveas(gcf, 'table1_fig.svg')
+saveas(gcf, 'table1_fig.eps')
+saveas(gcf, 'table1_fig.png')
+saveas(gcf, 'table1_fig.pdf')
+saveas(gcf, 'table1_fig.svg')
 
 % effectively reads max, cumulatives off Fig 7
 maxdD   = max(  dD_comp2_sort(subset, -25<t_comp2<45), [], 2);
