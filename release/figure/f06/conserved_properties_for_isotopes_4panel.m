@@ -24,7 +24,7 @@
 % conserved_properties_for_isotopes.m
 %
 % Applying the extrapolation and mixing fraction analysis to RHB data in
-% order to obtain isotope concentrations for entrained and downdraft end members
+% order to obtain isotope concentrations for entrained and hydrometeor downdraft end members
 % EQM Last modified: Nov 16 2022
 % SPdeS tweaked some paths 2025-06-05
 
@@ -101,7 +101,7 @@ for k = 1:length(h_hi)
      de_ent(k,:) = dD_ent(k,:) - (8*d18O_ent(k,:)); % deuterium excess
 end
 2+2;
-%% Air type: downdraft %%
+%% Air type: hydrometeor %%
 % from mean cloud layer
 % q and theta @ mean theta_w (wet-bub potential temp) above 1km and below the trade inversion line (6g/kg contour) for each sounding
 % Extracting trade inversion height (mixed layer depth)
@@ -125,7 +125,7 @@ for k = 1:size(thw,2)
     end
 end
 q_dd = qs(1e3*1e2,th_dd-273.15)*1e3; % q_d in g/kg    
-%% Isotope data for downdraft end member %%
+%% Isotope data for hydrometeor end member %%
 % Isotope concentrations calculated based on the mixing fractions obtained from soundings
 for k = 1:length(h_hi)
     [fen(k,:), fss(k,:), fdd(k,:)] = th_q_to_mixfraction(th_ob,q_ob, th_ent(k,:),q_ent(k,:), th_surf,q_surf, th_dd,q_dd);
@@ -161,6 +161,7 @@ figure;
 clf(); hold on
 
 %% Plots in theta-q space %%
+k=1;
 for ipanel = 1:2
     ax(ipanel) = subplot(2,2,ipanel, 'align', 'fontsize',18); hold on;
     flag = mod(ipanel,2); % cold pool plot
@@ -175,6 +176,9 @@ for ipanel = 1:2
 
     plot(th_ob(iso_cold_pool_flag==flag),q_ob(iso_cold_pool_flag==flag),'sk','MarkerSize',4)
     hold on;
+    scatter(th_ent(k,ii),q_ent(k,ii),10,[0.8500 0.3250 0.0980],'filled')
+    scatter(th_surf(ii),q_surf(ii),10,[0.9290 0.6940 0.1250],'filled')
+    scatter(th_dd(ii),q_dd(ii),10,[0 0.4470 0.7410],'filled')
     scatter(th_ob(iso_cold_pool_flag==flag),q_ob(iso_cold_pool_flag==flag),13,dD_ob(iso_cold_pool_flag==flag),'s','filled')
     colormap(flip(jet(16)))
     hdl=colorbar;
@@ -184,9 +188,6 @@ for ipanel = 1:2
         set(hdl, 'visible','off')
     end
     ylabel(hdl,['\deltaD (',char(8240),')'],'FontSize',18,'Rotation',90);
-    scatter(th_ent(k,ii),q_ent(k,ii),10,[0.8500 0.3250 0.0980],'filled')
-    scatter(th_surf(ii),q_surf(ii),10,[0.9290 0.6940 0.1250],'filled')
-    scatter(th_dd(ii),q_dd(ii),10,[0 0.4470 0.7410],'filled')
     xlim([289 303]); % xlim([288.8 302.2])
     ylim([7 23])
     axis square
@@ -198,7 +199,7 @@ for ipanel = 1:2
     if ~flag
         text(292,21.5,'surface','FontSize',15)
         text(292,9,'entrained','FontSize',15)
-        text(289.3,15.8,'downdraft','FontSize',15)
+        text(289.3,17.5,{'hydro-' 'meteor'},'FontSize',15)
     end
 end
 % set(findall(gcf,'-property','Fontsize'),'FontSize',18)
@@ -220,6 +221,9 @@ for ipanel = 3:4
 
     plot(th_ob(ii),dD_ob(ii),'sk','MarkerSize',5,'MarkerFaceColor','k')
     hold on;
+    scatter(th_ent(k,ii),dD_ent(k,ii),15,[0.8500 0.3250 0.0980],'filled')
+    scatter(th_surf(ii),dD_surf(ii),15,[0.9290 0.6940 0.1250],'filled')
+    scatter(th_dd(ii),dD_dd(k,ii),15,[0 0.4470 0.7410],'filled')
     scatter(th_ob(ii),dD_ob(ii),13,q_ob(ii),'s','filled')
     colormap(flip(jet(12)))
     clim([12 16])
@@ -229,9 +233,6 @@ for ipanel = 3:4
     else
         set(hdl, 'visible','off')
     end
-    scatter(th_ent(k,ii),dD_ent(k,ii),15,[0.8500 0.3250 0.0980],'filled')
-    scatter(th_surf(ii),dD_surf(ii),15,[0.9290 0.6940 0.1250],'filled')
-    scatter(th_dd(ii),dD_dd(k,ii),15,[0 0.4470 0.7410],'filled')
     ylim([-92 -62]);
     xlim([289 303]);
     xlabel('\theta (K)')
@@ -251,9 +252,9 @@ text(ax(4), 290,-66, "d", 'fontsize',18)
 
 % save in several formats
 fmt = ["epsc"; "svg"; "png"; "pdf"];
-% for i = 1:length(fmt)
-%     saveas(gcf, "con_prop_dD_4panel", fmt(i))
-% end
+for i = 1:length(fmt)
+    saveas(gcf, "con_prop_dD_4panel", fmt(i))
+end
 
 %% Plots in dD-DXS space %%
 for k = 4 % 1:size(dD_ent,1)
@@ -285,8 +286,8 @@ for k = 4 % 1:size(dD_ent,1)
     axis square
     hold on;text(-66,1,'surface','FontSize',15)
     hold on;text(-75,21.5,'entrained','FontSize',15)
-    hold on;text(-60,11.5,'downdraft','FontSize',15)
-    caxis([295 300])
+    hold on;text(-60,11.5,'hydrometeor','FontSize',15)
+    clim([295 300])
     set(gca, 'YDir','reverse')
     set(gca, 'XDir','reverse')
     title(['Height range [',num2str(h_low(k)/1000),':',num2str(h_hi(k)/1000),'] km'],'FontSize',17)

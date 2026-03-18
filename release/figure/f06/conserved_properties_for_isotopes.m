@@ -24,7 +24,7 @@
 % conserved_properties_for_isotopes.m
 %
 % Applying the extrapolation and mixing fraction analysis to RHB data in
-% order to obtain isotope concentrations for entrained and downdraft end members
+% order to obtain isotope concentrations for entrained and hydrometeor downdraft end members
 % EQM Last modified: Nov 16 2022
 % SPdeS tweaked some paths 2025-06-05
 
@@ -227,7 +227,7 @@ for k = 4 %1:size(dD_ent,1)
 %     scatter(th_ob(iso_cold_pool_flag==flag),d18O_ob(iso_cold_pool_flag==flag),13,q_ob(iso_cold_pool_flag==flag),'s','filled')
 %     scatter(th_ob,dD_ob,13,q_ob,'s','filled')
     colormap(flip(jet(12)))
-    caxis([11 17])
+    clim([11 17])
     hdl=colorbar;
     ylabel(hdl,'q [g kg^-^1])','FontSize',16,'Rotation',90);
 %     scatter(th_ent(k,iso_cold_pool_flag==flag),d18O_ent(k,iso_cold_pool_flag==flag),15,[0.8500 0.3250 0.0980],'filled')
@@ -255,7 +255,7 @@ for k = 4 %1:size(dD_ent,1)
     axis square
 %     hold on;text(-66,1,'surface','FontSize',15)
 %     hold on;text(-75,21.5,'entrained','FontSize',15)
-%     hold on;text(-60,11.5,'downdraft','FontSize',15)
+%     hold on;text(-60,11.5,'hydrometeor','FontSize',15)
 %     caxis([297 300])
 %     set(gca, 'YDir','reverse')
 %     set(gca, 'XDir','reverse')
@@ -297,8 +297,8 @@ for k = 4 % 1:size(dD_ent,1)
     axis square
     hold on;text(-66,1,'surface','FontSize',15)
     hold on;text(-75,21.5,'entrained','FontSize',15)
-    hold on;text(-60,11.5,'downdraft','FontSize',15)
-    caxis([295 300])
+    hold on;text(-60,11.5,'hydrometeor','FontSize',15)
+    clim([295 300])
     set(gca, 'YDir','reverse')
     set(gca, 'XDir','reverse')
     title(['Height range [',num2str(h_low(k)/1000),':',num2str(h_hi(k)/1000),'] km'],'FontSize',17)
@@ -333,8 +333,8 @@ for k = 4 %1:size(dD_ent,1)
     axis square
     hold on;text(294.25,21.5,'surface','FontSize',15)
     hold on;text(295,9,'entrained','FontSize',15)
-    hold on;text(289.5,11,'downdraft','FontSize',15)
-    caxis([-81 -65])
+    hold on;text(289.5,11,'hydrometeor','FontSize',15)
+    clim([-81 -65])
 %     title(['Height range [',num2str(h_low(k)/1000),':',num2str(h_hi(k)/1000),'] km'],'FontSize',17)
 %     saveas(gcf,['RHB-soundings-th-q-plain-height-range',num2str(k)],'png')
 %     saveas(gcf,['RHB-soundings-th-q-plain-height-range',num2str(k)],'fig')

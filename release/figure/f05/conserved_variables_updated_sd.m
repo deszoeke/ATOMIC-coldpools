@@ -59,7 +59,7 @@ th_en1km = th(h==1e3, ind:end);
 q_en  = mean(q(h>=1100 & h<=1300 ,ind:end),'omitnan')*1e3; % check units for q_inth, looks like is cg/kg
 th_en = mean(th(h>=1100 & h<=1300,ind:end),'omitnan');
     
-%% Air type: downdraft from mean cloud layer 
+%% Air type: hydrometeor downdraft from mean cloud layer 
 % % q and theta @ mean theta_w (wet-bulb potential temp) above 1km and below the trade inversion line (6g/kg contour) for each sounding
     % Extracting trade inversion height (mixed layer depth)
 for k = 1:size(q,2)
@@ -138,12 +138,14 @@ ylabel('q [g/kg]')
 xlabel('\theta [K]')
 set(findall(gcf,'-property','Fontsize'),'FontSize',18)
 box on; axis square
-% legend('entrained','observed','downdraft','surface')
+% legend('entrained','observed','hydrometeor','surface')
 
 %% Saving data in .mat file %%
 time_soundings = t_4h(7:end-1)';
 % time_PSD_surface_data = t1min(pos(7:end-1)); % only applies to q_surf and th_surf
-clearvars -except q_d q_en q_ob q_surf time_soundings time_PSD_surface_data th_d th_en th_ob th_surf iso_mr iso_dD iso_d18O
+clearvars -except q_d q_en q_ob q_surf time_soundings ...
+    time_PSD_surface_data th_d th_en th_ob th_surf iso_mr iso_dD ...
+    iso_d18O th_en_10 q_en_10 th_d_10 q_d_10 cold_pool_flag_10min
 
 %% Mix fraction plot %%
 % load('conserved_variables_with_iso_data_full_214_soundings.mat')
@@ -153,7 +155,7 @@ clearvars -except q_d q_en q_ob q_surf time_soundings time_PSD_surface_data th_d
 % for each timestamp (each row), 207 in this case.
 % fen = entrained air fraction
 % fss = fraction of air in equilibrium with the sea surface
-% fdd = saturated downdraft air fraction
+% fdd = saturated hydrometeor downdraft air fraction
 % The mixing fractions of these 3 end members are inverted algebraically
 % from observed thml (th_ob), qml (q_ob) as in de Szoeke (2018).
 
@@ -163,28 +165,28 @@ fss_10min = fss;
 fen_10min = fen;
 
 %% Plot q and theta for entrained air
-color = 'b'; %[0.8500 0.3250 0.0980]; %'k'; %[0 0.4470 0.7410]; %
-
-% figure;
-subplot(311)
-hold on;
-plot(t_4h,q_en,'Color',color)
-datetick('x','mm/dd','keeplimits','keepticks')
-ylabel('q_e_n_t [g/kg]')
-legend('@1km','mean [0.8 1.2] km','mean [1.0 1.4] km','mean [1.1 1.4] km','mean [1.1 1.3] km')
-
-subplot(312)
-hold on;
-plot(t_4h,th_en,'-.','Color',color)
-datetick('x','mm/dd','keeplimits','keepticks')
-ylabel('\theta_e_n_t [K]')
-
-subplot(313)
-hold on;
-plot(t_4h,q_en-q_en1km,'Color',color)
-plot(t_4h,th_en-th_en1km,'-.','Color',color)
-datetick('x','mm/dd','keeplimits','keepticks')
-ylabel('diff [mean - 1km]')
+% color = 'b'; %[0.8500 0.3250 0.0980]; %'k'; %[0 0.4470 0.7410]; %
+% 
+% % figure;
+% subplot(311)
+% hold on;
+% plot(t_4h,q_en,'Color',color)
+% datetick('x','mm/dd','keeplimits','keepticks')
+% ylabel('q_e_n_t [g/kg]')
+% legend('@1km','mean [0.8 1.2] km','mean [1.0 1.4] km','mean [1.1 1.4] km','mean [1.1 1.3] km')
+% 
+% subplot(312)
+% hold on;
+% plot(t_4h,th_en,'-.','Color',color)
+% datetick('x','mm/dd','keeplimits','keepticks')
+% ylabel('\theta_e_n_t [K]')
+% 
+% subplot(313)
+% hold on;
+% plot(t_4h,q_en-q_en1km,'Color',color)
+% plot(t_4h,th_en-th_en1km,'-.','Color',color)
+% datetick('x','mm/dd','keeplimits','keepticks')
+% ylabel('diff [mean - 1km]')
 
 %% Plot Fig 9
 clrs = colororder();
@@ -212,10 +214,10 @@ set(gca,'Xdir','reverse')
 xlim([-0.2 1.1])
 ylim([-0.2 1.1])
 ylabel('surface fraction')
-xlabel('downdraft fraction')
+xlabel('hydrometeor fraction')
 set(findall(gcf,'-property','Fontsize'),'FontSize',18)
 box on; axis square;
-% legend('entrained','observed','downdraft','surface')
+% legend('entrained','observed','hydrometeor','surface')
 text(0.95, 0.95, 'b', 'FontSize',18)
 title('\theta-q mixture fraction', 'fontweight','normal')
 
@@ -233,9 +235,9 @@ hdl = colorbar(); hdl.Visible = "off";
 set(findall(gcf,'-property','Fontsize'),'FontSize',18)
 set(findall(gcf,'-property','TickLength'),'TickLength',[.05 .05])
 set(findall(gcf,'-property','LineWidth'),'LineWidth',1)
-text(293.2,21.5,'surface','FontSize',18)
-text(294,8.75,'entrained','FontSize',18)
-text(289.5,11,'downdraft','FontSize',18)
+text(292.2,21.5,'surface','FontSize',18)
+text(294,8.3,'entrained','FontSize',18)
+text(289.2,11,'hydrometeor','FontSize',18)
 text(290, 21, 'a', 'FontSize',18)
 % legend('observed')
 box on; axis square
@@ -243,9 +245,9 @@ box on; axis square
 % print Fig 9
 orient landscape
 fmt = ["epsc"; "svg"; "png"; "pdf"];
-% for i = 1:length(fmt)
-%     saveas(gcf, "con_prop_thq_ab", fmt(i))
-% end
+for i = 1:length(fmt)
+    saveas(gcf, "con_prop_thq_ab", fmt(i))
+end
 
 % END working part of script
 %{
@@ -270,7 +272,7 @@ ylabel('specific humidity q [g/kg]')
 xlabel('potential temperature \theta [K]')
 set(findall(gcf,'-property','Fontsize'),'FontSize',30)
 box on
-legend('entrained','observed','downdraft','surface')
+legend('entrained','observed','hydrometeor','surface')
 title('BL conserved properties')
 
 %% BL air mixture fraction plot
@@ -291,7 +293,7 @@ set(gca,'Xdir','reverse')
 xlim([-0.2 1])
 ylim([-0.2 1])
 ylabel('surface fraction ~ q [g/kg]')
-xlabel('downdraft fraction ~ \theta [K]')
+xlabel('hydrometeor fraction ~ \theta [K]')
 set(findall(gcf,'-property','Fontsize'),'FontSize',30)
 box on
 axis square
@@ -316,7 +318,7 @@ bar(t1min,[fen_10min;fss_10min;fdd_10min]',1,'stacked')
 datetick('x','mmm/dd','keepticks','keeplimits')
 xlabel('2020 date')
 ylabel('BL air mixture fraction')
-legend({'entrained fraction','surface fraction','downdraft fraction'})
+legend({'entrained fraction','surface fraction','hydrometeor fraction'})
 set(findall(gcf,'-property','Fontsize'),'FontSize',15)
 set(findall(gcf,'Type','axes'),'LineWidth',2)
 % xlim([datenum('Jan/09/2020') datenum('Feb/12/2020 1PM')])
